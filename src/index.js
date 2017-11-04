@@ -1,34 +1,82 @@
 import './index.css';
+import level1 from './map-definitions/map';
+import MapRender from './map-render';
+var maze = new Pacman();
 
-import {getUsers, deleteUser} from './api/userApi';
+function setUpKeyListeners() {
 
-// Populate table of users via API call.
-getUsers().then(result => {
-  let usersBody = "";
+  document.addEventListener('keydown', (event) => {
 
-  result.forEach(user => {
-    usersBody+= `<tr>
-      <td><a href="#" data-id="${user.id}" class="deleteUser">Delete</a></td>
-      <td>${user.id}</td>
-      <td>${user.firstName}</td>
-      <td>${user.lastName}</td>
-      <td>${user.email}</td>
-      </tr>`
-  });
+    console.log(event);
+    if (event.keyCode >= 37 && event.keyCode <= 40) {
 
-  global.document.getElementById('users').innerHTML = usersBody;
+      maze.UpdatePlayer(event.keyCode);
+    }
+  }, false);
+}
 
-  const deleteLinks = global.document.getElementsByClassName('deleteUser');
+setUpKeyListeners();
 
-  // Must use array.from to create a real array from a DOM collection
-  // getElementsByClassname only returns an "array like" object
-  Array.from(deleteLinks, link => {
-    link.onclick = function(event) {
-      const element = event.target;
-      event.preventDefault();
-      deleteUser(element.attributes["data-id"].value);
-      const row = element.parentNode.parentNode;
-      row.parentNode.removeChild(row);
-    };
-  });
-});
+function Pacman() {
+
+  var map = level1;
+
+  function Main() {
+    var canvas = document.getElementById("canvas");
+    canvas.width = window.innerWidth - (window.innerWidth % map[0].length);
+    canvas.height = window.innerHeight - (window.innerHeight % map.length);
+    var ctx = canvas.getContext("2d");
+    const cellWidth = canvas.width / map[0].length * 1.0;
+    const cellHeight = canvas.height / map.length * 1.0;
+    MapRender(ctx, cellWidth, cellHeight, map);
+  }
+
+  function UpdatePlayer(direction) {
+    const index = isItemInArray(map, 2);
+    if (index.index > 0)
+      if (direction == 37 && (index.index - 1 > 0 && index.index - 1 < map[0].length)) {
+        map[index.i][index.index] = 0;
+        map[index.i][index.index - 1] = 2;
+      }
+    if (direction == 39 && (index.index + 1 > 0 && index.index + 1 < map[0].length)) {
+      map[index.i][index.index] = 0;
+      map[index.i][index.index + 1] = 2;
+    }
+    if (direction == 38 && (index.i - 1 > 0 && index.i - 1 < map.length)) {
+      map[index.i][index.index] = 0;
+      map[index.i - 1][index.index] = 2;
+    }
+    if (direction == 40 && (index.i + 1 > 0 && index.i + 1 < map.length)) {
+      map[index.i][index.index] = 0;
+      map[index.i + 1][index.index] = 2;
+    }
+    this.Main();
+  }
+
+
+  function isItemInArray(array, item) {
+    console.log(item);
+    for (var i = 0; i < array.length; i++) {
+      // This if statement depends on the format of your array
+      let index = array[i].findIndex(x => x == 2)
+      if (index >= 0) {
+        return {
+          i: i,
+          index: index
+        }
+      }
+    }
+    return {
+      i: -1,
+      index: -1
+    } // Not found
+  }
+
+  return {
+    UpdatePlayer: UpdatePlayer,
+    Main: Main,
+    items: map
+  }
+
+}
+window.maze = maze;
