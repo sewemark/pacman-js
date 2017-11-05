@@ -8,6 +8,9 @@ export default function MapRender(context, width, height, map) {
       } else if (map[j][i] == 2) {
         context.fillStyle = "yellow";
       }
+      else if (map[j][i] == 3) {
+        context.fillStyle = "red";
+      }
       context.fillRect(Math.floor(i * width), Math.floor(j * height), Math.floor(width), Math.floor(height));
     }
   }
