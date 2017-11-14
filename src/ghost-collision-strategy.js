@@ -1,4 +1,4 @@
-export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
+export default function GhostCollisionStartegy(mapHeight, mapWidth) {
 
   this.mapHeight = mapHeight;
   this.mapWidth = mapWidth;
@@ -9,13 +9,6 @@ export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
     39: (playerPosition) => (playerPosition.x + 1 >= 0 || playerPosition.x + 1 < mapWidth)  && this.map[playerPosition.y][playerPosition.x +1] != 1,
     38: (playerPosition) => (playerPosition.y - 1 >= 0 || playerPosition.y - 1 < mapHeight) && this.map[playerPosition.y-1][playerPosition.x] != 1,
     40: (playerPosition) => (playerPosition.y + 1 >= 0 || playerPosition.y + 1 < mapHeight) && this.map[playerPosition.y +1][playerPosition.x] != 1
-  };
-
-  this.foodChecker = {
-    37: (playerPosition) =>this.map[playerPosition.y][playerPosition.x-1] == 4,
-    39: (playerPosition) => this.map[playerPosition.y][playerPosition.x +1] == 4,
-    38: (playerPosition) => this.map[playerPosition.y-1][playerPosition.x] == 4,
-    40: (playerPosition) => this.map[playerPosition.y +1][playerPosition.x] == 4
   };
 
   this.mapUpdater = {
@@ -44,18 +37,21 @@ export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
   }
 
   this.updateMap = function(destinationDirection, map, playerPosition, player) {
-     this.mapUpdater[destinationDirection](map, playerPosition, player);
-    return map;
+    return this.mapUpdater[destinationDirection](map, playerPosition, player);
+
   }
 
-  this.checkFood = function(destinationDirection, playerPosition, map) {
+  this.checkWin =  function(destinationDirection, playerPosition, map){
     this.map = map;
-   return this.foodChecker[destinationDirection](playerPosition);
+    return this.win[destinationDirection](playerPosition);
   }
 
-
-
-
+  this.win = {
+    37: (playerPosition) =>  this.map[playerPosition.y][playerPosition.x-1] ==2,
+    39: (playerPosition) =>  this.map[playerPosition.y][playerPosition.x +1] == 2,
+    38: (playerPosition) =>  this.map[playerPosition.y-1][playerPosition.x] == 2,
+    40: (playerPosition) =>  this.map[playerPosition.y +1][playerPosition.x] == 1
+  };
 
 
 };

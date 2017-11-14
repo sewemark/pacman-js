@@ -1,6 +1,6 @@
 export default function getItemPosition(array, item) {
     for (var i = 0; i < array.length; i++) {
-      let index = array[i].findIndex(x => x == 2)
+      let index = array[i].findIndex(x => x == item)
       if (index >= 0) {
         return {
           y: i,
