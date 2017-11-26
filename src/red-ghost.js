@@ -1,11 +1,12 @@
-export default function RedGhost(position, destination, path) {
+export default function RedGhost(initData) {
   var mode = "scatter";
-  var position = position;
-  var destination = destination;
-  this.path = path;
+  var position = initData.position;
+  var destination = initData.destination;
+  this.path = initData.path;
 
 
   function getDirection(position) {
+
     var firstPath = this.path.splice(0,1);
     if (firstPath[0][0] == position.x) {
         if(firstPath[0][1] > position.y) return 40;
@@ -21,6 +22,6 @@ export default function RedGhost(position, destination, path) {
 
   return {
     getDirection: getDirection,
-    path:path
+    path:this.path
   }
 }

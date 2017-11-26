@@ -5,57 +5,96 @@ export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
   this.map = new Array();
 
   this.destinationCheker = {
-    37: (playerPosition) => (playerPosition.x - 1 >= 0 || playerPosition.x - 1 < mapWidth) && this.map[playerPosition.y][playerPosition.x-1] != 1,
-    39: (playerPosition) => (playerPosition.x + 1 >= 0 || playerPosition.x + 1 < mapWidth)  && this.map[playerPosition.y][playerPosition.x +1] != 1,
-    38: (playerPosition) => (playerPosition.y - 1 >= 0 || playerPosition.y - 1 < mapHeight) && this.map[playerPosition.y-1][playerPosition.x] != 1,
-    40: (playerPosition) => (playerPosition.y + 1 >= 0 || playerPosition.y + 1 < mapHeight) && this.map[playerPosition.y +1][playerPosition.x] != 1
-  };
-
-  this.foodChecker = {
-    37: (playerPosition) =>this.map[playerPosition.y][playerPosition.x-1] == 4,
-    39: (playerPosition) => this.map[playerPosition.y][playerPosition.x +1] == 4,
-    38: (playerPosition) => this.map[playerPosition.y-1][playerPosition.x] == 4,
-    40: (playerPosition) => this.map[playerPosition.y +1][playerPosition.x] == 4
+    37: (playerPosition,destination) => (playerPosition.x - 1 >= 0 || playerPosition.x - 1 < mapWidth) && destination != 1,
+    39: (playerPosition,destination) => (playerPosition.x + 1 >= 0 || playerPosition.x + 1 < mapWidth) && destination != 1,
+    38: (playerPosition,destination) => (playerPosition.y - 1 >= 0 || playerPosition.y - 1 < mapHeight) && destination != 1,
+    40: (playerPosition,destination) => (playerPosition.y + 1 >= 0 || playerPosition.y + 1 < mapHeight) && destination != 1
   };
 
   this.mapUpdater = {
-    37: (map, playerPosition, player) => {
-      map[playerPosition.y][playerPosition.x] = 0;
-      map[playerPosition.y][playerPosition.x - 1] = player;
+    37: (playerPosition, player) => {
+      return [{
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x
+          },
+          value: 0
+        },
+        {
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x - 1
+          },
+          value: player
+        }
+      ]
     },
-    39: (map,playerPosition, player) => {
-      map[playerPosition.y][playerPosition.x] = 0;
-      map[playerPosition.y][playerPosition.x + 1] = player;
+    38: (playerPosition, player) => {
+      return [{
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x
+          },
+          value: 0
+        },
+        {
+          position: {
+            y: playerPosition.y - 1,
+            x: playerPosition.x
+          },
+          value: player
+        }
+      ]
     },
-    38: (map,playerPosition, player) => {
-      map[playerPosition.y][playerPosition.x] = 0;
-      map[playerPosition.y - 1][playerPosition.x] = player;
+    39: (playerPosition, player) => {
+      return [{
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x
+          },
+          value: 0
+        },
+        {
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x + 1
+          },
+          value: player
+        }
+      ]
     },
-    40: (map, playerPosition, player) => {
-      map[playerPosition.y][playerPosition.x] = 0;
-      map[playerPosition.y + 1][playerPosition.x] = player;
+    40: (playerPosition, player) => {
+      return [{
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x
+          },
+          value: 0
+        },
+        {
+          position: {
+            y: playerPosition.y + 1,
+            x: playerPosition.x,
+          },
+          value: player
+        }
+      ]
     },
+
   }
 
-  this.checkCollision= function(destinationDirection, playerPosition, map) {
-    this.map = map;
-   return this.destinationCheker[destinationDirection](playerPosition);
+  this.checkCollision = function (direction, playerPosition, destination) {
+    return this.destinationCheker[direction](playerPosition, destination);
 
   }
 
-  this.updateMap = function(destinationDirection, map, playerPosition, player) {
-     this.mapUpdater[destinationDirection](map, playerPosition, player);
-    return map;
+  this.getNewPositions = function (direction, playerPosition, destination) {
+   return this.mapUpdater[direction](playerPosition,destination);
   }
 
-  this.checkFood = function(destinationDirection, playerPosition, map) {
-    this.map = map;
-   return this.foodChecker[destinationDirection](playerPosition);
+  this.checkFood = function (destination) {
+    return destination == 4;
   }
-
-
-
-
 
 
 };

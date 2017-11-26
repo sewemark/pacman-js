@@ -41,9 +41,8 @@ export default function GhostCollisionStartegy(mapHeight, mapWidth) {
 
   }
 
-  this.checkWin =  function(destinationDirection, playerPosition, map){
-    this.map = map;
-    return this.win[destinationDirection](playerPosition);
+  this.checkWin = function (destination) {
+    return destination == 2;
   }
 
   this.win = {
