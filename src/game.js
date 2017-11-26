@@ -9,7 +9,7 @@ export default function Game(mapManager) {
   this.pacmanMoveStrategy = new PacmanCollisionStartegy(this.mapManager.getLevelWidth(), this.mapManager.getLevelHeight());
   this.ghostCollisionStrategy = new GhostCollisionStartegy(this.mapManager.getLevelWidth(), this.mapManager.getLevelHeight());
   this.redGhost = new RedGhost(this.mapManager.getNextTripForGhost(3));
-  this.player = new Player();
+  this.player = new Player(this.pacmanMoveStrategy, this.mapManager.getItemPosition(2));
 
   this.Start = function () {
     this.mapManager.render();
@@ -18,12 +18,9 @@ export default function Game(mapManager) {
   this.HandleUserInput = function (direction) {
     const playerPosition = this.mapManager.getItemPosition(2);
     const destination = this.mapManager.getDestinationPosition(direction, playerPosition);
-    if (this.pacmanMoveStrategy.checkCollision(direction, playerPosition, destination)) {
-      if (this.pacmanMoveStrategy.checkFood(destination)) {
-        this.player.points++;
-      }
-      var positions = this.pacmanMoveStrategy.getNewPositions(direction, playerPosition, 2);
-      this.mapManager.updateMap(positions);
+    const temp = this.player.getNewPosition(direction, destination);
+    if ( temp.x != playerPosition.x || temp.y != playerPosition.y) {
+      this.mapManager.updateMap(this.player.getNewPositions());
       this.Start();
     }
   }
@@ -31,24 +28,23 @@ export default function Game(mapManager) {
   setInterval(UpdateGohosts.bind(this), 100);
 
   function UpdateGohosts() {
-     if (this.redGhost.path.length == 0) {
-       console.log("ADDDING");
-         var path = this.mapManager.getNextTripForGhost(3).path;
-         this.redGhost.path =path;
-     }
-     const ghostPostion = this.mapManager.getItemPosition(3);
-     var direction = this.redGhost.getDirection(ghostPostion)
+    if (this.redGhost.path.length == 0) {
+      var path = this.mapManager.getNextTripForGhost(3).path;
+      this.redGhost.path = path;
+    }
+    const ghostPostion = this.mapManager.getItemPosition(3);
+    var direction = this.redGhost.getDirection(ghostPostion)
 
-     const destination = this.mapManager.getDestinationPosition(direction, ghostPostion);
+    const destination = this.mapManager.getDestinationPosition(direction, ghostPostion);
 
-     if (this.pacmanMoveStrategy.checkCollision(direction, ghostPostion, destination)) {
-       if(this.ghostCollisionStrategy.checkWin(destination)){
-            alert("GAME OVER");
-       }
+    if (this.pacmanMoveStrategy.checkCollision(direction, ghostPostion, destination)) {
+      if (this.ghostCollisionStrategy.checkWin(destination)) {
+        alert("GAME OVER");
+      }
       //this.collistionStrategy.updateMap(direction, map, ghostPostion, 3);
       var positions = this.pacmanMoveStrategy.getNewPositions(direction, ghostPostion, 3);
       this.mapManager.updateMap(positions);
-       this.Start();
-     }
-   }
+      this.Start();
+    }
+  }
 }

@@ -36,8 +36,6 @@ export default function MapManager(map,ctx, cellWidth, cellHeight) {
 
   }
 
-
-
   this.generateRandomPoint = function () {
     var yRandom = Math.floor((Math.random() * this.map.length) + 1);
     var xRandom = Math.floor((Math.random() * this.map[0].length) + 1);

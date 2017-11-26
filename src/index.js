@@ -20,7 +20,7 @@ setUpKeyListeners();
 function setUpKeyListeners() {
   document.addEventListener('keydown', (event) => {
     if (event.keyCode >= 37 && event.keyCode <= 40) {
-      game.HandleUserInput(event.keyCode);
+         game.HandleUserInput(event.keyCode);
     }
   }, false);
 }
