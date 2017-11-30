@@ -18,4 +18,6 @@ export default function Player(pacmanMoveStrategy, playerPosition) {
   this.getNewPositions = () => this.newPositions;
 
 
+
+
 }

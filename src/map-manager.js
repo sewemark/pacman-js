@@ -94,6 +94,7 @@ export default function MapManager(map,ctx, cellWidth, cellHeight) {
     var path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
     while(path.length ==0){
       path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
+      console.log("bBLALBLA");
     }
     return {
       init:init,
