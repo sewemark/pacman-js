@@ -1,24 +1,25 @@
+import ActorDefinitions from './map-definitions/map-config';
+
 export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
 
   this.mapHeight = mapHeight;
   this.mapWidth = mapWidth;
-  this.map = new Array();
 
   this.destinationCheker = {
-    37: (playerPosition,destination) => (playerPosition.x - 1 >= 0 || playerPosition.x - 1 < mapWidth) && destination != 1,
-    39: (playerPosition,destination) => (playerPosition.x + 1 >= 0 || playerPosition.x + 1 < mapWidth) && destination != 1,
-    38: (playerPosition,destination) => (playerPosition.y - 1 >= 0 || playerPosition.y - 1 < mapHeight) && destination != 1,
-    40: (playerPosition,destination) => (playerPosition.y + 1 >= 0 || playerPosition.y + 1 < mapHeight) && destination != 1
+    37: (playerPosition, destination) => (playerPosition.x - 1 >= 0 || playerPosition.x - 1 < mapWidth) && destination != ActorDefinitions.WALL,
+    39: (playerPosition, destination) => (playerPosition.x + 1 >= 0 || playerPosition.x + 1 < mapWidth) && destination != ActorDefinitions.WALL,
+    38: (playerPosition, destination) => (playerPosition.y - 1 >= 0 || playerPosition.y - 1 < mapHeight) && destination != ActorDefinitions.WALL,
+    40: (playerPosition, destination) => (playerPosition.y + 1 >= 0 || playerPosition.y + 1 < mapHeight) && destination != ActorDefinitions.WALL
   };
 
   this.mapUpdater = {
-    37: (playerPosition, player) => {
+    37: (playerPosition, player, prevValue) => {
       return [{
           position: {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: 0
+          value: prevValue ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -29,13 +30,13 @@ export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
         }
       ]
     },
-    38: (playerPosition, player) => {
+    38: (playerPosition, player, prevValue) => {
       return [{
           position: {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: 0
+          value: prevValue ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -46,13 +47,13 @@ export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
         }
       ]
     },
-    39: (playerPosition, player) => {
+    39: (playerPosition, player, prevValue) => {
       return [{
           position: {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: 0
+          value: prevValue ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -63,13 +64,13 @@ export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
         }
       ]
     },
-    40: (playerPosition, player) => {
+    40: (playerPosition, player, prevValue) => {
       return [{
           position: {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: 0
+          value: prevValue ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -80,21 +81,18 @@ export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
         }
       ]
     },
-
   }
 
   this.checkCollision = function (direction, playerPosition, destination) {
     return this.destinationCheker[direction](playerPosition, destination);
-
   }
 
   this.getNewPositions = function (direction, playerPosition, destination) {
-   return this.mapUpdater[direction](playerPosition,destination);
+    return this.mapUpdater[direction](playerPosition, destination);
   }
 
   this.checkFood = function (destination) {
-    return destination == 4;
+    return destination == ActorDefinitions.FOOD;
   }
-
 
 };

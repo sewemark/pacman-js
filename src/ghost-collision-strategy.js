@@ -13,6 +13,7 @@ export default function GhostCollisionStartegy(mapHeight, mapWidth) {
 
   this.mapUpdater = {
     37: (map, playerPosition, player) => {
+
       map[playerPosition.y][playerPosition.x] = 0;
       map[playerPosition.y][playerPosition.x - 1] = player;
     },
@@ -49,7 +50,7 @@ export default function GhostCollisionStartegy(mapHeight, mapWidth) {
     37: (playerPosition) =>  this.map[playerPosition.y][playerPosition.x-1] ==2,
     39: (playerPosition) =>  this.map[playerPosition.y][playerPosition.x +1] == 2,
     38: (playerPosition) =>  this.map[playerPosition.y-1][playerPosition.x] == 2,
-    40: (playerPosition) =>  this.map[playerPosition.y +1][playerPosition.x] == 1
+    40: (playerPosition) =>  this.map[playerPosition.y +1][playerPosition.x] == 2
   };
 
 
