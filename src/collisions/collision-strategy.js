@@ -1,18 +1,21 @@
-import ActorDefinitions from './map-definitions/map-config';
+import ActorDefinitions from '../map-definitions/map-config';
 
-export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
+var CollisionStrategy = (function () {
+  "use strict"
+  var priv = new WeakMap();
+  var _ = function (instance) {
+    return priv.get(instance);
+  }
 
-  this.mapHeight = mapHeight;
-  this.mapWidth = mapWidth;
-
-  this.destinationCheker = {
-    37: (playerPosition, destination) => (playerPosition.x - 1 >= 0 || playerPosition.x - 1 < mapWidth) && destination != ActorDefinitions.WALL,
-    39: (playerPosition, destination) => (playerPosition.x + 1 >= 0 || playerPosition.x + 1 < mapWidth) && destination != ActorDefinitions.WALL,
-    38: (playerPosition, destination) => (playerPosition.y - 1 >= 0 || playerPosition.y - 1 < mapHeight) && destination != ActorDefinitions.WALL,
-    40: (playerPosition, destination) => (playerPosition.y + 1 >= 0 || playerPosition.y + 1 < mapHeight) && destination != ActorDefinitions.WALL
-  };
-
-  this.mapUpdater = {
+  function CollisionStrategyConstructor(mapWidth, mapHeight) {
+    var privMembers = {
+      mapWidth: mapWidth,
+      mapHeight: mapHeight
+    };
+    priv.set(this, privMembers);
+  }
+ 
+  CollisionStrategyConstructor.prototype.mapUpdater = {
     37: (playerPosition, player, prevValue) => {
       return [{
           position: {
@@ -80,19 +83,30 @@ export default function PacmanCollisionStartegy(mapHeight, mapWidth) {
           value: player
         }
       ]
-    },
+    }
   }
 
-  this.checkCollision = function (direction, playerPosition, destination) {
+  CollisionStrategyConstructor.prototype.checkCollision = function (direction, playerPosition, destination) {
     return this.destinationCheker[direction](playerPosition, destination);
   }
 
-  this.getNewPositions = function (direction, playerPosition, destination) {
+  CollisionStrategyConstructor.prototype.getNewPositions = function (direction, playerPosition, destination) {
     return this.mapUpdater[direction](playerPosition, destination);
   }
 
-  this.checkFood = function (destination) {
+  CollisionStrategyConstructor.prototype.destinationCheker = {
+    37: (playerPosition, destination) => (playerPosition.x - 1 >= 0 || playerPosition.x - 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL,
+    39: (playerPosition, destination) => (playerPosition.x + 1 >= 0 || playerPosition.x + 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL,
+    38: (playerPosition, destination) => (playerPosition.y - 1 >= 0 || playerPosition.y - 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL,
+    40: (playerPosition, destination) => (playerPosition.y + 1 >= 0 || playerPosition.y + 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL
+  };
+ 
+  CollisionStrategyConstructor.prototype.checkFood = function (destination) {
     return destination == ActorDefinitions.FOOD;
   }
 
-};
+  return CollisionStrategyConstructor;
+
+})();
+
+export default CollisionStrategy;

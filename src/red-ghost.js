@@ -1,4 +1,4 @@
-export default function RedGhost(collisionMoveStrategy, ghostCollisionStrategy, mapManager) {
+export default function RedGhost(ghostCollisionStrategy, mapManager) {
   var mode = "scatter";
   this.mapManager = mapManager;
   var initData = this.mapManager.getNextTripForGhost(3);
@@ -6,7 +6,6 @@ export default function RedGhost(collisionMoveStrategy, ghostCollisionStrategy, 
   var destination = initData.destination;
   this.path = initData.path;
   this.ghostCollisionStrategy = ghostCollisionStrategy;
-  this.collisionMoveStrategy = collisionMoveStrategy;
 
   this.newPositions = [];
 
@@ -27,11 +26,11 @@ export default function RedGhost(collisionMoveStrategy, ghostCollisionStrategy, 
   }
 
   this.getNewPosition = (direction, destination) => {
-    if (this.collisionMoveStrategy.checkCollision(direction, this.position, destination)) {
+    if (this.ghostCollisionStrategy.checkCollision(direction, this.position, destination)) {
       if (this.ghostCollisionStrategy.checkWin(destination)) {
           alert("GAME OVER");
       }
-      this.newPositions = this.collisionMoveStrategy.getNewPositions(direction, this.position, 3);
+      this.newPositions = this.ghostCollisionStrategy.getNewPositions(direction, this.position, 3);
       this.position = this.newPositions[1].position;
     }
 

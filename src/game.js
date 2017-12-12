@@ -1,5 +1,5 @@
-import PacmanCollisionStartegy from './collision-strategy';
-import GhostCollisionStartegy from './ghost-collision-strategy';
+import PacmanCollisionStartegy from './collisions/pacman-collision-strategy';
+import GhostCollisionStartegy from './collisions/ghost-collision-strategy';
 import Player from './player';
 import RedGhost from './red-ghost';
 
@@ -8,7 +8,7 @@ export default function Game(mapManager) {
   this.mapManager = mapManager;
   this.pacmanMoveStrategy = new PacmanCollisionStartegy(this.mapManager.getLevelWidth(), this.mapManager.getLevelHeight());
   this.ghostCollisionStrategy = new GhostCollisionStartegy(this.mapManager.getLevelWidth(), this.mapManager.getLevelHeight());
-  this.redGhost = new RedGhost(this.pacmanMoveStrategy, this.ghostCollisionStrategy, this.mapManager);
+  this.redGhost = new RedGhost(this.ghostCollisionStrategy, this.mapManager);
   this.player = new Player(this.pacmanMoveStrategy, this.mapManager.getItemPosition(2));
 
   this.Start = function () {
@@ -18,6 +18,9 @@ export default function Game(mapManager) {
   this.HandleUserInput = function (direction) {
     const position = this.mapManager.getItemPosition(2);
     common.apply(this, [this.player, direction, position]);
+    if (this.mapManager.checkWin()) {
+      alert('wygrales');
+    }
   }
 
   setInterval(UpdateGohosts.bind(this), 100);
@@ -25,7 +28,7 @@ export default function Game(mapManager) {
   function UpdateGohosts() {
     const position = this.mapManager.getItemPosition(3);
     var direction = this.redGhost.getDirection(position)
-    common.apply(this,[this.redGhost, direction, position]);
+    common.apply(this, [this.redGhost, direction, position]);
   }
 
   function common(player, direction, position) {
