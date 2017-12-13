@@ -3,9 +3,10 @@ import GhostCollisionStartegy from './collisions/ghost-collision-strategy';
 import Player from './player';
 import RedGhost from './red-ghost';
 
-export default function Game(mapManager) {
+export default function Game(mapManager,spiritesManager) {
 
   this.mapManager = mapManager;
+  this.spiritesManager = spiritesManager;
   this.pacmanMoveStrategy = new PacmanCollisionStartegy(this.mapManager.getLevelWidth(), this.mapManager.getLevelHeight());
   this.ghostCollisionStrategy = new GhostCollisionStartegy(this.mapManager.getLevelWidth(), this.mapManager.getLevelHeight());
   this.redGhost = new RedGhost(this.ghostCollisionStrategy, this.mapManager);
@@ -36,6 +37,7 @@ export default function Game(mapManager) {
     const temp = player.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
       this.mapManager.updateMap(player.getNewPositions());
+      this.spiritesManager.updateSpirit(direction);
       this.Start();
     }
   }

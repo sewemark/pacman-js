@@ -1,17 +1,14 @@
 import PF from 'pathfinding';
 import ActorDefinitions from './map-definitions/map-config';
-import pacman from './assets/img/pacman/Pacman1.png';
-import pacman1 from './assets/img/pacman/Pacman2.png';
-import pacman2 from './assets/img/pacman/Pacman3.png';
-import pacman3 from './assets/img/pacman/Pacman4.png';
-var spirits = [pacman, pacman1, pacman2, pacman3];
-export default function MapManager(map, ctx, cellWidth, cellHeight) {
+
+export default function MapManager(map, ctx, cellWidth, cellHeight, spiritsManager) {
   this.map = map;
   this.cellHeight = cellHeight;
   this.cellWidth = cellWidth;
   this.ctx = ctx;
   this.grid = new PF.Grid(this.map, [0, 2, 3, 4]);
   this.finder = new PF.AStarFinder();
+  this.spiritsManager = spiritsManager;
   this.frame =0;
   this.render = function () {
     for (let i = 0; i < this.map[0].length; i++) {
@@ -29,9 +26,9 @@ export default function MapManager(map, ctx, cellWidth, cellHeight) {
           this.ctx.fillRect(Math.floor((i * this.cellWidth)) + Math.floor(this.cellWidth * 0.25), Math.floor((j * this.cellHeight)) + Math.floor(this.cellHeight * 0.25), Math.floor(this.cellWidth / 2), Math.floor(this.cellHeight / 2));
         } else if (this.map[j][i] == 2) {
           this.ctx.fillStyle = "yellow";
-          var playerSprites = document.createElement("img");
-          playerSprites.src = this.getPacmanSpirit();
-          this.ctx.drawImage(playerSprites, Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
+          //var playerSprites = document.createElement("img");
+          //playerSprites.src = this.getPacmanSpirit();
+          this.ctx.drawImage(this.spiritsManager.getSpirit(2), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
           //this.ctx.fillRect(Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
         } else if (this.map[j][i] == 3) {
           this.ctx.fillStyle = "red";
@@ -39,19 +36,6 @@ export default function MapManager(map, ctx, cellWidth, cellHeight) {
         }
       }
     }
-
-  }
-
-  this.getPacmanSpirit = function() {
-    if(this.frame >= spirits.length){
-        this.frame = 0;
-      }
-
-      console.log(this.frame);
-      const spirit = spirits[this.frame];
-      this.frame++;
-      return spirit;
-
 
   }
 
