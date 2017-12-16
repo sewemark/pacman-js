@@ -19,6 +19,7 @@ export default function Game(mapManager,spiritesManager) {
   this.HandleUserInput = function (direction) {
     const position = this.mapManager.getItemPosition(2);
     common.apply(this, [this.player, direction, position]);
+    this.spiritesManager.updateSpirit(direction);
     if (this.mapManager.checkWin()) {
       alert('wygrales');
     }
@@ -37,7 +38,6 @@ export default function Game(mapManager,spiritesManager) {
     const temp = player.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
       this.mapManager.updateMap(player.getNewPositions());
-      this.spiritesManager.updateSpirit(direction);
       this.Start();
     }
   }
