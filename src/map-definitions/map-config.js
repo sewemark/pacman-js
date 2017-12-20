@@ -6,7 +6,8 @@
    PLAYER: 2,
    REDGHOST:3,
    FOOD: 4,
-   GHOSTS: [3, 5, 6]
+   GHOSTS: [3, 5, 6, 7],
+   FOODICON:8,
 
 };
 export default ActorDefinitions;

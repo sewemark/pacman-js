@@ -1,6 +1,6 @@
 import PF from 'pathfinding';
 import ActorDefinitions from './map-definitions/map-config';
-
+import { userPosition } from './map-definitions/map';
 export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsManager) {
   this.map = map;
   this.cellHeight = cellHeight;
@@ -11,6 +11,7 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
   this.finder = new PF.AStarFinder();
   this.spiritsManager = spiritsManager;
   this.frame =0;
+  this.state =0;
   this.render = function () {
     for (let i = 0; i < this.map[0].length; i++) {
       for (let j = 0; j < this.map.length; j++) {
@@ -25,7 +26,7 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
           this.ctx.fillStyle = "white";
           this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.FOOD), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
           this.ctx.fillStyle = "green";
-          this.ctx.fillRect(Math.floor((i * this.cellWidth)) + Math.floor(this.cellWidth * 0.25), Math.floor((j * this.cellHeight)) + Math.floor(this.cellHeight * 0.25), Math.floor(this.cellWidth / 2), Math.floor(this.cellHeight / 2));
+          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.FOODICON), Math.floor((i * this.cellWidth)) + Math.floor(this.cellWidth * 0.25), Math.floor((j * this.cellHeight)) + Math.floor(this.cellHeight * 0.25), Math.floor(this.cellWidth / 2), Math.floor(this.cellHeight / 2));
         } else if (this.map[j][i] == 2) {
           var x = Math.floor(i * this.cellWidth);
           var y =  Math.floor(j * this.cellHeight);
@@ -40,7 +41,7 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
 
         } else if (this.map[j][i] == 3) {
           this.ctx.fillStyle = "red";
-          this.ctx.fillRect(Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
+          this.ctx.drawImage( this.spiritsManager.getSpirit(ActorDefinitions.REDGHOST),Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
         }
       }
     }
@@ -70,6 +71,8 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
         }
       }
     }
+
+    console.log("Jak tu doszlo to cos sie spierdolilo");
     return {
       y: -1,
       x: -1
@@ -81,9 +84,18 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
   }
 
   this.updateMap = function (positions) {
+    this.state =0;
     positions.forEach(item => {
+      if(map[item.position.y][item.position.x] == ActorDefinitions.PLAYER)
+      {
+          this.state = -1;
+      }
       this.map[item.position.y][item.position.x] = item.value;
     });
+  }
+
+  this.checkLoose = function(){
+    return this.state == -1;
   }
 
   this.destinationCheker = {
@@ -128,5 +140,15 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
           return x.indexOf(ActorDefinitions.FOOD) >=0;
       }) < 0;
 
+  }
+
+  this.checkLoose = function(){
+    return this.map.findIndex(x => {
+      return x.indexOf(ActorDefinitions.PLAYER) >=0;
+  }) < 0;
+  }
+
+  this.resetPlayer = function() {
+      this.map[userPosition.y][userPosition.x] = ActorDefinitions.PLAYER;
   }
 }

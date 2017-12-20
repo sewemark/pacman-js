@@ -6,26 +6,43 @@ import SpiritesManager from './sprites-manager';
 import MapManager from './map-manager';
 import Game from './game';
 
+function init(newGameListener) {
+  var canvas = document.getElementById("canvas");
+  canvas.width = window.innerWidth - (window.innerWidth % level1[0].length);
+  canvas.height = window.innerHeight - (window.innerHeight % level1.length);
+  var ctx = canvas.getContext("2d");
+  const cellWidth = canvas.width / level1[0].length * 1.0;
+  const cellHeight = canvas.height / level1.length * 1.0;
+  const spiritesManager = new SpiritesManager();
+  var mapManager = new MapManager(level1.slice(), canvas, cellWidth, cellHeight, spiritesManager);
+  var game = new Game(mapManager, spiritesManager, newGameListener);
 
-var canvas = document.getElementById("canvas");
-canvas.width = window.innerWidth - (window.innerWidth % level1[0].length);
-canvas.height = window.innerHeight - (window.innerHeight % level1.length);
-var ctx = canvas.getContext("2d");
-const cellWidth = canvas.width / level1[0].length * 1.0;
-const cellHeight = canvas.height / level1.length * 1.0;
-const spiritesManager = new SpiritesManager();
-var mapManager = new MapManager(level1, canvas, cellWidth, cellHeight, spiritesManager);
-var game = new Game(mapManager,spiritesManager);
 
-setUpKeyListeners();
+  setUpKeyListeners();
 
-function setUpKeyListeners() {
-  document.addEventListener('keydown', (event) => {
-    if (event.keyCode >= 37 && event.keyCode <= 40) {
-         game.HandleUserInput(event.keyCode);
-    }
-  }, false);
+  function setUpKeyListeners() {
+    document.addEventListener('keydown', (event) => {
+      if (event.keyCode >= 37 && event.keyCode <= 40) {
+        game.HandleUserInput(event.keyCode);
+      }
+    }, false);
+  }
+
+
+  return game;
+}
+
+function newGameListener() {
+//  const game = init(newGameListener);
+ // window.game = game;
+  //game.Start();
+ // conosole.log("New game listnerne");
 }
 
 
+const game = init(newGameListener.bind(window));
 window.game = game;
+game.on('end',()=>{
+  window.game = init(newGameListener.bind(window));
+})
+

@@ -1,6 +1,8 @@
 export default function Player(pacmanMoveStrategy, playerPosition) {
   this.points = 0;
+  this.lifs = 1;
   this.playerPosition = playerPosition;
+  this.initPosition = Object.assign({}, playerPosition);
   this.newPositions = [];
   this.pacmanMoveStrategy = pacmanMoveStrategy;
 
@@ -19,8 +21,11 @@ export default function Player(pacmanMoveStrategy, playerPosition) {
   };
 
   this.getNewPositions = () => this.newPositions;
-
-
-
+  this.getLifes = () => this.lifs;
+  this.getPoints = () => this.points;
+  this.reduceLife = () => this.lifs--;
+  this.resetPosition = () => {
+    this.playerPosition = Object.assign({}, this.initPosition);
+  };
 
 }

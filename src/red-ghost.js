@@ -27,9 +27,9 @@ export default function RedGhost(ghostCollisionStrategy, mapManager) {
 
   this.getNewPosition = (direction, destination) => {
     if (this.ghostCollisionStrategy.checkCollision(direction, this.position, destination)) {
-      if (this.ghostCollisionStrategy.checkWin(destination)) {
-          alert("GAME OVER");
-      }
+      //if (this.ghostCollisionStrategy.checkWin(destination)) {
+         // alert("GAME OVER");
+     // }
       this.newPositions = this.ghostCollisionStrategy.getNewPositions(direction, this.position, 3);
       this.position = this.newPositions[1].position;
     }
