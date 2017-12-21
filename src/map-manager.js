@@ -71,7 +71,6 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
         }
       }
     }
-
     console.log("Jak tu doszlo to cos sie spierdolilo");
     return {
       y: -1,

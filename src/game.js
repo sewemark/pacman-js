@@ -15,7 +15,7 @@ export default function Game(mapManager,spiritesManager,newGameListener) {
   this.ghostCollisionStrategy = new GhostCollisionStartegy(this.mapManager.getLevelWidth(), this.mapManager.getLevelHeight());
   this.redGhost = new RedGhost(this.ghostCollisionStrategy, this.mapManager);
   this.player = new Player(this.pacmanMoveStrategy, this.mapManager.getItemPosition(2));
-
+  this.ghostIntervalId;
   this.Start = function () {
     this.mapManager.render();
     this.renderUI();
@@ -48,18 +48,22 @@ export default function Game(mapManager,spiritesManager,newGameListener) {
     }
   }
 
-  setInterval(UpdateGohosts.bind(this), 100);
+  this.ghostIntervalId = setInterval(UpdateGohosts.bind(this), 100);
 
   function UpdateGohosts() {
+    console.log("UPDATE GHOSTS");
     const position = this.mapManager.getItemPosition(3);
     var direction = this.redGhost.getDirection(position)
     common.apply(this, [this.redGhost, direction, position]);
+    console.log(this.player.getLifes());
+    console.log(this.mapManager.checkLoose());
     if (this.mapManager.checkLoose()) {
       this.player.reduceLife();
       if(this.player.getLifes() <= 0){
         this.emit('end');
+        clearInterval(this.ghostIntervalId);
       }else {
-        console.log('weszlow  w check llooose');
+        console.log('weszlo w chec  w check llooose');
         this.mapManager.resetPlayer();
         this.player.resetPosition();
       }
@@ -71,7 +75,6 @@ export default function Game(mapManager,spiritesManager,newGameListener) {
     const temp = player.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
       this.mapManager.updateMap(player.getNewPositions());
-
       this.Start();
     }
   }

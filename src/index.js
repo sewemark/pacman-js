@@ -2,9 +2,20 @@ import './index.css';
 
 
 import level1 from './map-definitions/map';
+
 import SpiritesManager from './sprites-manager';
 import MapManager from './map-manager';
 import Game from './game';
+function copy(o) {
+  var output, v, key;
+  output = Array.isArray(o) ? [] : {};
+  for (key in o) {
+      v = o[key];
+      output[key] = (typeof v === "object") ? copy(v) : v;
+  }
+  return output;
+}
+
 
 function init(newGameListener) {
   var canvas = document.getElementById("canvas");
@@ -14,7 +25,8 @@ function init(newGameListener) {
   const cellWidth = canvas.width / level1[0].length * 1.0;
   const cellHeight = canvas.height / level1.length * 1.0;
   const spiritesManager = new SpiritesManager();
-  var mapManager = new MapManager(level1.slice(), canvas, cellWidth, cellHeight, spiritesManager);
+  console.log(level1);
+  var mapManager = new MapManager(copy(level1), canvas, cellWidth, cellHeight, spiritesManager);
   var game = new Game(mapManager, spiritesManager, newGameListener);
 
 
@@ -33,16 +45,18 @@ function init(newGameListener) {
 }
 
 function newGameListener() {
-//  const game = init(newGameListener);
- // window.game = game;
+  //  const game = init(newGameListener);
+  // window.game = game;
   //game.Start();
- // conosole.log("New game listnerne");
+  // conosole.log("New game listnerne");
 }
 
 
-const game = init(newGameListener.bind(window));
+const game = new init(newGameListener.bind(window));
 window.game = game;
-game.on('end',()=>{
-  window.game = init(newGameListener.bind(window));
+game.on('end', () => {
+  console.log("EMITTING");
+  window.game = new init(newGameListener.bind(window));
+  window.game.Start();
+  ///console.log(window.game);
 })
-
