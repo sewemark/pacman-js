@@ -14,7 +14,7 @@ var CollisionStrategy = (function () {
     };
     priv.set(this, privMembers);
   }
- 
+
   CollisionStrategyConstructor.prototype.mapUpdater = {
     37: (playerPosition, player, prevValue) => {
       return [{
@@ -90,8 +90,8 @@ var CollisionStrategy = (function () {
     return this.destinationCheker[direction](playerPosition, destination);
   }
 
-  CollisionStrategyConstructor.prototype.getNewPositions = function (direction, playerPosition, destination) {
-    return this.mapUpdater[direction](playerPosition, destination);
+  CollisionStrategyConstructor.prototype.getNewPositions = function (direction, playerPosition, destination, prevValue) {
+    return this.mapUpdater[direction](playerPosition, destination, prevValue);
   }
 
   CollisionStrategyConstructor.prototype.destinationCheker = {
@@ -100,7 +100,7 @@ var CollisionStrategy = (function () {
     38: (playerPosition, destination) => (playerPosition.y - 1 >= 0 || playerPosition.y - 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL,
     40: (playerPosition, destination) => (playerPosition.y + 1 >= 0 || playerPosition.y + 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL
   };
- 
+
   CollisionStrategyConstructor.prototype.checkFood = function (destination) {
     return destination == ActorDefinitions.FOOD;
   }

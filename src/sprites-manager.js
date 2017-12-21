@@ -47,7 +47,6 @@ export default function SpiritesManager(){
     }
   }
   this.updateSpirit= function(direction) {
-    console.log(direction);
     if(direction == 37){
       this.degree = 0;
     }

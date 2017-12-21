@@ -9,7 +9,7 @@ export default function Player(pacmanMoveStrategy, playerPosition) {
   this.getNewPosition = (direction, destination) => {
     if (this.pacmanMoveStrategy.checkCollision(direction, this.playerPosition, destination)) {
       if (this.pacmanMoveStrategy.checkFood(destination)) {
-        this.points++;
+          this.points++;
       }
       if (this.pacmanMoveStrategy.checkLoose(destination)) {
           alert("GAME OVER Z PACMANA");

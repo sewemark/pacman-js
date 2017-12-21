@@ -30,7 +30,7 @@ export default function RedGhost(ghostCollisionStrategy, mapManager) {
       //if (this.ghostCollisionStrategy.checkWin(destination)) {
          // alert("GAME OVER");
      // }
-      this.newPositions = this.ghostCollisionStrategy.getNewPositions(direction, this.position, 3);
+      this.newPositions = this.ghostCollisionStrategy.getNewPositions(direction, this.position, 3, destination);
       this.position = this.newPositions[1].position;
     }
 

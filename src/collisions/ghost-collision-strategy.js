@@ -17,6 +17,77 @@ var GhostCollisionStartegy = (function () {
     return destination == ActorDefinitions.PLAYER;
   }
 
+  GhostCollisionStartegyConstructor.prototype.mapUpdater = {
+    37: (playerPosition, player, prevValue) => {
+      return [{
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x
+          },
+          value: prevValue || prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+        },
+        {
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x - 1
+          },
+          value: player
+        }
+      ]
+    },
+    38: (playerPosition, player, prevValue) => {
+      return [{
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x
+          },
+          value: prevValue || prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+        },
+        {
+          position: {
+            y: playerPosition.y - 1,
+            x: playerPosition.x
+          },
+          value: player
+        }
+      ]
+    },
+    39: (playerPosition, player, prevValue) => {
+      return [{
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x
+          },
+          value: prevValue || prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+        },
+        {
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x + 1
+          },
+          value: player
+        }
+      ]
+    },
+    40: (playerPosition, player, prevValue) => {
+      return [{
+          position: {
+            y: playerPosition.y,
+            x: playerPosition.x
+          },
+          value: prevValue || prevValue == ActorDefinitions.FOOD  ? prevValue : ActorDefinitions.EMPTY
+        },
+        {
+          position: {
+            y: playerPosition.y + 1,
+            x: playerPosition.x,
+          },
+          value: player
+        }
+      ]
+    }
+  }
+
 
   return GhostCollisionStartegyConstructor;
 })();

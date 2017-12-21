@@ -25,7 +25,6 @@ function init(newGameListener) {
   const cellWidth = canvas.width / level1[0].length * 1.0;
   const cellHeight = canvas.height / level1.length * 1.0;
   const spiritesManager = new SpiritesManager();
-  console.log(level1);
   var mapManager = new MapManager(copy(level1), canvas, cellWidth, cellHeight, spiritesManager);
   var game = new Game(mapManager, spiritesManager, newGameListener);
 
