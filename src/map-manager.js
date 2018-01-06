@@ -144,6 +144,13 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
     return this.map.length;
   }
 
+  this.getLevelInfo = function () {
+    return {
+      height: this.map.length,
+      width: this.map[0].length
+    }
+  }
+
   this.checkWin = function () {
     return this.map.findIndex(x => {
       return x.indexOf(ActorDefinitions.FOOD) >= 0;

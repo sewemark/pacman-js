@@ -8,8 +8,8 @@ var PacmanCollisionStartegy = (function () {
     return priv.get(instance);
   }
 
-  function PacmanCollisionStartegyConstructor(mapHeight, mapWidth) {
-      priv.set(this, {mapWidth:mapWidth, mapHeight: mapHeight});
+  function PacmanCollisionStartegyConstructor(mapInfo) {
+      priv.set(this, {mapWidth:mapInfo.width, mapHeight: mapInfo.height});
       CollisionStrategy.apply(this, arguments);
   }
 

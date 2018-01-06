@@ -8,8 +8,8 @@ var GhostCollisionStartegy = (function () {
     return priv.get(instance);
   }
 
-  function GhostCollisionStartegyConstructor(mapHeight, mapWidth) {
-      priv.set(this, {mapWidth:mapWidth, mapHeight: mapHeight});
+  function GhostCollisionStartegyConstructor(mapInfo) {
+      priv.set(this, {mapWidth:mapInfo.width, mapHeight: mapInfo.height});
       CollisionStrategy.apply(this, arguments);
   }
   GhostCollisionStartegyConstructor.prototype = Object.create(CollisionStrategy.prototype);
