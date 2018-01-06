@@ -13,3 +13,13 @@ export default function getItemPosition(array, item) {
       x: -1
     }
   }
+
+export function deepCopy(o) {
+  var output, v, key;
+  output = Array.isArray(o) ? [] : {};
+  for (key in o) {
+    v = o[key];
+    output[key] = (typeof v === "object") ? deepCopy(v) : v;
+  }
+  return output;
+}
