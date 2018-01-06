@@ -30,6 +30,8 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
           this.ctx.fillStyle = "green";
           this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.FOODICON), Math.floor((i * this.cellWidth)) + Math.floor(this.cellWidth * 0.25), Math.floor((j * this.cellHeight)) + Math.floor(this.cellHeight * 0.25), Math.floor(this.cellWidth / 2), Math.floor(this.cellHeight / 2));
         } else if (this.map[j][i] == 2) {
+          this.ctx.fillStyle = "white";
+          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.EMPTY), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
           var x = Math.floor(i * this.cellWidth);
           var y = Math.floor(j * this.cellHeight);
           var w = Math.floor(this.cellWidth);
@@ -40,9 +42,25 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
           this.ctx.translate(-x - w / 2, -y - h / 2);
           this.ctx.drawImage(this.spiritsManager.getSpirit(2), x, y, w, h);
           this.ctx.restore();
+          var image2 = this.ctx.getImageData(x, y, w, h);
+          console.log(image2);
+          var imageData = image2.data;
+          console.log(imageData.length);
+          var  length = imageData.length;
+          for(let i = 0; i < length -4; i+=4){
+            /*if(imageData[i]==0) {
+              imageData[i]=0;
+              imageData[i+1]=255;
+              imageData[i+2]=0;
+              imageData[i+3]=255;
+            }*/
+          }
+         // image2.data = imageData;
+          this.ctx.putImageData(image2, x, y);
 
         } else if (this.map[j][i] == 3) {
-          this.ctx.fillStyle = "red";
+
+          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.EMPTY), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
           this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.REDGHOST), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
         }
       }

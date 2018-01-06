@@ -1,6 +1,6 @@
 export default function Player(pacmanMoveStrategy, playerPosition) {
   this.points = 0;
-  this.lifs = 1;
+  this.lifs = 2;
   this.playerPosition = playerPosition;
   this.initPosition = Object.assign({}, playerPosition);
   this.newPositions = [];

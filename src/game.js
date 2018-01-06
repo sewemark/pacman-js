@@ -26,6 +26,7 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
     pointsElement.innerText = "You have  " + this.player.getPoints() + " point";
     var img = document.createElement("img");
     img.setAttribute("src", coin);
+    img.style="background:none; border:none";
     pointsElement.appendChild(img);
     var elem = document.getElementById("content-ul--lifes");
     while (elem.firstChild) {
@@ -33,6 +34,7 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
     }
     for (let i = 0; i < this.player.getLifes(); i++) {
       img = document.createElement("img");
+      img.style="background:none; border:none";
       img.setAttribute("src", money);
       elem.appendChild(img);
     }

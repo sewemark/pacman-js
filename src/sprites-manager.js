@@ -12,11 +12,13 @@ import redGhost from './assets/img/ghosts/ghost1.png';
 var spirits = [pacman, pacman1, pacman2, pacman3];
 var textures = [background, wall, grass, money];
 var ghost = [redGhost];
+
 export default function SpiritesManager(){
   this.userSpirit = null;
   this.frame = 0;
   this.degree =0;
   this.playerSprites = document.createElement("img");
+  this.playerSprites.style = "background:red; border:none";
   this.playerSprites.src = spirits[this.frame];
   this.backgroundSprite = document.createElement("img");
   this.backgroundSprite.src = textures[1];
@@ -31,9 +33,7 @@ export default function SpiritesManager(){
 
   }
   this.getSpirit = function(actor){
-    if(actor ==ActorDefinitions.PLAYER){
-      return this.playerSprites;
-    }else if(actor == ActorDefinitions.WALL){
+    if(actor == ActorDefinitions.WALL){
       return this.backgroundSprite;
     }
     else if(actor == ActorDefinitions.EMPTY || actor == ActorDefinitions.FOOD){
@@ -44,6 +44,9 @@ export default function SpiritesManager(){
     }
     else if(actor == ActorDefinitions.REDGHOST){
       return this.redghostSpirit;
+    }
+    else if(actor ==ActorDefinitions.PLAYER){
+      return this.playerSprites;
     }
   }
   this.updateSpirit= function(direction) {
@@ -66,6 +69,7 @@ export default function SpiritesManager(){
     }
     this.playerSprites = document.createElement("img");
     this.playerSprites.src = spirits[this.frame];
+    this.playerSprites.style = "background:red; border:none";
    // this.rotateImage(this.playerSprites)
     return this.playerSprites;
   }
