@@ -7,7 +7,7 @@ import pacman3 from './assets/img/pacman/Pacman4.png';
 import background from './assets/img/textures/background.png';
 import wall from './assets/img/textures/texture.png';
 import grass from './assets/img/textures/gras.png';
-import money from './assets/img/textures/Coin.png';
+import money from './assets/img/textures/coin.png';
 import redGhost from './assets/img/ghosts/ghost1.png';
 var spirits = [pacman, pacman1, pacman2, pacman3];
 var textures = [background, wall, grass, money];

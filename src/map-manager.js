@@ -85,19 +85,25 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
   }
 
   this.updateMap = function (positions) {
-    this.state = 0;
     var last = positions[positions.length - 1];
     if (last && this.map[last.position.y][last.position.x] == ActorDefinitions.PLAYER) {
+      this.map[last.position.y][last.position.x]= ActorDefinitions.EMPTY;
           this.state = -1;
+
+    }
+    if(last && ActorDefinitions.GHOSTS.indexOf(this.map[last.position.y][last.position.x]) >=0)
+    {
+      this.map[positions[0].y][positions[0].x] == ActorDefinitions.EMPTY;
+      this.state = -1;
     }
     positions.forEach(item => {
       this.map[item.position.y][item.position.x] = item.value;
     });
   }
 
-  this.checkLoose = function () {
+ /* this.checkLoose = function () {
     return this.state == -1;
-  }
+  }*/
 
   this.destinationCheker = {
     37: (playerPosition) => this.map[playerPosition.y][playerPosition.x - 1],
@@ -108,6 +114,7 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
 
   this.getNextTripForGhost = function (ghost) {
     this.grid = new PF.Grid(this.map, [0, 2, 3, 4]);
+    //this.grid = new PF.Grid(this.map, [0, 2, 3, 4]);
     var init = this.generateRandomPoint();
     var initaliGhostPosition = this.getItemPosition(ghost);
 
@@ -144,12 +151,27 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
   }
 
   this.checkLoose = function () {
-    return this.map.findIndex(x => {
+    let index = this.map.findIndex(x => {
       return x.indexOf(ActorDefinitions.PLAYER) >= 0;
-    }) < 0;
+    }) ;
+    return index < 0;
   }
 
+   this.checkLoose = function () {
+   return this.state == -1;
+ }
+
   this.resetPlayer = function () {
+    console.log(this.map);
+    this.state = 0;
+    console.log(this.map);
+   for(let i =0;i<this.map.length;i++){
+     for(let j =0; j<this.map[0].length; j++){
+       if(this.map[i][j] == ActorDefinitions.PLAYER ){
+         this.map[i][j] = ActorDefinitions.EMPTY
+       }
+     }
+   }
     this.map[userPosition.y][userPosition.x] = ActorDefinitions.PLAYER;
   }
 }
