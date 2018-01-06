@@ -18,10 +18,23 @@ function copy(o) {
 
 
 function init(newGameListener) {
+
+  var button = document.getElementById("new-game-button");
+  button.addEventListener("click", newGameListener.bind(window));
+  var game = initGame();
+  return game;
+}
+
+function initGame() {
   var canvas = document.getElementById("canvas");
+
+
+
   canvas.width = window.innerWidth - (window.innerWidth % level1[0].length);
   canvas.height = window.innerHeight - (window.innerHeight % level1.length);
   var ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   const cellWidth = canvas.width / level1[0].length * 1.0;
   const cellHeight = canvas.height / level1.length * 1.0;
   const spiritesManager = new SpiritesManager();
@@ -29,9 +42,11 @@ function init(newGameListener) {
   var game = new Game(mapManager, spiritesManager, newGameListener);
 
 
+
   setUpKeyListeners();
 
   function setUpKeyListeners() {
+
     document.addEventListener('keydown', (event) => {
       if (event.keyCode >= 37 && event.keyCode <= 40) {
         game.HandleUserInput(event.keyCode);
@@ -44,10 +59,8 @@ function init(newGameListener) {
 }
 
 function newGameListener() {
-  //  const game = init(newGameListener);
-  // window.game = game;
-  //game.Start();
-  // conosole.log("New game listnerne");
+  window.game.close();
+  window.game = new initGame(newGameListener.bind(window));
 }
 
 

@@ -73,7 +73,6 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
     const temp = player.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
       if(player instanceof  RedGhost){
-        console.log(player.getNewPositions());
       }
       this.mapManager.updateMap(player.getNewPositions());
       this.Start();
@@ -95,6 +94,9 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
       this.mapManager.resetPlayer();
       this.player.resetPosition();
     }
+  }
+  this.close = function () {
+    clearInterval(this.ghostIntervalId);
   }
 }
 Game.prototype = Object.create(EventEmitter.prototype);
