@@ -90,8 +90,8 @@ var CollisionStrategy = (function () {
     return this.destinationCheker[direction](playerPosition, destination);
   }
 
-  CollisionStrategyConstructor.prototype.getNewPositions = function (direction, playerPosition, destination, prevValue) {
-    return this.mapUpdater[direction](playerPosition, destination, prevValue);
+  CollisionStrategyConstructor.prototype.getNewPositions = function (direction, playerPosition, destination, destinationValue) {
+    return this.mapUpdater[direction](playerPosition, destination, destinationValue);
   }
 
   CollisionStrategyConstructor.prototype.destinationCheker = {

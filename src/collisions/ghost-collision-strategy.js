@@ -24,7 +24,7 @@ var GhostCollisionStartegy = (function () {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: prevValue || prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+          value: prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -41,7 +41,7 @@ var GhostCollisionStartegy = (function () {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: prevValue || prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+          value: prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -58,7 +58,7 @@ var GhostCollisionStartegy = (function () {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: prevValue || prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+          value: prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -75,7 +75,7 @@ var GhostCollisionStartegy = (function () {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: prevValue || prevValue == ActorDefinitions.FOOD  ? prevValue : ActorDefinitions.EMPTY
+          value: prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {

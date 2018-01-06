@@ -87,13 +87,12 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
   this.updateMap = function (positions) {
     var last = positions[positions.length - 1];
     if (last && this.map[last.position.y][last.position.x] == ActorDefinitions.PLAYER) {
-      this.map[last.position.y][last.position.x]= ActorDefinitions.EMPTY;
+          //this.map[last.position.y][last.position.x]= ActorDefinitions.EMPTY;
           this.state = -1;
-
     }
     if(last && ActorDefinitions.GHOSTS.indexOf(this.map[last.position.y][last.position.x]) >=0)
     {
-      this.map[positions[0].y][positions[0].x] == ActorDefinitions.EMPTY;
+      //this.map[positions[0].y][positions[0].x] == ActorDefinitions.EMPTY;
       this.state = -1;
     }
     positions.forEach(item => {
@@ -162,9 +161,7 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
  }
 
   this.resetPlayer = function () {
-    console.log(this.map);
     this.state = 0;
-    console.log(this.map);
    for(let i =0;i<this.map.length;i++){
      for(let j =0; j<this.map[0].length; j++){
        if(this.map[i][j] == ActorDefinitions.PLAYER ){
@@ -173,5 +170,9 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
      }
    }
     this.map[userPosition.y][userPosition.x] = ActorDefinitions.PLAYER;
+  }
+
+  this.getPrevValue= function (position) {
+    return this.map[position.y][position.x];
   }
 }

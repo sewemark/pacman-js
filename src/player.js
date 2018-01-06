@@ -14,7 +14,7 @@ export default function Player(pacmanMoveStrategy, playerPosition) {
       if (this.pacmanMoveStrategy.checkLoose(destination)) {
           alert("GAME OVER Z PACMANA");
       }
-      this.newPositions = this.pacmanMoveStrategy.getNewPositions(direction, this.playerPosition, 2);
+      this.newPositions = this.pacmanMoveStrategy.getNewPositions(direction, this.playerPosition, 2, destination);
       this.playerPosition = this.newPositions[1].position;
     }
     return this.playerPosition;

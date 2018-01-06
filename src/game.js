@@ -22,7 +22,6 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
   }
 
   this.renderUI = function () {
-    var content = document.getElementById("content");
     var pointsElement = document.getElementById("content-p-points");
     pointsElement.innerText = "You have  " + this.player.getPoints() + " point";
     var img = document.createElement("img");
@@ -33,7 +32,7 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
       elem.removeChild(elem.firstChild);
     }
     for (let i = 0; i < this.player.getLifes(); i++) {
-      var img = document.createElement("img");
+      img = document.createElement("img");
       img.setAttribute("src", money);
       elem.appendChild(img);
     }
@@ -46,8 +45,7 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
     const position = this.mapManager.getItemPosition(2);
     if(position.x == -1 && position.y == -1)
     {
-      console.log("Undefine position player");
-      this.checkGameState();
+      return;
     }
     common.apply(this, [this.player, direction, position]);
     this.spiritesManager.updateSpirit(direction);
@@ -56,12 +54,11 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
     }
   }
 
-  this.ghostIntervalId = setInterval(UpdateGohosts.bind(this), 100);
+  this.ghostIntervalId = setInterval(UpdateGohosts.bind(this),100);
 
   function UpdateGohosts() {
     const position = this.mapManager.getItemPosition(3);
     if(position.x == -1 && position.y == -1) {
-      console.log("Undefine position ghost");
       return;
     }
     var direction = this.redGhost.getDirection(position)
@@ -69,16 +66,18 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
   }
 
   function common(player, direction, position) {
+
     const destination = this.mapManager.getDestinationPosition(direction, position);
     const temp = player.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
+      if(player instanceof  RedGhost){
+        console.log(player.getNewPositions());
+      }
       this.mapManager.updateMap(player.getNewPositions());
       this.Start();
     }
     if (this.mapManager.checkLoose()) {
-      alert("Weszlo w checkloose");
-
-     this.player.reduceLife();
+      this.player.reduceLife();
       this.checkGameState();
     }
   }
@@ -87,10 +86,10 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
     if (this.player.getLifes() <= 0) {
       alert("Mniej zyc");
       clearInterval(this.ghostIntervalId);
+
       this.Start();
 
     } else {
-      //console.log("Mniejsze od zera");
       this.mapManager.resetPlayer();
       this.player.resetPosition();
     }
