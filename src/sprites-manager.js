@@ -9,10 +9,12 @@ import wall from './assets/img/textures/texture.png';
 import grass from './assets/img/textures/gras.png';
 import money from './assets/img/textures/coin.png';
 import redGhost from './assets/img/ghosts/ghost1.png';
+import life  from './assets/img/textures/heart.png';
+
 var spirits = [pacman, pacman1, pacman2, pacman3];
 var textures = [background, wall, grass, money];
 var ghost = [redGhost];
-
+var lifeSprites = [life];
 export default function SpiritesManager(){
   this.userSpirit = null;
   this.frame = 0;
@@ -28,6 +30,8 @@ export default function SpiritesManager(){
   this.foodSprite.src = textures[3];
   this.redghostSpirit = document.createElement("img");
   this.redghostSpirit.src = ghost[0];
+  this.lifeSprites = document.createElement("img");
+  this.lifeSprites.src = lifeSprites[0];
 
   this.GetUserSpirit = function(){
 
@@ -47,6 +51,18 @@ export default function SpiritesManager(){
     }
     else if(actor ==ActorDefinitions.PLAYER){
       return this.playerSprites;
+    }
+    else if(actor ==ActorDefinitions.LIFEICON){
+      return this.lifeSprites;
+    }
+  }
+
+  this.getIcons = function (actor) {
+   if(actor ==ActorDefinitions.FOODICON){
+      return money;
+    }
+    else if(actor ==ActorDefinitions.LIFEICON){
+      return life;
     }
   }
   this.updateSpirit= function(direction) {

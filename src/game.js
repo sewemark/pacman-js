@@ -2,15 +2,14 @@ import PacmanCollisionStartegy from './collisions/pacman-collision-strategy';
 import GhostCollisionStartegy from './collisions/ghost-collision-strategy';
 import Player from './player';
 import RedGhost from './red-ghost';
-import money from './assets/img/textures/heart.png';
-import coin from './assets/img/textures/coin.png';
+
 import EventEmitter from 'events';
 
-export default function Game(mapManager, spiritesManager, newGameListener) {
+export default function Game(mapManager, spiritesManager, uiInterfaceAdapter) {
 
   this.mapManager = mapManager;
   this.spiritesManager = spiritesManager;
-  this.newGameListener = newGameListener;
+  this.uiInterfaceAdapter = uiInterfaceAdapter;
   this.pacmanMoveStrategy = new PacmanCollisionStartegy(this.mapManager.getLevelWidth(), this.mapManager.getLevelHeight());
   this.ghostCollisionStrategy = new GhostCollisionStartegy(this.mapManager.getLevelWidth(), this.mapManager.getLevelHeight());
   this.redGhost = new RedGhost(this.ghostCollisionStrategy, this.mapManager);
@@ -18,26 +17,14 @@ export default function Game(mapManager, spiritesManager, newGameListener) {
   this.ghostIntervalId;
   this.Start = function () {
     this.mapManager.render();
-    this.renderUI();
+    this.uiInterfaceAdapter.updateUserInfo({
+      playerPoints:this.player.getPoints(),
+      playerLifes: this.player.getLifes()
+    });
   }
 
   this.renderUI = function () {
-    var pointsElement = document.getElementById("content-p-points");
-    pointsElement.innerText = "You have  " + this.player.getPoints() + " point";
-    var img = document.createElement("img");
-    img.setAttribute("src", coin);
-    img.style="background:none; border:none";
-    pointsElement.appendChild(img);
-    var elem = document.getElementById("content-ul--lifes");
-    while (elem.firstChild) {
-      elem.removeChild(elem.firstChild);
-    }
-    for (let i = 0; i < this.player.getLifes(); i++) {
-      img = document.createElement("img");
-      img.style="background:none; border:none";
-      img.setAttribute("src", money);
-      elem.appendChild(img);
-    }
+
 
   }
 
