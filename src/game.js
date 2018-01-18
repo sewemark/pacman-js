@@ -26,27 +26,15 @@ export default function Game(mapManager, spiritesManager, uiInterfaceAdapter) {
   };
 
   this.HandleUserInput = function (direction) {
-    if( this.player.getLifes() == 0 )
-      return;
-    const position = this.mapManager.getItemPosition(2);
-    if(position.x == -1 && position.y == -1)
-    {
-      return;
-    }
+    const position = this.mapManager.getItemPosition(ActorDefinitions.PLAYER);
     common.apply(this, [this.player, direction, position]);
     this.spiritesManager.updateSpirit(direction);
-    if (this.mapManager.checkWin()) {
-      alert('wygrales');
-    }
   };
 
   this.ghostIntervalId = setInterval(UpdateGohosts.bind(this),100);
 
   function UpdateGohosts() {
-    const position = this.mapManager.getItemPosition(3);
-    if(position.x == -1 && position.y == -1) {
-      return;
-    }
+    const position = this.mapManager.getItemPosition(ActorDefinitions.REDGHOST);
     var direction = this.redGhost.getDirection(position)
     common.apply(this, [this.redGhost, direction, position]);
   }
@@ -56,20 +44,20 @@ export default function Game(mapManager, spiritesManager, uiInterfaceAdapter) {
     const destination = this.mapManager.getDestinationPosition(direction, position);
     const temp = player.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
-      if(player instanceof  RedGhost){
-      }
       this.mapManager.updateMap(player.getNewPositions());
       this.Start();
     }
-    if (this.mapManager.checkLoose()) {
+    if(this.mapManager.checkLoose()) {
       this.player.reduceLife();
       this.checkGameState();
+    }
+    if(this.mapManager.checkWin()) {
+      alert('wygrales');
     }
   }
 
   this.checkGameState = function() {
     if (this.player.getLifes() <= 0) {
-      alert("Mniej zyc");
       clearInterval(this.ghostIntervalId);
       this.Start();
     } else {
