@@ -4,11 +4,12 @@ import Player from './player';
 import RedGhost from './red-ghost';
 import ActorDefinitions  from './map-definitions/map-config';
 
-export default function Game(mapManager, spiritesManager, uiInterfaceAdapter) {
+export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfaceAdapter) {
 
   this.mapManager = mapManager;
   this.spiritesManager = spiritesManager;
   this.uiInterfaceAdapter = uiInterfaceAdapter;
+  this.mapRenderer = mapRenderer;
 
   this.pacmanMoveStrategy = new PacmanCollisionStartegy(this.mapManager.getLevelInfo());
   this.ghostCollisionStrategy = new GhostCollisionStartegy(this.mapManager.getLevelInfo());
@@ -18,7 +19,7 @@ export default function Game(mapManager, spiritesManager, uiInterfaceAdapter) {
 
 
   this.Start = function () {
-    this.mapManager.render();
+    this.mapRenderer.render();
     this.uiInterfaceAdapter.updateUserInfo({
       playerPoints:this.player.getPoints(),
       playerLifes: this.player.getLifes()
@@ -44,7 +45,7 @@ export default function Game(mapManager, spiritesManager, uiInterfaceAdapter) {
     const destination = this.mapManager.getDestinationPosition(direction, position);
     const temp = player.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
-      this.mapManager.updateMap(player.getNewPositions());
+      this.mapManager.updateMap(player.getPendingPositions());
       this.Start();
     }
     if(this.mapManager.checkLoose()) {

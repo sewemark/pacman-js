@@ -3,54 +3,13 @@ import ActorDefinitions from './map-definitions/map-config';
 import {
   userPosition
 } from './map-definitions/map';
-export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsManager) {
+
+export default function MapManager(map) {
   this.map = map;
-  this.cellHeight = cellHeight;
-  this.cellWidth = cellWidth;
-  this.canvas = canvas;
-  this.ctx = this.canvas.getContext("2d");
   this.grid = new PF.Grid(this.map, [0, 2, 3, 4]);
   this.finder = new PF.AStarFinder();
-  this.spiritsManager = spiritsManager;
   this.frame = 0;
   this.state = 0;
-  this.render = function () {
-    for (let i = 0; i < this.map[0].length; i++) {
-      for (let j = 0; j < this.map.length; j++) {
-        if (this.map[j][i] == 1) {
-          //this.ctx.fillStyle = "black";
-          //this.ctx.drawImage(this.spiritsManager.getSpirit(2),Math.floor(i * this.cellWidth),Math.floor(j * this.cellHeight),Math.floor(this.cellWidth),h);
-          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.WALL), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
-        } else if (this.map[j][i] == 0) {
-          this.ctx.fillStyle = "white";
-          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.EMPTY), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
-        } else if (this.map[j][i] == 4) {
-          this.ctx.fillStyle = "white";
-          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.FOOD), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
-          this.ctx.fillStyle = "green";
-          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.FOODICON), Math.floor((i * this.cellWidth)) + Math.floor(this.cellWidth * 0.25), Math.floor((j * this.cellHeight)) + Math.floor(this.cellHeight * 0.25), Math.floor(this.cellWidth / 2), Math.floor(this.cellHeight / 2));
-        } else if (this.map[j][i] == 2) {
-          this.ctx.fillStyle = "white";
-          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.EMPTY), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
-          var x = Math.floor(i * this.cellWidth);
-          var y = Math.floor(j * this.cellHeight);
-          var w = Math.floor(this.cellWidth);
-          var h = Math.floor(this.cellHeight);
-          this.ctx.save();
-          this.ctx.translate(x + w / 2, y + h / 2);
-          this.ctx.rotate(this.spiritsManager.getRotate() * Math.PI / 180.0);
-          this.ctx.translate(-x - w / 2, -y - h / 2);
-          this.ctx.drawImage(this.spiritsManager.getSpirit(2), x, y, w, h);
-          this.ctx.restore();
-        } else if (this.map[j][i] == 3) {
-
-          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.EMPTY), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
-          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.REDGHOST), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
-        }
-      }
-    }
-
-  }
 
   this.generateRandomPoint = function () {
     var yRandom = Math.floor((Math.random() * this.map.length) + 1);
@@ -75,7 +34,6 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
         }
       }
     }
-    console.log("Jak tu doszlo to cos sie spierdolilo");
     return {
       y: -1,
       x: -1
@@ -101,10 +59,6 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
       this.map[item.position.y][item.position.x] = item.value;
     });
   }
-
- /* this.checkLoose = function () {
-    return this.state == -1;
-  }*/
 
   this.destinationCheker = {
     37: (playerPosition) => this.map[playerPosition.y][playerPosition.x - 1],
@@ -136,15 +90,11 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
     }
   }
 
-  this.getLevelWidth = function () {
-    return this.map[0].length;
-  }
+  this.getLevelWidth = () => this.map[0].length;
 
-  this.getLevelHeight = function () {
-    return this.map.length;
-  }
+  this.getLevelHeight = () => this.map.length;
 
-  this.getLevelInfo = function () {
+  this.getLevelInfo = () => {
     return {
       height: this.map.length,
       width: this.map[0].length
@@ -155,17 +105,9 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
     return this.map.findIndex(x => {
       return x.indexOf(ActorDefinitions.FOOD) >= 0;
     }) < 0;
-
   }
 
   this.checkLoose = function () {
-    let index = this.map.findIndex(x => {
-      return x.indexOf(ActorDefinitions.PLAYER) >= 0;
-    }) ;
-    return index < 0;
-  }
-
-   this.checkLoose = function () {
    return this.state == -1;
  }
 
@@ -179,9 +121,5 @@ export default function MapManager(map, canvas, cellWidth, cellHeight, spiritsMa
      }
    }
     this.map[userPosition.y][userPosition.x] = ActorDefinitions.PLAYER;
-  }
-
-  this.getPrevValue= function (position) {
-    return this.map[position.y][position.x];
   }
 }

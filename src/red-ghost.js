@@ -1,19 +1,18 @@
+import ActorDefinitions from './map-definitions/map-config';
+
+
 export default function RedGhost(ghostCollisionStrategy, mapManager) {
-  var mode = "scatter";
   this.mapManager = mapManager;
-  var initData = this.mapManager.getNextTripForGhost(3);
+  var initData = this.mapManager.getNextTripForGhost(ActorDefinitions.REDGHOST);
   this.position = initData.initaliGhostPosition;
-  var destination = initData.destination;
   this.path = initData.path;
   this.ghostCollisionStrategy = ghostCollisionStrategy;
-
   this.newPositions = [];
 
   this.getDirection = (position) => {
-
     var firstPath = this.path.splice(0, 1);
     if (this.path.length == 0) {
-      this.path = this.mapManager.getNextTripForGhost(3).path;
+      this.path = this.mapManager.getNextTripForGhost(ActorDefinitions.REDGHOST).path;
     }
     if (firstPath[0][0] == position.x) {
       if (firstPath[0][1] > position.y) return 40;
@@ -27,17 +26,12 @@ export default function RedGhost(ghostCollisionStrategy, mapManager) {
 
   this.getNewPosition = (direction, destination) => {
     if (this.ghostCollisionStrategy.checkCollision(direction, this.position, destination)) {
-      //if (this.ghostCollisionStrategy.checkWin(destination)) {
-         // alert("GAME OVER");
-     // }
-      this.newPositions = this.ghostCollisionStrategy.getNewPositions(direction, this.position, 3, destination);
-      this.position = this.newPositions[1].position;
+        this.newPositions = this.ghostCollisionStrategy.getPendingPositions(direction, this.position, ActorDefinitions.REDGHOST, destination);
+        this.position = this.newPositions[1].position;
     }
-
     return this.newPositions;
   };
 
-  this.getNewPositions = () => this.newPositions;
-
+  this.getPendingPositions = () => this.newPositions;
 
 }

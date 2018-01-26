@@ -90,7 +90,7 @@ var CollisionStrategy = (function () {
     return this.destinationCheker[direction](playerPosition, destination);
   }
 
-  CollisionStrategyConstructor.prototype.getNewPositions = function (direction, playerPosition, destination, destinationValue) {
+  CollisionStrategyConstructor.prototype.getPendingPositions = function (direction, playerPosition, destination, destinationValue) {
     return this.mapUpdater[direction](playerPosition, destination, destinationValue);
   }
 

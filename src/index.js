@@ -2,6 +2,7 @@ import './index.css';
 import  level1  from './map-definitions/map';
 import SpiritesManager from './sprites-manager';
 import MapManager from './map-manager';
+import MapRenderer from './map-renderer';
 import Game from './game';
 import UIIntefaceAdapter  from './ui-interface-adapter';
 import { deepCopy } from './utils';
@@ -49,8 +50,10 @@ function initGameCanvas() {
 
 function initGameObjects(gameBoard) {
   const spiritesManager = new SpiritesManager();
-  const mapManager = new MapManager(deepCopy(level1), gameBoard.canvas, gameBoard.cellWidth, gameBoard.cellHeight, spiritesManager );
-  return new Game(mapManager, spiritesManager, window.uiIntefaceAdapter);
+  let levelCopy = deepCopy(level1);
+  const mapRenderer = new MapRenderer(levelCopy, gameBoard.canvas, gameBoard.cellWidth, gameBoard.cellHeight, spiritesManager)
+  const mapManager = new MapManager(levelCopy);
+  return new Game(mapManager, mapRenderer, spiritesManager, window.uiIntefaceAdapter);
 }
 
 function newGameListener() {
