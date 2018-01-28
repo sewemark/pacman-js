@@ -20,7 +20,7 @@ var level1 = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 export  default level1;
-//refact to getting user position dynamically
+
 const userPosition = {
   x: 6,
   y: 3

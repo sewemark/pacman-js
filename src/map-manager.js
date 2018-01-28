@@ -8,7 +8,6 @@ export default function MapManager(map) {
   this.map = map;
   this.grid = new PF.Grid(this.map, [0, 2, 3, 4]);
   this.finder = new PF.AStarFinder();
-  this.frame = 0;
   this.state = 0;
 
   this.generateRandomPoint = function () {
@@ -47,12 +46,10 @@ export default function MapManager(map) {
   this.updateMap = function (positions) {
     var last = positions[positions.length - 1];
     if (last && this.map[last.position.y][last.position.x] == ActorDefinitions.PLAYER) {
-          //this.map[last.position.y][last.position.x]= ActorDefinitions.EMPTY;
           this.state = -1;
     }
     if(last && ActorDefinitions.GHOSTS.indexOf(this.map[last.position.y][last.position.x]) >=0)
     {
-      //this.map[positions[0].y][positions[0].x] == ActorDefinitions.EMPTY;
       this.state = -1;
     }
     positions.forEach(item => {
@@ -60,16 +57,8 @@ export default function MapManager(map) {
     });
   }
 
-  this.destinationCheker = {
-    37: (playerPosition) => this.map[playerPosition.y][playerPosition.x - 1],
-    39: (playerPosition) => this.map[playerPosition.y][playerPosition.x + 1],
-    38: (playerPosition) => this.map[playerPosition.y - 1][playerPosition.x],
-    40: (playerPosition) => this.map[playerPosition.y + 1][playerPosition.x],
-  };
-
   this.getNextTripForGhost = function (ghost) {
     this.grid = new PF.Grid(this.map, [0, 2, 3, 4]);
-    //this.grid = new PF.Grid(this.map, [0, 2, 3, 4]);
     var init = this.generateRandomPoint();
     var initaliGhostPosition = this.getItemPosition(ghost);
 
@@ -89,10 +78,6 @@ export default function MapManager(map) {
       path: path
     }
   }
-
-  this.getLevelWidth = () => this.map[0].length;
-
-  this.getLevelHeight = () => this.map.length;
 
   this.getLevelInfo = () => {
     return {
@@ -122,4 +107,15 @@ export default function MapManager(map) {
    }
     this.map[userPosition.y][userPosition.x] = ActorDefinitions.PLAYER;
   }
+
+  this.getLevelWidth = () => this.map[0].length;
+
+  this.getLevelHeight = () => this.map.length;
+
+  this.destinationCheker = {
+    37: (playerPosition) => this.map[playerPosition.y][playerPosition.x - 1],
+    39: (playerPosition) => this.map[playerPosition.y][playerPosition.x + 1],
+    38: (playerPosition) => this.map[playerPosition.y - 1][playerPosition.x],
+    40: (playerPosition) => this.map[playerPosition.y + 1][playerPosition.x],
+  };
 }
