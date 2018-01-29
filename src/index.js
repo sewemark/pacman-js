@@ -7,7 +7,6 @@ import Game from './game';
 import UIIntefaceAdapter  from './ui-interface-adapter';
 import { deepCopy } from './utils';
 
-
 function init() {
   window.uiIntefaceAdapter = new UIIntefaceAdapter(new SpiritesManager());
   initUIListeners();

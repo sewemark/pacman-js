@@ -1,37 +1,28 @@
 import ActorDefinitions from './map-definitions/map-config';
+import Ghost from './ghost';
 
+var RedGhost = (function() {
+  "use strict";
 
-export default function RedGhost(ghostCollisionStrategy, mapManager) {
-  this.mapManager = mapManager;
-  var initData = this.mapManager.getNextTripForGhost(ActorDefinitions.REDGHOST);
-  this.position = initData.initaliGhostPosition;
-  this.path = initData.path;
-  this.ghostCollisionStrategy = ghostCollisionStrategy;
-  this.newPositions = [];
-
-  this.getDirection = (position) => {
-    var firstPath = this.path.splice(0, 1);
-    if (this.path.length == 0) {
-      this.path = this.mapManager.getNextTripForGhost(ActorDefinitions.REDGHOST).path;
+  function RedGhostConstructor(ghostCollisionStrategy, mapManager) {
+    var data = mapManager.getNextTripForGhost(ActorDefinitions.REDGHOST);
+    var privMembers = {
+      mapManager: mapManager,
+      initData: data,
+      position: data.initaliGhostPosition,
+      path: data.path,
+      ghostCollisionStrategy: ghostCollisionStrategy,
+      newPositions: []
     }
-    if (firstPath[0][0] == position.x) {
-      if (firstPath[0][1] > position.y) return 40;
-      else return 38;
+    Ghost.apply(this, [...arguments, privMembers]);
 
-    } else {
-      if (firstPath[0][0] > position.x) return 39;
-      else return 37;
-    }
   }
+  RedGhostConstructor.prototype = Object.create(Ghost.prototype);
 
-  this.getNewPosition = (direction, destination) => {
-    if (this.ghostCollisionStrategy.checkCollision(direction, this.position, destination)) {
-        this.newPositions = this.ghostCollisionStrategy.getPendingPositions(direction, this.position, ActorDefinitions.REDGHOST, destination);
-        this.position = this.newPositions[1].position;
-    }
-    return this.newPositions;
-  };
+  return RedGhostConstructor;
 
-  this.getPendingPositions = () => this.newPositions;
+})();
 
-}
+
+export default RedGhost;
+
