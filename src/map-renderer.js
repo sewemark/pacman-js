@@ -38,6 +38,10 @@ export default function MapRenderer (map, canvas, cellWidth, cellHeight, spirits
           this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.EMPTY), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
           this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.REDGHOST), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
         }
+        else if (this.map[j][i] == ActorDefinitions.YELLOWGHOST) {
+          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.EMPTY), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
+          this.ctx.drawImage(this.spiritsManager.getSpirit(ActorDefinitions.YELLOWGHOST), Math.floor(i * this.cellWidth), Math.floor(j * this.cellHeight), Math.floor(this.cellWidth), Math.floor(this.cellHeight));
+        }
       }
     }
 

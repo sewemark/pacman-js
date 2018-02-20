@@ -51,7 +51,7 @@ function initGameObjects(gameBoard) {
   const spiritesManager = new SpiritesManager();
   let levelCopy = deepCopy(level1);
   const mapRenderer = new MapRenderer(levelCopy, gameBoard.canvas, gameBoard.cellWidth, gameBoard.cellHeight, spiritesManager)
-  const mapManager = new MapManager(levelCopy);
+  const mapManager =  new MapManager(levelCopy);
   return new Game(mapManager, mapRenderer, spiritesManager, window.uiIntefaceAdapter);
 }
 

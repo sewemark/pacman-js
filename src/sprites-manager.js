@@ -10,10 +10,11 @@ import grass from './assets/img/textures/gras.png';
 import money from './assets/img/textures/coin.png';
 import redGhost from './assets/img/ghosts/ghost1.png';
 import life  from './assets/img/textures/heart.png';
+import yellowGhost  from './assets/img/ghosts/yelloGhost.png';
 
 var spirits = [pacman, pacman1, pacman2, pacman3];
 var textures = [background, wall, grass, money];
-var ghost = [redGhost];
+var ghost = [redGhost, yellowGhost];
 var lifeSprites = [life];
 export default function SpiritesManager(){
   this.userSpirit = null;
@@ -30,6 +31,8 @@ export default function SpiritesManager(){
   this.foodSprite.src = textures[3];
   this.redghostSpirit = document.createElement("img");
   this.redghostSpirit.src = ghost[0];
+  this.yellowGhostSpirit = document.createElement("img");
+  this.yellowGhostSpirit.src = ghost[1];
   this.lifeSprites = document.createElement("img");
   this.lifeSprites.src = lifeSprites[0];
 
@@ -48,6 +51,9 @@ export default function SpiritesManager(){
     }
     else if(actor == ActorDefinitions.REDGHOST){
       return this.redghostSpirit;
+    }
+    else if(actor == ActorDefinitions.YELLOWGHOST){
+      return this.yellowGhostSpirit;
     }
     else if(actor ==ActorDefinitions.PLAYER){
       return this.playerSprites;

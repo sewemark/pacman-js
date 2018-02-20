@@ -4,6 +4,7 @@ import CollisionStrategy from './collision-strategy';
 var GhostCollisionStartegy = (function () {
   "use strict";
   var priv = new WeakMap();
+
   var _ = function (instance) {
     return priv.get(instance);
   }
@@ -12,7 +13,9 @@ var GhostCollisionStartegy = (function () {
       priv.set(this, {mapWidth:mapInfo.width, mapHeight: mapInfo.height});
       CollisionStrategy.apply(this, arguments);
   }
+
   GhostCollisionStartegyConstructor.prototype = Object.create(CollisionStrategy.prototype);
+
   GhostCollisionStartegyConstructor.prototype.checkWin = function (destination) {
     return destination == ActorDefinitions.PLAYER;
   }
@@ -24,7 +27,7 @@ var GhostCollisionStartegy = (function () {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+          value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 )  ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -41,7 +44,7 @@ var GhostCollisionStartegy = (function () {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+          value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 ) ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -58,7 +61,7 @@ var GhostCollisionStartegy = (function () {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+          value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 ) ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {
@@ -75,7 +78,7 @@ var GhostCollisionStartegy = (function () {
             y: playerPosition.y,
             x: playerPosition.x
           },
-          value: prevValue == ActorDefinitions.FOOD ? prevValue : ActorDefinitions.EMPTY
+          value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 ) ? prevValue : ActorDefinitions.EMPTY
         },
         {
           position: {

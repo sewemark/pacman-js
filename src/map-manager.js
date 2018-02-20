@@ -6,7 +6,7 @@ import {
 
 export default function MapManager(map) {
   this.map = map;
-  this.grid = new PF.Grid(this.map, [0, 2, 3, 4]);
+  this.grid = new PF.Grid(this.map, [0, 2, 3, 4, 5]);
   this.finder = new PF.AStarFinder();
   this.state = 0;
 
@@ -48,8 +48,10 @@ export default function MapManager(map) {
     if (last && this.map[last.position.y][last.position.x] == ActorDefinitions.PLAYER) {
           this.state = -1;
     }
-    if(last && ActorDefinitions.GHOSTS.indexOf(this.map[last.position.y][last.position.x]) >=0)
+    if((last && ActorDefinitions.GHOSTS.indexOf(this.map[last.position.y][last.position.x]) >=0)
+      && this.map[positions[0].position.y][positions[0].position.x] == ActorDefinitions.PLAYER )
     {
+      console.log("Weszlo tam gzie nie mialo1!!!!!!!!!1");
       this.state = -1;
     }
     positions.forEach(item => {
@@ -58,19 +60,22 @@ export default function MapManager(map) {
   }
 
   this.getNextTripForGhost = function (ghost) {
-    this.grid = new PF.Grid(this.map, [0, 2, 3, 4]);
+    this.grid = new PF.Grid(this.map, [0, 2, 3, 4, 5]);
     var init = this.generateRandomPoint();
     var initaliGhostPosition = this.getItemPosition(ghost);
 
-    while (init.x === initaliGhostPosition.x && init.y === initaliGhostPosition.y) {
+    while ( Math.abs(init.x - initaliGhostPosition.x) < 5 || Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
+    //&& Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
       init = this.generateRandomPoint();
-      initaliGhostPosition = this.getItemPosition(ghost);
     }
 
     var path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
     while (path.length == 0) {
       path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
     }
+    //console.log('ghost ' + init.x + ' ' + init.y);
+    //console.log('destination ' + initaliGhostPosition.x + ' ' + initaliGhostPosition.y);
+    //console.log(path);
 
     return {
       init: init,

@@ -1,25 +1,46 @@
 import ActorDefinitions from './map-definitions/map-config';
 
 var Ghost =  (function () {
-  "use strict"
-   var protectedMembers;
 
-   function GhostConstructor(ghostCollisionStrategy, mapManager, members) {
-    protectedMembers = members || {
-      mapManager:mapManager,
-      initData:{},
-      position: undefined,
-      path: undefined,
-      ghostCollisionStrategy: ghostCollisionStrategy,
-      newPositions: []
-    }
+
+  var priv = new WeakMap();
+
+  var  _ = function (inst) {
+    return priv.get(inst);
   }
 
-  GhostConstructor.prototype.getDirection = (position) => {
-    var firstPath = protectedMembers.path.splice(0, 1);
+   function GhostConstructor(ghostCollisionStrategy, mapManager, protectedMembers) {
+     var data = {};
+     var privMembers = protectedMembers||  {
+       mapManager: mapManager,
+       initData: data,
+       position: data.initaliGhostPosition,
+       path: data.path,
+       ghostCollisionStrategy: ghostCollisionStrategy,
+       newPositions: [],
+       GHOST: ActorDefinitions.EMPTY
+     }
+     priv.set(this, protectedMembers);
 
-    if (protectedMembers.path.length == 0) {
-      protectedMembers.path = protectedMembers.mapManager.getNextTripForGhost(ActorDefinitions.REDGHOST).path;
+  }
+  GhostConstructor.prototype.sayName = function(){
+  }
+  GhostConstructor.prototype.getDirection = function(position)  {
+    var firstPath = _(this).path.splice(0, 1);
+
+    if (_(this).path.length == 0) {
+      do {
+        _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
+      } while (_(this).path.length ==0);
+
+
+      firstPath = _(this).path.splice(0, 1);
+
+      while(firstPath[0][0] == position.x &&
+            firstPath[0][1] == position.y)
+      {
+        firstPath = _(this).path.splice(0, 1);
+      }
     }
     if (firstPath[0][0] == position.x) {
       if (firstPath[0][1] > position.y) return 40;
@@ -31,15 +52,24 @@ var Ghost =  (function () {
     }
   };
 
-  GhostConstructor.prototype.getNewPosition = (direction, destination) => {
-    if (protectedMembers.ghostCollisionStrategy.checkCollision(direction, protectedMembers.position, destination)) {
-        protectedMembers.newPositions = protectedMembers.ghostCollisionStrategy.getPendingPositions(direction, protectedMembers.position, ActorDefinitions.REDGHOST, destination);
-        protectedMembers.position = protectedMembers.newPositions[1].position;
+  GhostConstructor.prototype.getNewPosition = function(direction, destination)  {
+    if (_(this).ghostCollisionStrategy.checkCollision(direction, _(this).position, destination)) {
+      _(this).newPositions = _(this).ghostCollisionStrategy.getPendingPositions(direction, _(this).position, _(this).GHOST, destination);
+      _(this).position = _(this).newPositions[1].position;
+    } else {
+     /* _(this).path = _(this).path.splice(0, _(this).path.length);
+      do {
+        _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
+      } while (_(this).path.length ==0)
+      this.getNewPosition((direction,destination));
+*/
     }
-    return protectedMembers.newPositions;
+    return _(this).newPositions;
   };
 
-  GhostConstructor.prototype.getPendingPositions = () => protectedMembers.newPositions;
+  GhostConstructor.prototype.getPendingPositions = function() {
+    return _(this).newPositions;
+  }
 
   return GhostConstructor;
 

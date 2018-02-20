@@ -1,38 +1,37 @@
 import ActorDefinitions from './map-definitions/map-config';
+import Ghost from './ghost';
 
+var YellowGhost = (function() {
+  "use strict";
 
-export default function RedGhost(ghostCollisionStrategy, mapManager) {
-  //TODO przeniesc logike wyberania sciezki do innej klasy niz mapManager
-  this.mapManager = mapManager;
-  var initData = this.mapManager.getNextTripForGhost(ActorDefinitions.YELLOWGHOST);
-  this.position = initData.initaliGhostPosition;
-  this.path = initData.path;
-  this.ghostCollisionStrategy = ghostCollisionStrategy;
-  this.newPositions = [];
+  var priv = new WeakMap();
 
-  this.getDirection = (position) => {
-    var firstPath = this.path.splice(0, 1);
-    if (this.path.length == 0) {
-      this.path = this.mapManager.getNextTripForGhost(ActorDefinitions.YELLOWGHOST).path;
-    }
-    if (firstPath[0][0] == position.x) {
-      if (firstPath[0][1] > position.y) return 40;
-      else return 38;
-
-    } else {
-      if (firstPath[0][0] > position.x) return 39;
-      else return 37;
-    }
+  var  _ = function (inst) {
+    return priv.get(inst);
   }
 
-  this.getNewPosition = (direction, destination) => {
-    if (this.ghostCollisionStrategy.checkCollision(direction, this.position, destination)) {
-        this.newPositions = this.ghostCollisionStrategy.getPendingPositions(direction, this.position, ActorDefinitions.REDGHOST, destination);
-        this.position = this.newPositions[1].position;
+  function YellowGhostConstructor(ghostCollisionStrategy, mapManager) {
+    var data = mapManager.getNextTripForGhost(ActorDefinitions.YELLOWGHOST);
+    var privMembers = {
+      mapManager: mapManager,
+      initData: data,
+      position: data.initaliGhostPosition,
+      path: data.path,
+      ghostCollisionStrategy: ghostCollisionStrategy,
+      newPositions: [],
+      GHOST: ActorDefinitions.YELLOWGHOST
     }
-    return this.newPositions;
-  };
+    Ghost.call(this, ghostCollisionStrategy, mapManager, privMembers);
+    priv.set(this, privMembers);
 
-  this.getPendingPositions = () => this.newPositions;
+  }
+  YellowGhostConstructor.prototype = Object.create(Ghost.prototype);
+  YellowGhostConstructor.prototype.constructor = YellowGhostConstructor;
 
-}
+  return YellowGhostConstructor;
+
+})();
+
+
+export default YellowGhost;
+
