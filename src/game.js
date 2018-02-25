@@ -15,7 +15,7 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
   this.pacmanMoveStrategy = new PacmanCollisionStartegy(this.mapManager.getLevelInfo());
   this.ghostCollisionStrategy = new GhostCollisionStartegy(this.mapManager.getLevelInfo());
   this.redGhost = new RedGhost(this.ghostCollisionStrategy, this.mapManager);
-  this.yellowGhost = new YellowGhost(this.ghostCollisionStrategy, this.mapManager);
+  //this.yellowGhost = new YellowGhost(this.ghostCollisionStrategy, this.mapManager);
   this.player = new Player(this.pacmanMoveStrategy, this.mapManager.getItemPosition(ActorDefinitions.PLAYER));
   this.ghostIntervalId;
   this.Start = function () {
@@ -37,18 +37,33 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
 
   this.UpdateGohosts = function () {
     const position = this.mapManager.getItemPosition(ActorDefinitions.REDGHOST);
-    var direction = this.redGhost.getDirection(position);
-    this.common(this.redGhost, direction, position);
+    var nextPosition = this.redGhost.getNextGhostPath(position)[0];
+    var destinationValue = this.mapManager.getPosition(nextPosition);
+    while(this.redGhost.checkCollisionWithOther(destinationValue))
+    {
+      this.redGhost.resestPosition();
+      nextPosition = this.redGhost.getNextGhostPath(position);
+      destinationValue = this.mapManager.getPosition(nextPosition);
+    }
 
-    const yellowPosition = this.mapManager.getItemPosition(ActorDefinitions.YELLOWGHOST);
-    const yellowDirection = this.yellowGhost.getDirection(yellowPosition);
-    this.common(this.yellowGhost, yellowDirection, yellowPosition);
+    const direction = this.redGhost.getDirection(nextPosition, position);
 
+
+    this.commonGhost(this.redGhost, direction, position, destinationValue);
+
+   /* const yellowPosition = this.mapManager.getItemPosition(ActorDefinitions.YELLOWGHOST);
+    const yellowDirection = this.yellowGhost.getDirection(yellowPosition, yellowDestination);
+
+    const yellowDestination = this.mapManager.getDestinationPosition(yellowDirection, position);
+
+
+    this.commonGhost(this.yellowGhost, yellowDirection, yellowPosition, yellowDestination);
+    */
   }
 
-  this.commonGhost = function(player, direction, position) {
+  this.commonGhost = function(player, direction, position, destination) {
 
-    const destination = this.mapManager.getDestinationPosition(direction, position);
+
     const temp = player.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
       this.mapManager.updateMap(player.getPendingPositions());

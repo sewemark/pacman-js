@@ -20,6 +20,10 @@ var GhostCollisionStartegy = (function () {
     return destination == ActorDefinitions.PLAYER;
   }
 
+  GhostCollisionStartegyConstructor.prototype.checkCollisionWithOther = function (destination) {
+      return  ActorDefinitions.GHOSTS.indexOf(destination) >= 0;
+  }
+
   GhostCollisionStartegyConstructor.prototype.mapUpdater = {
     37: (playerPosition, player, prevValue) => {
       return [{

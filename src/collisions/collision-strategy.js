@@ -95,10 +95,10 @@ var CollisionStrategy = (function () {
   }
 
   CollisionStrategyConstructor.prototype.destinationCheker = {
-    37: (playerPosition, destination) => (ActorDefinitions.GHOSTS.indexOf(destination) < 0) && ((playerPosition.x - 1 >= 0 || playerPosition.x - 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
-    39: (playerPosition, destination) => (ActorDefinitions.GHOSTS.indexOf(destination) < 0) && ((playerPosition.x + 1 >= 0 || playerPosition.x + 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
-    38: (playerPosition, destination) => ActorDefinitions.GHOSTS.indexOf(destination) < 0 && ((playerPosition.y - 1 >= 0 || playerPosition.y - 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL),
-    40: (playerPosition, destination) => (ActorDefinitions.GHOSTS.indexOf(destination) < 0) && ((playerPosition.y + 1 >= 0 || playerPosition.y + 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL)
+    37: (playerPosition, destination) => ((playerPosition.x - 1 >= 0 || playerPosition.x - 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
+    39: (playerPosition, destination) =>  ((playerPosition.x + 1 >= 0 || playerPosition.x + 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
+    38: (playerPosition, destination) =>  ((playerPosition.y - 1 >= 0 || playerPosition.y - 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL),
+    40: (playerPosition, destination) =>((playerPosition.y + 1 >= 0 || playerPosition.y + 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL)
   };
 
   CollisionStrategyConstructor.prototype.checkFood = function (destination) {

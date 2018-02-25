@@ -39,6 +39,10 @@ export default function MapManager(map) {
     }
   }
 
+  this.getPosition = function (position) {
+    return this.map[position[0]][position[1]];
+  }
+
   this.getDestinationPosition = function (direction, playerPosition) {
     return this.destinationCheker[direction](playerPosition)
   }
