@@ -6,7 +6,7 @@ import {
 
 export default function MapManager(map) {
   this.map = map;
-  this.grid = new PF.Grid(this.map, [0, 2, 3, 4, 5]);
+  this.grid = new PF.Grid(this.map, [0, 2, 3, 4, 5 ]);
   this.finder = new PF.AStarFinder();
   this.state = 0;
 
@@ -40,7 +40,8 @@ export default function MapManager(map) {
   }
 
   this.getPosition = function (position) {
-    return this.map[position[0]][position[1]];
+    const next =  this.map[position[1]][position[0]];
+    return next;
   }
 
   this.getDestinationPosition = function (direction, playerPosition) {
@@ -68,10 +69,10 @@ export default function MapManager(map) {
     var init = this.generateRandomPoint();
     var initaliGhostPosition = this.getItemPosition(ghost);
 
-    while ( Math.abs(init.x - initaliGhostPosition.x) < 5 || Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
+    /*while ( Math.abs(init.x - initaliGhostPosition.x) < 5 || Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
     //&& Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
       init = this.generateRandomPoint();
-    }
+    }*/
 
     var path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
     while (path.length == 0) {
@@ -80,7 +81,6 @@ export default function MapManager(map) {
     //console.log('ghost ' + init.x + ' ' + init.y);
     //console.log('destination ' + initaliGhostPosition.x + ' ' + initaliGhostPosition.y);
     //console.log(path);
-
     return {
       init: init,
       initaliGhostPosition: initaliGhostPosition,

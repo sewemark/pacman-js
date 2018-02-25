@@ -15,7 +15,7 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
   this.pacmanMoveStrategy = new PacmanCollisionStartegy(this.mapManager.getLevelInfo());
   this.ghostCollisionStrategy = new GhostCollisionStartegy(this.mapManager.getLevelInfo());
   this.redGhost = new RedGhost(this.ghostCollisionStrategy, this.mapManager);
-  //this.yellowGhost = new YellowGhost(this.ghostCollisionStrategy, this.mapManager);
+  this.yellowGhost = new YellowGhost(this.ghostCollisionStrategy, this.mapManager);
   this.player = new Player(this.pacmanMoveStrategy, this.mapManager.getItemPosition(ActorDefinitions.PLAYER));
   this.ghostIntervalId;
   this.Start = function () {
@@ -35,39 +35,58 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
     this.spiritesManager.updateSpirit(direction);
   };
 
+  this.UpdateRed = function () {
+
+  };
+
   this.UpdateGohosts = function () {
+
     const position = this.mapManager.getItemPosition(ActorDefinitions.REDGHOST);
+
     var nextPosition = this.redGhost.getNextGhostPath(position)[0];
     var destinationValue = this.mapManager.getPosition(nextPosition);
+
+
     while(this.redGhost.checkCollisionWithOther(destinationValue))
     {
+
+      console.log("Kolizja");
       this.redGhost.resestPosition();
-      nextPosition = this.redGhost.getNextGhostPath(position);
-      destinationValue = this.mapManager.getPosition(nextPosition);
+      nextPosition = this.redGhost.getNextGhostPath(position)[0];
+      let temp=  this.mapManager.getPosition(nextPosition);
+      destinationValue =temp;
     }
 
     const direction = this.redGhost.getDirection(nextPosition, position);
 
-
     this.commonGhost(this.redGhost, direction, position, destinationValue);
+      const yposition = this.mapManager.getItemPosition(ActorDefinitions.YELLOWGHOST);
+      var ynextPosition = this.yellowGhost.getNextGhostPath(yposition)[0];
+      var ydestinationValue = this.mapManager.getPosition(ynextPosition);
 
-   /* const yellowPosition = this.mapManager.getItemPosition(ActorDefinitions.YELLOWGHOST);
-    const yellowDirection = this.yellowGhost.getDirection(yellowPosition, yellowDestination);
+      while(this.yellowGhost.checkCollisionWithOther(ydestinationValue))
+      {
 
-    const yellowDestination = this.mapManager.getDestinationPosition(yellowDirection, position);
+        this.yellowGhost.resestPosition();
+        ynextPosition = this.yellowGhost.getNextGhostPath(yposition)[0];
+        let temp1 =  this.mapManager.getPosition(ynextPosition);
+        ydestinationValue = temp1;
+      }
 
+      const ydirection = this.yellowGhost.getDirection(ynextPosition, yposition);
+      this.commonGhost(this.yellowGhost, ydirection, yposition, ydestinationValue,true);
 
-    this.commonGhost(this.yellowGhost, yellowDirection, yellowPosition, yellowDestination);
-    */
   }
 
-  this.commonGhost = function(player, direction, position, destination) {
+  this.commonGhost = function(player, direction, position, destination,czy) {
 
 
     const temp = player.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
       this.mapManager.updateMap(player.getPendingPositions());
-      this.Start();
+      if(czy) {
+        this.Start();
+      }
     }
     if(this.mapManager.checkLoose()) {
       this.player.reduceLife();

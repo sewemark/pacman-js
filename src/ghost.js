@@ -83,12 +83,12 @@ var Ghost =  (function () {
   }
 
   GhostConstructor.prototype.resestPosition = function () {
-    _(this).path = _(this).path.splice(0, _(this).path.length);
+     _(this).path.splice(0, _(this).path.length);
 
   }
   GhostConstructor.prototype.checkCollision = function (direction, position, destination) {
     if(!_(this).ghostCollisionStrategy.checkCollision(direction, position, destination)) {
-      _(this).path = _(this).path.splice(0, _(this).path.length);
+      _(this).path.splice(0, _(this).path.length);
       return false;
     }
     return true;
@@ -104,7 +104,6 @@ var Ghost =  (function () {
       } while (_(this).path.length ==0)
       this.getNewPosition((direction,destination));
 */
-     alert('colizaj kurwa');
     }
     return _(this).newPositions;
   };
