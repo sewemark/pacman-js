@@ -20,7 +20,7 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
   this.ghostIntervalId;
   this.Start = function () {
     if(!this.ghostIntervalId) {
-       this.ghostIntervalId = setInterval(this.UpdateGohosts.bind(this),100);
+       this.ghostIntervalId = setInterval(this.UpdateGohosts.bind(this),200);
     }
     this.mapRenderer.render();
     this.uiInterfaceAdapter.updateUserInfo({
@@ -36,49 +36,70 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
   };
 
   this.UpdateRed = function () {
-
-  };
-
-  this.UpdateGohosts = function () {
-
     const position = this.mapManager.getItemPosition(ActorDefinitions.REDGHOST);
-
     var nextPosition = this.redGhost.getNextGhostPath(position)[0];
     var destinationValue = this.mapManager.getPosition(nextPosition);
-
-
-    while(this.redGhost.checkCollisionWithOther(destinationValue))
+    let i = 0;
+    while(this.redGhost.checkCollisionWithOther(destinationValue) && i < 5)
     {
 
-      console.log("Kolizja");
+      console.log('LOOP RED');
       this.redGhost.resestPosition();
       nextPosition = this.redGhost.getNextGhostPath(position)[0];
       let temp=  this.mapManager.getPosition(nextPosition);
       destinationValue =temp;
+      i++;
+      if(i ==5)
+      {
+        nextPosition = this.mapManager.getItemPosition(ActorDefinitions.REDGHOST);
+      }
+    }
+    if(i < 5) {
+      const direction = this.redGhost.getDirection(nextPosition, position);
+      this.commonGhost(this.redGhost, direction, position, destinationValue);
     }
 
-    const direction = this.redGhost.getDirection(nextPosition, position);
+  };
 
-    this.commonGhost(this.redGhost, direction, position, destinationValue);
-      const yposition = this.mapManager.getItemPosition(ActorDefinitions.YELLOWGHOST);
-      var ynextPosition = this.yellowGhost.getNextGhostPath(yposition)[0];
-      var ydestinationValue = this.mapManager.getPosition(ynextPosition);
 
-      while(this.yellowGhost.checkCollisionWithOther(ydestinationValue))
+  this.UpdateYellow = function () {
+    const yposition = this.mapManager.getItemPosition(ActorDefinitions.YELLOWGHOST);
+    var ynextPosition = this.yellowGhost.getNextGhostPath(yposition)[0];
+    var ydestinationValue = this.mapManager.getPosition(ynextPosition);
+    let i = 0;
+    while( i < 5 && this.yellowGhost.checkCollisionWithOther(ydestinationValue))
+    {
+
+      console.log('LOOP YELLOW');
+      this.yellowGhost.resestPosition();
+      ynextPosition = this.yellowGhost.getNextGhostPath(yposition)[0];
+      let temp1 =  this.mapManager.getPosition(ynextPosition);
+      ydestinationValue = temp1;
+
+      i++;
+      if(i ==5)
       {
-
-        this.yellowGhost.resestPosition();
-        ynextPosition = this.yellowGhost.getNextGhostPath(yposition)[0];
-        let temp1 =  this.mapManager.getPosition(ynextPosition);
-        ydestinationValue = temp1;
+        ynextPosition = this.mapManager.getItemPosition(ActorDefinitions.YELLOWGHOST);
       }
+    }
 
+    if(i < 5) {
       const ydirection = this.yellowGhost.getDirection(ynextPosition, yposition);
-      this.commonGhost(this.yellowGhost, ydirection, yposition, ydestinationValue,true);
+      this.commonGhost(this.yellowGhost, ydirection, yposition, ydestinationValue);
+    }
+  }
+
+  this.predicates = [ this.UpdateYellow,this.UpdateRed];
+  this.UpdateGohosts = function () {
+    console.log(this.predicates);
+    this.predicates.reverse();
+    this.predicates.forEach(x=> {
+      x.call(this)
+    });
 
   }
 
-  this.commonGhost = function(player, direction, position, destination,czy) {
+  this.commonGhost = function(player, direction, position, destination,czy=true) {
 
 
     const temp = player.getNewPosition(direction, destination);
