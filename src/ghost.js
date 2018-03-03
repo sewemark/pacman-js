@@ -1,119 +1,120 @@
 import ActorDefinitions from './map-definitions/map-config';
 
-var Ghost =  (function () {
+var Ghost = (function () {
 
 
   var priv = new WeakMap();
 
-  var  _ = function (inst) {
+  var _ = function (inst) {
     return priv.get(inst);
   }
 
-   function GhostConstructor(ghostCollisionStrategy, mapManager, protectedMembers) {
-     var data = {};
-     var privMembers = protectedMembers||  {
-       mapManager: mapManager,
-       initData: data,
-       position: data.initaliGhostPosition,
-       path: data.path,
-       ghostCollisionStrategy: ghostCollisionStrategy,
-       newPositions: [],
-       GHOST: ActorDefinitions.EMPTY
-     }
-     priv.set(this, protectedMembers);
+  function GhostConstructor(ghostCollisionStrategy, mapManager, protectedMembers) {
+    var data = {};
+    const privMembers = protectedMembers || {
+      mapManager: mapManager,
+      initData: data,
+      position: data.initaliGhostPosition,
+      path: data.path,
+      ghostCollisionStrategy: ghostCollisionStrategy,
+      newPositions: [],
+      GHOST: ActorDefinitions.EMPTY
+    }
+    priv.set(this, privMembers);
 
   }
-  GhostConstructor.prototype.checkCollisionWithOther = function(destination){
+
+  GhostConstructor.prototype.checkCollisionWithOther = function (destination) {
     return _(this).ghostCollisionStrategy.checkCollisionWithOther(destination);
   }
 
 
-  GhostConstructor.prototype.getNextGhostPath = function(position)  {
-    let direction;
-    var firstPath = _(this).path.splice(0, 1);
+  GhostConstructor.prototype.getNextGhostPath = function (position) {
+    if (checkIfNoMoreMoves.call(this)) {
+      return getNextTripFirstMove.call(this);
+    } else {
+      return getNextTrip.call(this)
+    }
 
-    if (_(this).path.length == 0 ) {
+    function getNextTrip() {
+      var firstPath = _(this).path.splice(0, 1);
+      while (firstPath[0][0] == position.x &&
+      firstPath[0][1] == position.y) {
+        firstPath = _(this).path.splice(0, 1);
+      }
+      return firstPath;
+    }
+
+    function getNextTripFirstMove() {
       do {
         _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
-      } while (_(this).path.length ==0);
+      } while (_(this).path.length == 0);
 
 
-      firstPath = _(this).path.splice(0, 1);
+      let firstPath = _(this).path.splice(0, 1);
 
-      while(firstPath[0][0] == position.x &&
-            firstPath[0][1] == position.y)
-      {
+      while (firstPath[0][0] == position.x &&  firstPath[0][1] == position.y) {
         firstPath = _(this).path.splice(0, 1);
       }
-    } else {
-      while(firstPath[0][0] == position.x &&
-      firstPath[0][1] == position.y)
-      {
-        firstPath = _(this).path.splice(0, 1);
-      }
-    }
-    return firstPath;
-    /*
-    if (firstPath[0][0] == position.x) {
-      if (firstPath[0][1] > position.y) direction= 40;
-      else direction = 38;
-
-    } else {
-      if (firstPath[0][0] > position.x) direction= 39;
-      else direction = 37;
+      return firstPath;
     }
 
-   return direction
-    */
+    function checkIfNoMoreMoves() {
+      return _(this).path.length == 0
+    }
   };
 
   GhostConstructor.prototype.getDirection = function (firstPath, position) {
     let direction;
-    if (firstPath[0] == position.x) {
-      if (firstPath[1] > position.y) direction= 40;
-      else direction = 38;
 
+    if (firstPath[0] == position.x) {
+      if (firstPath[1] > position.y) direction = 40;
+      else direction = 38;
     } else {
-      if (firstPath[0] > position.x) direction= 39;
-        else direction = 37;
+      if (firstPath[0] > position.x) direction = 39;
+      else direction = 37;
     }
 
-   return direction
+    return direction
 
   }
 
   GhostConstructor.prototype.resestPosition = function () {
-     _(this).path.splice(0, _(this).path.length);
+    _(this).path.splice(0, _(this).path.length);
 
   }
   GhostConstructor.prototype.checkCollision = function (direction, position, destination) {
-    if(!_(this).ghostCollisionStrategy.checkCollision(direction, position, destination)) {
+    if (!_(this).ghostCollisionStrategy.checkCollision(direction, position, destination)) {
       _(this).path.splice(0, _(this).path.length);
       return false;
     }
     return true;
   }
-  GhostConstructor.prototype.getNewPosition = function(direction, destination)  {
+  GhostConstructor.prototype.getNewPosition = function (direction, destination) {
     if (_(this).ghostCollisionStrategy.checkCollision(direction, _(this).position, destination)) {
       _(this).newPositions = _(this).ghostCollisionStrategy.getPendingPositions(direction, _(this).position, _(this).GHOST, destination);
       _(this).position = _(this).newPositions[1].position;
     } else {
-     /* _(this).path = _(this).path.splice(0, _(this).path.length);
-      do {
-        _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
-      } while (_(this).path.length ==0)
-      this.getNewPosition((direction,destination));
-*/
+      /* _(this).path = _(this).path.splice(0, _(this).path.length);
+       do {
+         _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
+       } while (_(this).path.length ==0)
+       this.getNewPosition((direction,destination));
+ */
     }
     return _(this).newPositions;
   };
 
-  GhostConstructor.prototype.getPendingPositions = function() {
+  GhostConstructor.prototype.getPendingPositions = function () {
     return _(this).newPositions;
+  }
+
+  GhostConstructor.prototype.getActorValue = function () {
+    return _(this).GHOST;
   }
 
   return GhostConstructor;
 
 })();
 
-export  default  Ghost;
+export default Ghost;

@@ -33,10 +33,7 @@ export default function MapManager(map) {
         }
       }
     }
-    return {
-      y: -1,
-      x: -1
-    }
+    return new Error('No such item in map');
   }
 
   this.getPosition = function (position) {

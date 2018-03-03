@@ -28,6 +28,7 @@ var RedGhost = (function() {
     priv.set(this, privMembers);
 
   }
+
   RedGhostConstructor.prototype = Object.create(Ghost.prototype);
   RedGhostConstructor.prototype.constructor = RedGhostConstructor;
 
