@@ -1,8 +1,8 @@
 import PF from 'pathfinding';
-import ActorDefinitions from './map-definitions/map-config';
+import ActorDefinitions from '../map-definitions/map-config';
 import {
   userPosition
-} from './map-definitions/map';
+} from '../map-definitions/map';
 
 export default function MapManager(map) {
   this.map = map;
@@ -21,7 +21,7 @@ export default function MapManager(map) {
       y: yRandom,
       x: xRandom
     }
-  }
+  };
 
   this.getItemPosition = function (item) {
     for (var i = 0; i < this.map.length; i++) {
@@ -34,16 +34,16 @@ export default function MapManager(map) {
       }
     }
     return new Error('No such item in map');
-  }
+  };
 
   this.getPosition = function (position) {
     const next =  this.map[position[1]][position[0]];
     return next;
-  }
+  };
 
   this.getDestinationPosition = function (direction, playerPosition) {
     return this.destinationCheker[direction](playerPosition)
-  }
+  };
 
   this.updateMap = function (positions) {
     var last = positions[positions.length - 1];
@@ -59,51 +59,49 @@ export default function MapManager(map) {
     positions.forEach(item => {
       this.map[item.position.y][item.position.x] = item.value;
     });
-  }
+  };
 
   this.getNextTripForGhost = function (ghost) {
     this.grid = new PF.Grid(this.map, [0, 2, 3, 4, 5]);
     var init = this.generateRandomPoint();
     var initaliGhostPosition = this.getItemPosition(ghost);
 
-    /*while ( Math.abs(init.x - initaliGhostPosition.x) < 5 || Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
+    //while ( Math.abs(init.x - initaliGhostPosition.x) < 5 || Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
     //&& Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
-      init = this.generateRandomPoint();
-    }*/
+      //init = this.generateRandomPoint();
+    //}*/
 
     var path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
     while (path.length == 0) {
       path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
     }
-    //console.log('ghost ' + init.x + ' ' + init.y);
-    //console.log('destination ' + initaliGhostPosition.x + ' ' + initaliGhostPosition.y);
-    //console.log(path);
+
     return {
       init: init,
       initaliGhostPosition: initaliGhostPosition,
       path: path
     }
-  }
+  };
 
   this.getLevelInfo = () => {
     return {
       height: this.map.length,
       width: this.map[0].length
     }
-  }
+  };
 
   this.checkWin = function () {
     return this.map.findIndex(x => {
       return x.indexOf(ActorDefinitions.FOOD) >= 0;
     }) < 0;
-  }
+  };
 
   this.checkLoose = function () {
    return this.state == -1;
- }
+ };
 
   this.resetPlayer = function () {
-    this.state = 0;
+   this.state = 0;
    for(let i =0;i<this.map.length;i++){
      for(let j =0; j<this.map[0].length; j++){
        if(this.map[i][j] == ActorDefinitions.PLAYER ){
@@ -112,7 +110,7 @@ export default function MapManager(map) {
      }
    }
     this.map[userPosition.y][userPosition.x] = ActorDefinitions.PLAYER;
-  }
+  };
 
   this.getLevelWidth = () => this.map[0].length;
 

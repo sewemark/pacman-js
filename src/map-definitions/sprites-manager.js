@@ -1,16 +1,16 @@
-import ActorDefinitions  from './map-definitions/map-config';
+import ActorDefinitions  from './map-config';
 
-import pacman from './assets/img/pacman/Pacman1.png';
-import pacman1 from './assets/img/pacman/Pacman2.png';
-import pacman2 from './assets/img/pacman/Pacman3.png';
-import pacman3 from './assets/img/pacman/Pacman4.png';
-import background from './assets/img/textures/background.png';
-import wall from './assets/img/textures/texture.png';
-import grass from './assets/img/textures/gras.png';
-import money from './assets/img/textures/coin.png';
-import redGhost from './assets/img/ghosts/ghost1.png';
-import life  from './assets/img/textures/heart.png';
-import yellowGhost  from './assets/img/ghosts/yelloGhost.png';
+import pacman from '../assets/img/pacman/Pacman1.png';
+import pacman1 from '../assets/img/pacman/Pacman2.png';
+import pacman2 from '../assets/img/pacman/Pacman3.png';
+import pacman3 from '../assets/img/pacman/Pacman4.png';
+import background from '../assets/img/textures/background.png';
+import wall from '../assets/img/textures/texture.png';
+import grass from '../assets/img/textures/gras.png';
+import money from '../assets/img/textures/coin.png';
+import redGhost from '../assets/img/ghosts/ghost1.png';
+import life  from '../assets/img/textures/heart.png';
+import yellowGhost  from '../assets/img/ghosts/yelloGhost.png';
 
 var spirits = [pacman, pacman1, pacman2, pacman3];
 var textures = [background, wall, grass, money];

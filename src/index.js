@@ -1,11 +1,11 @@
 import './index.css';
 import  level1  from './map-definitions/map';
-import SpiritesManager from './sprites-manager';
-import MapManager from './map-manager';
-import MapRenderer from './map-renderer';
-import Game from './game';
-import UIIntefaceAdapter  from './ui-interface-adapter';
-import { deepCopy } from './utils';
+import SpiritesManager from './map-definitions/sprites-manager';
+import MapManager from './map/map-manager';
+import MapRenderer from './map/map-renderer';
+import Game from './game/game';
+import UIIntefaceAdapter  from './ui-adapters/ui-interface-adapter';
+import { deepCopy } from './common/utils';
 
 function init() {
   window.uiIntefaceAdapter = new UIIntefaceAdapter(new SpiritesManager());

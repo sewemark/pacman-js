@@ -1,4 +1,4 @@
-import ActorDefinitions from './map-definitions/map-config';
+import ActorDefinitions from '../map-definitions/map-config';
 
 var Ghost = (function () {
 
@@ -31,32 +31,24 @@ var Ghost = (function () {
 
   GhostConstructor.prototype.getNextGhostPath = function (position) {
     if (checkIfNoMoreMoves.call(this)) {
-      return getNextTripFirstMove.call(this);
+       generateNextTrip.call(this);
+       return getNextTrip.call(this);
     } else {
       return getNextTrip.call(this)
     }
 
     function getNextTrip() {
       var firstPath = _(this).path.splice(0, 1);
-      while (firstPath[0][0] == position.x &&
-      firstPath[0][1] == position.y) {
+      while (firstPath[0][0] == position.x && firstPath[0][1] == position.y) {
         firstPath = _(this).path.splice(0, 1);
       }
       return firstPath;
     }
 
-    function getNextTripFirstMove() {
+    function generateNextTrip() {
       do {
         _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
       } while (_(this).path.length == 0);
-
-
-      let firstPath = _(this).path.splice(0, 1);
-
-      while (firstPath[0][0] == position.x &&  firstPath[0][1] == position.y) {
-        firstPath = _(this).path.splice(0, 1);
-      }
-      return firstPath;
     }
 
     function checkIfNoMoreMoves() {
@@ -66,7 +58,6 @@ var Ghost = (function () {
 
   GhostConstructor.prototype.getDirection = function (firstPath, position) {
     let direction;
-
     if (firstPath[0] == position.x) {
       if (firstPath[1] > position.y) direction = 40;
       else direction = 38;
@@ -77,37 +68,32 @@ var Ghost = (function () {
 
     return direction
 
-  }
+  };
 
   GhostConstructor.prototype.resestPosition = function () {
     _(this).path.splice(0, _(this).path.length);
 
-  }
+  };
+
   GhostConstructor.prototype.checkCollision = function (direction, position, destination) {
     if (!_(this).ghostCollisionStrategy.checkCollision(direction, position, destination)) {
       _(this).path.splice(0, _(this).path.length);
       return false;
     }
     return true;
-  }
+  };
+
   GhostConstructor.prototype.getNewPosition = function (direction, destination) {
     if (_(this).ghostCollisionStrategy.checkCollision(direction, _(this).position, destination)) {
       _(this).newPositions = _(this).ghostCollisionStrategy.getPendingPositions(direction, _(this).position, _(this).GHOST, destination);
       _(this).position = _(this).newPositions[1].position;
-    } else {
-      /* _(this).path = _(this).path.splice(0, _(this).path.length);
-       do {
-         _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
-       } while (_(this).path.length ==0)
-       this.getNewPosition((direction,destination));
- */
     }
     return _(this).newPositions;
   };
 
   GhostConstructor.prototype.getPendingPositions = function () {
     return _(this).newPositions;
-  }
+  };
 
   GhostConstructor.prototype.getActorValue = function () {
     return _(this).GHOST;

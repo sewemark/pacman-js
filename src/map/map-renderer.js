@@ -1,4 +1,4 @@
-import ActorDefinitions from "./map-definitions/map-config";
+import ActorDefinitions from "../map-definitions/map-config";
 
 export default function MapRenderer (map, canvas, cellWidth, cellHeight, spiritsManager){
   this.map = map;

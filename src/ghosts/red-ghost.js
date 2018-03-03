@@ -1,4 +1,4 @@
-import ActorDefinitions from './map-definitions/map-config';
+import ActorDefinitions from '../map-definitions/map-config';
 import Ghost from './ghost';
 
 var RedGhost = (function() {
