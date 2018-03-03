@@ -1,3 +1,5 @@
+import { deepCopy } from '../common/utils';
+
 var level1 = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1],
@@ -40,7 +42,8 @@ var level1 = [
   [1, 4, 4, 4, 4, 1],
   [1, 1, 1, 1, 1, 1],
 ]*/
-export  default level1;
+
+export  default deepCopy(level1);
 
 const userPosition = {
   x: 6,

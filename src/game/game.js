@@ -32,11 +32,11 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
     });
   };
 
-  this.HandleUserInput = function (direction) {
+  this.HandleUserInput = function (destinationDirection) {
     const position = this.mapManager.getItemPosition(ActorDefinitions.PLAYER);
-    const destination = this.mapManager.getDestinationPosition(direction, position);
-    this.common(this.player, direction, position, destination);
-    this.spiritesManager.updateSpirit(direction);
+    const destination = this.mapManager.getDestinationPosition(destinationDirection, position);
+    this.common(this.player, destinationDirection, position, destination);
+    this.spiritesManager.updateSpirit(destinationDirection);
   };
 
   this.UpdateGhost = function (ghost) {

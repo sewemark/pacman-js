@@ -1,10 +1,10 @@
 import ActorDefinitions from "../map-definitions/map-config";
 
-export default function MapRenderer (map, canvas, cellWidth, cellHeight, spiritsManager){
+export default function MapRenderer (map, gameBoard, spiritsManager){
   this.map = map;
-  this.cellHeight = cellHeight;
-  this.cellWidth = cellWidth;
-  this.canvas = canvas;
+  this.cellHeight = gameBoard.cellHeight;
+  this.cellWidth = gameBoard.cellWidth;
+  this.canvas = gameBoard.canvas;
   this.ctx = this.canvas.getContext("2d");
   this.spiritsManager = spiritsManager;
 
