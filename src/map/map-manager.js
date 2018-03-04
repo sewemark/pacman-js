@@ -45,6 +45,11 @@ export default function MapManager(map) {
     return this.destinationCheker[direction](playerPosition)
   };
 
+  this.getDestinationPosition2 = function (actor, direction) {
+    const position = this.getItemPosition(actor);
+    return this.destinationCheker[direction](position)
+  };
+
   this.updateMap = function (positions) {
     var last = positions[positions.length - 1];
     if (last && this.map[last.position.y][last.position.x] == ActorDefinitions.PLAYER) {

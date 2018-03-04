@@ -1,3 +1,5 @@
+import ActorDefinitions from "../map-definitions/map-config";
+
 export default function Player(pacmanMoveStrategy, playerPosition) {
   this.points = 0;
   this.lifes = 2;
@@ -6,21 +8,26 @@ export default function Player(pacmanMoveStrategy, playerPosition) {
   this.initialPosition = Object.assign({}, playerPosition);
   this.newPositions = [];
 
-  this.getNewPosition = (direction, destination) => {
-    if (this.pacmanMoveStrategy.checkCollision(direction, this.playerPosition, destination)) {
-      if (this.pacmanMoveStrategy.checkFood(destination)) {
-          this.points++;
-      }
+  this.actions = {
+    101 : () => alert("GAME OVER Z PACMANA"),
+    4: () =>   this.points++
+  };
 
-      //TODO przenies to sprawdzanie wyzej
-      if (this.pacmanMoveStrategy.checkLoose(destination)) {
-          alert("GAME OVER Z PACMANA");
-      }
+  this.canMoveToPosition = (direction, destination) => {
+    return this.pacmanMoveStrategy.checkCollision(direction, this.playerPosition, destination)
+  };
+
+  this.getNewPosition = (direction, destination) => {
+      if(this.actions.hasOwnProperty(destination)) this.actions[destination]();
       this.newPositions = this.pacmanMoveStrategy.getPendingPositions(direction, this.playerPosition, 2, destination);
       this.playerPosition = this.newPositions[1].position;
-    }
-    return this.newPositions[1].position;
+      return this.newPositions;
   };
+
+  this.getActorValue = function () {
+    return ActorDefinitions.PLAYER;
+  }
+
   this.getPendingPositions = () => this.newPositions;
   this.getLifes = () => this.lifes;
   this.getPoints = () => this.points;

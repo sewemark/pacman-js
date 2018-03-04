@@ -23,7 +23,7 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
 
   this.Start = function () {
     if(!this.ghostIntervalId) {
-       this.ghostIntervalId = setInterval(this.UpdateGohosts.bind(this),200);
+       this.ghostIntervalId = setInterval(this.UpdateGohosts.bind(this),2000);
     }
     this.mapRenderer.render();
     this.uiInterfaceAdapter.updateUserInfo({
@@ -32,11 +32,9 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
     });
   };
 
-  this.HandleUserInput = function (destinationDirection) {
-    const position = this.mapManager.getItemPosition(ActorDefinitions.PLAYER);
-    const destination = this.mapManager.getDestinationPosition(destinationDirection, position);
-    this.common(this.player, destinationDirection, position, destination);
-    this.spiritesManager.updateSpirit(destinationDirection);
+  this.HandleUserInput = function (direction) {
+    this.moveUser(this.player, direction);
+    this.spiritesManager.updateSpirit(direction);
   };
 
   this.UpdateGhost = function (ghost) {
@@ -44,13 +42,12 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
     var nextPosition = ghost.getNextGhostPath(position)[0];
     var destinationValue = this.mapManager.getPosition(nextPosition);
     let i = 0;
-
     while(ghost.checkCollisionWithOther(destinationValue) && i < 5)
     {
       ghost.resestPosition();
       nextPosition = ghost.getNextGhostPath(position)[0];
-      let temp=  this.mapManager.getPosition(nextPosition);
-      destinationValue =temp;
+      let temp = this.mapManager.getPosition(nextPosition);
+      destinationValue = temp;
       i++;
       if(i === 5)
       {
@@ -59,7 +56,7 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
     }
     if(i < 5) {
       const direction = ghost.getDirection(nextPosition, position);
-      this.common(ghost, direction, position, destinationValue);
+      this.moveGhost(ghost, direction, position, destinationValue);
     }
   };
 
@@ -70,10 +67,33 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
     });
   };
 
-  this.common = function(player, direction, position, destination) {
-    const temp = player.getNewPosition(direction, destination);
+
+  this.moveUser = function(actor, direction) {
+    const currentPosition = this.mapManager.getItemPosition(actor.getActorValue());
+    const destinationValue = this.mapManager.getDestinationPosition(direction, currentPosition);
+
+    if(actor.canMoveToPosition(direction, destinationValue)){
+
+        const newPositions = actor.getNewPosition(direction, destinationValue);
+        this.mapManager.updateMap(newPositions);
+        this.Start();
+
+      if(this.mapManager.checkLoose()) {
+        this.player.reduceLife();
+        this.checkGameState();
+      }
+
+      if(this.mapManager.checkWin()) {
+        alert('wygrales');
+      }
+    }
+
+  };
+
+  this.moveGhost = function(actor, direction, position, destination) {
+    const temp = actor.getNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
-      this.mapManager.updateMap(player.getPendingPositions());
+      this.mapManager.updateMap(actor.getPendingPositions());
       this.Start();
     }
     if(this.mapManager.checkLoose()) {
