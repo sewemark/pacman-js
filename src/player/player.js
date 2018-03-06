@@ -18,7 +18,9 @@ export default function Player(pacmanMoveStrategy, playerPosition) {
   };
 
   this.getNewPosition = (direction, destination) => {
-      if(this.actions.hasOwnProperty(destination)) this.actions[destination]();
+      if(this.actions.hasOwnProperty(destination)) {
+        this.actions[destination]();
+      }
       this.newPositions = this.pacmanMoveStrategy.getPendingPositions(direction, this.playerPosition, 2, destination);
       this.playerPosition = this.newPositions[1].position;
       return this.newPositions;
@@ -26,7 +28,7 @@ export default function Player(pacmanMoveStrategy, playerPosition) {
 
   this.getActorValue = function () {
     return ActorDefinitions.PLAYER;
-  }
+  };
 
   this.getPendingPositions = () => this.newPositions;
   this.getLifes = () => this.lifes;

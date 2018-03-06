@@ -30,30 +30,31 @@ var Ghost = (function () {
 
 
   GhostConstructor.prototype.getNextGhostPath = function (position) {
-    if (checkIfNoMoreMoves.call(this)) {
-       generateNextTrip.call(this);
-       return getNextTrip.call(this);
-    } else {
       return getNextTrip.call(this)
-    }
 
-    function getNextTrip() {
-      var firstPath = _(this).path.splice(0, 1);
-      while (firstPath[0][0] == position.x && firstPath[0][1] == position.y) {
-        firstPath = _(this).path.splice(0, 1);
+      function getNextTrip() {
+        var firstPath = _(this).path.splice(0, 1);
+        while (firstPath[0][0] == position.x && firstPath[0][1] == position.y) {
+          firstPath = _(this).path.splice(0, 1);
+        }
+        return firstPath;
       }
-      return firstPath;
-    }
 
-    function generateNextTrip() {
-      do {
-        _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
-      } while (_(this).path.length == 0);
-    }
+    //function generateNextTrip() {
+     // do {
+       // _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
+      //} while (_(this).path.length == 0);
+   // }
 
-    function checkIfNoMoreMoves() {
-      return _(this).path.length == 0
-    }
+
+  };
+
+  GhostConstructor.prototype.checkIfNoMoreMoves = function() {
+    return _(this).path.length == 0
+  };
+
+  GhostConstructor.prototype.setPath = function (newPath) {
+    _(this).path = newPath;
   };
 
   GhostConstructor.prototype.getDirection = function (firstPath, position) {

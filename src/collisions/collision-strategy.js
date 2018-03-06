@@ -1,16 +1,18 @@
 import ActorDefinitions from '../map-definitions/map-config';
 
 var CollisionStrategy = (function () {
-  "use strict"
+  "use strict";
+
   var priv = new WeakMap();
+
   var _ = function (instance) {
     return priv.get(instance);
-  }
+  };
 
-  function CollisionStrategyConstructor(mapWidth, mapHeight) {
+  function CollisionStrategyConstructor(mapInfo) {
     var privMembers = {
-      mapWidth: mapWidth,
-      mapHeight: mapHeight
+      mapWidth: mapInfo.width,
+      mapHeight: mapInfo.height
     };
     priv.set(this, privMembers);
   }
@@ -84,26 +86,30 @@ var CollisionStrategy = (function () {
         }
       ]
     }
-  }
+  };
 
   CollisionStrategyConstructor.prototype.checkCollision = function (direction, playerPosition, destination) {
-    return this.destinationCheker[direction](playerPosition, destination);
-  }
+    return this.destinationCheker()[direction](playerPosition, destination)
+  };
 
   CollisionStrategyConstructor.prototype.getPendingPositions = function (direction, playerPosition, destination, destinationValue) {
     return this.mapUpdater[direction](playerPosition, destination, destinationValue);
-  }
+  };
 
-  CollisionStrategyConstructor.prototype.destinationCheker = {
-    37: (playerPosition, destination) => ((playerPosition.x - 1 >= 0 || playerPosition.x - 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
-    39: (playerPosition, destination) =>  ((playerPosition.x + 1 >= 0 || playerPosition.x + 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
-    38: (playerPosition, destination) =>  ((playerPosition.y - 1 >= 0 || playerPosition.y - 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL),
-    40: (playerPosition, destination) =>((playerPosition.y + 1 >= 0 || playerPosition.y + 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL)
+  CollisionStrategyConstructor.prototype.destinationCheker = function () {
+    console.log(_(this).mapWidth);
+    console.log(_(this).mapHeight);
+    return {
+      37: (playerPosition, destination) => ((playerPosition.x - 1 >= 0 && playerPosition.x - 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
+      39: (playerPosition, destination) => ((playerPosition.x + 1 >= 0 && playerPosition.x + 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
+      38: (playerPosition, destination) => ((playerPosition.y - 1 >= 0 && playerPosition.y - 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL),
+      40: (playerPosition, destination) => ((playerPosition.y + 1 >= 0 && playerPosition.y + 1 < _(this).mapHeight) && destination != ActorDefinitions.WALL)
+    }
   };
 
   CollisionStrategyConstructor.prototype.checkFood = function (destination) {
     return destination == ActorDefinitions.FOOD;
-  }
+  };
 
   return CollisionStrategyConstructor;
 

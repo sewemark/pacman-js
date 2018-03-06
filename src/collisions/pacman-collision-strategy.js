@@ -4,9 +4,10 @@ import CollisionStrategy from './collision-strategy';
 var PacmanCollisionStartegy = (function () {
   "use strict";
   var priv = new WeakMap();
+
   var _ = function (instance) {
     return priv.get(instance);
-  }
+  };
 
   function PacmanCollisionStartegyConstructor(mapInfo) {
       priv.set(this, {mapWidth:mapInfo.width, mapHeight: mapInfo.height});
@@ -17,11 +18,11 @@ var PacmanCollisionStartegy = (function () {
 
   PacmanCollisionStartegyConstructor.prototype.checkFood = function (destination) {
     return destination == ActorDefinitions.FOOD;
-  }
+  };
 
   PacmanCollisionStartegyConstructor.prototype.checkLoose = function (destination) {
-    return ActorDefinitions.GHOSTS.findIndex(d=> d === destination) >= 0;
-  }
+    return ActorDefinitions.GHOSTS.findIndex(x=> x === destination) >= 0;
+  };
 
   PacmanCollisionStartegyConstructor.prototype.mapUpdater = {
     37: (playerPosition, player, destinationValue) => {
@@ -92,7 +93,7 @@ var PacmanCollisionStartegy = (function () {
         }
       ]
     }
-  }
+  };
   return PacmanCollisionStartegyConstructor;
 
 })();

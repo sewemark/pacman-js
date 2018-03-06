@@ -23,7 +23,7 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
 
   this.Start = function () {
     if(!this.ghostIntervalId) {
-       this.ghostIntervalId = setInterval(this.UpdateGohosts.bind(this),2000);
+       this.ghostIntervalId = setInterval(this.UpdateGohosts.bind(this), 200);
     }
     this.mapRenderer.render();
     this.uiInterfaceAdapter.updateUserInfo({
@@ -38,25 +38,34 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
   };
 
   this.UpdateGhost = function (ghost) {
-    const position = this.mapManager.getItemPosition(ghost.getActorValue());
-    var nextPosition = ghost.getNextGhostPath(position)[0];
-    var destinationValue = this.mapManager.getPosition(nextPosition);
-    let i = 0;
-    while(ghost.checkCollisionWithOther(destinationValue) && i < 5)
-    {
-      ghost.resestPosition();
-      nextPosition = ghost.getNextGhostPath(position)[0];
-      let temp = this.mapManager.getPosition(nextPosition);
-      destinationValue = temp;
-      i++;
-      if(i === 5)
+
+    tryGetNewPathForGhost.call(this);
+    tryMoveGhost.call(this);
+
+    function tryMoveGhost() {
+      const position = this.mapManager.getItemPosition(ghost.getActorValue());
+      var nextPosition = ghost.getNextGhostPath(position)[0];
+      var destinationValue = this.mapManager.getPositionValue(nextPosition);
+      let maxNumOfCollisionResolver = 0;
+      while(ghost.checkCollisionWithOther(destinationValue) && maxNumOfCollisionResolver < 5)
       {
-        nextPosition = this.mapManager.getItemPosition(ghost.getActorValue());
+        ghost.resestPosition();
+        nextPosition = ghost.getNextGhostPath(position)[0];
+        destinationValue = this.mapManager.getPositionValue(nextPosition);
+        maxNumOfCollisionResolver++;
+      }
+
+      if(maxNumOfCollisionResolver < 5) {
+        const direction = ghost.getDirection(nextPosition, position);
+        this.moveGhost(ghost, direction, position, destinationValue);
       }
     }
-    if(i < 5) {
-      const direction = ghost.getDirection(nextPosition, position);
-      this.moveGhost(ghost, direction, position, destinationValue);
+
+    function tryGetNewPathForGhost() {
+      while(ghost.checkIfNoMoreMoves()){
+        const newPath = this.mapManager.getNextTripForGhost(ghost.getActorValue()).path;
+        ghost.setPath(newPath);
+      }
     }
   };
 

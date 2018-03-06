@@ -36,7 +36,7 @@ export default function MapManager(map) {
     return new Error('No such item in map');
   };
 
-  this.getPosition = function (position) {
+  this.getPositionValue = function (position) {
     const next =  this.map[position[1]][position[0]];
     return next;
   };
@@ -61,6 +61,7 @@ export default function MapManager(map) {
       console.log("Weszlo tam gzie nie mialo1!!!!!!!!!1");
       this.state = -1;
     }
+    console.log(positions);
     positions.forEach(item => {
       this.map[item.position.y][item.position.x] = item.value;
     });

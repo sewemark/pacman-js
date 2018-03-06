@@ -3,6 +3,7 @@ import CollisionStrategy from './collision-strategy';
 
 var GhostCollisionStartegy = (function () {
   "use strict";
+
   var priv = new WeakMap();
 
   var _ = function (instance) {
@@ -10,6 +11,7 @@ var GhostCollisionStartegy = (function () {
   }
 
   function GhostCollisionStartegyConstructor(mapInfo) {
+
       priv.set(this, {mapWidth:mapInfo.width, mapHeight: mapInfo.height});
       CollisionStrategy.apply(this, arguments);
   }
@@ -18,11 +20,11 @@ var GhostCollisionStartegy = (function () {
 
   GhostCollisionStartegyConstructor.prototype.checkWin = function (destination) {
     return destination == ActorDefinitions.PLAYER;
-  }
+  };
 
   GhostCollisionStartegyConstructor.prototype.checkCollisionWithOther = function (destination) {
       return  ActorDefinitions.GHOSTS.indexOf(destination) >= 0;
-  }
+  };
 
   GhostCollisionStartegyConstructor.prototype.mapUpdater = {
     37: (playerPosition, player, prevValue) => {
@@ -93,7 +95,7 @@ var GhostCollisionStartegy = (function () {
         }
       ]
     }
-  }
+  };
 
 
   return GhostCollisionStartegyConstructor;
