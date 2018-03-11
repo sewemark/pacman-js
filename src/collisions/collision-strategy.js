@@ -97,8 +97,6 @@ var CollisionStrategy = (function () {
   };
 
   CollisionStrategyConstructor.prototype.destinationCheker = function () {
-    console.log(_(this).mapWidth);
-    console.log(_(this).mapHeight);
     return {
       37: (playerPosition, destination) => ((playerPosition.x - 1 >= 0 && playerPosition.x - 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
       39: (playerPosition, destination) => ((playerPosition.x + 1 >= 0 && playerPosition.x + 1 < _(this).mapWidth) && destination != ActorDefinitions.WALL),
