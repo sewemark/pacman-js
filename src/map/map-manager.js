@@ -61,7 +61,6 @@ export default function MapManager(map) {
       console.log("Weszlo tam gzie nie mialo1!!!!!!!!!1");
       this.state = -1;
     }
-    console.log(positions);
     positions.forEach(item => {
       this.map[item.position.y][item.position.x] = item.value;
     });

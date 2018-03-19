@@ -12,7 +12,8 @@ var GhostCollisionStartegy = (function () {
 
   function GhostCollisionStartegyConstructor(mapInfo) {
 
-      priv.set(this, {mapWidth:mapInfo.width, mapHeight: mapInfo.height});
+      priv.set(this, {mapWidth:mapInfo.width, mapHeight: mapInfo.height,
+      foodCache:new Array()});
       CollisionStrategy.apply(this, arguments);
   }
 
@@ -26,15 +27,23 @@ var GhostCollisionStartegy = (function () {
       return  ActorDefinitions.GHOSTS.indexOf(destination) >= 0;
   };
 
-  GhostCollisionStartegyConstructor.prototype.mapUpdater = {
-    37: (playerPosition, player, prevValue) => {
+  GhostCollisionStartegyConstructor.prototype.mapUpdater = function () {
+    return {
+      37: (playerPosition, player, prevValue) => {
+      if (prevValue === ActorDefinitions.FOOD) {
+        _(this).foodCache.push({y: playerPosition.y, x: playerPosition.x - 1 });
+      }
+      const index = _(this).foodCache.findIndex(x=> x.x === playerPosition.x && x.y == playerPosition.y);
+      const oldValue = index >=0 ? _(this).foodCache.splice(index,1): undefined;
+
       return [{
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x
-          },
-          value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 )  ? prevValue : ActorDefinitions.EMPTY
+        position: {
+          y: playerPosition.y,
+          x: playerPosition.x
         },
+        //value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 )  ? prevValue : ActorDefinitions.EMPTY
+        value : oldValue ? ActorDefinitions.FOOD : ActorDefinitions.EMPTY
+      },
         {
           position: {
             y: playerPosition.y,
@@ -44,14 +53,20 @@ var GhostCollisionStartegy = (function () {
         }
       ]
     },
-    38: (playerPosition, player, prevValue) => {
+      38: (playerPosition, player, prevValue) => {
+      if (prevValue=== ActorDefinitions.FOOD) {
+        _(this).foodCache.push({y: playerPosition.y - 1, x: playerPosition.x});
+      }
+        const index = _(this).foodCache.findIndex(x=> x.x === playerPosition.x && x.y == playerPosition.y);
+        const oldValue = index >=0 ? _(this).foodCache.splice(index,1): undefined;
       return [{
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x
-          },
-          value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 ) ? prevValue : ActorDefinitions.EMPTY
+        position: {
+          y: playerPosition.y,
+          x: playerPosition.x
         },
+        // value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 ) ? prevValue : ActorDefinitions.EMPTY
+        value : oldValue ? ActorDefinitions.FOOD : ActorDefinitions.EMPTY
+      },
         {
           position: {
             y: playerPosition.y - 1,
@@ -61,14 +76,20 @@ var GhostCollisionStartegy = (function () {
         }
       ]
     },
-    39: (playerPosition, player, prevValue) => {
+      39: (playerPosition, player, prevValue) => {
+      if (prevValue=== ActorDefinitions.FOOD) {
+        _(this).foodCache.push({y: playerPosition.y, x: playerPosition.x + 1 });
+      }
+        const index = _(this).foodCache.findIndex(x=> x.x === playerPosition.x && x.y == playerPosition.y);
+        const oldValue = index >=0 ? _(this).foodCache.splice(index,1): undefined;
       return [{
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x
-          },
-          value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 ) ? prevValue : ActorDefinitions.EMPTY
+        position: {
+          y: playerPosition.y,
+          x: playerPosition.x
         },
+        // value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 ) ? prevValue : ActorDefinitions.EMPTY
+        value : oldValue ? ActorDefinitions.FOOD : ActorDefinitions.EMPTY
+      },
         {
           position: {
             y: playerPosition.y,
@@ -78,14 +99,20 @@ var GhostCollisionStartegy = (function () {
         }
       ]
     },
-    40: (playerPosition, player, prevValue) => {
+      40: (playerPosition, player, prevValue) => {
+      if (prevValue === ActorDefinitions.FOOD) {
+        _(this).foodCache.push({y: playerPosition.y +1 , x: playerPosition.x,  });
+      }
+        const index = _(this).foodCache.findIndex(x=> x.x === playerPosition.x && x.y == playerPosition.y);
+      const oldValue = index >=0 ? _(this).foodCache.splice(index,1): undefined;
       return [{
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x
-          },
-          value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 ) ? prevValue : ActorDefinitions.EMPTY
+        position: {
+          y: playerPosition.y,
+          x: playerPosition.x
         },
+        //value: (prevValue == ActorDefinitions.FOOD || ActorDefinitions.GHOSTS.indexOf(prevValue) >= 0 ) ? prevValue : ActorDefinitions.EMPTY
+        value : oldValue ? ActorDefinitions.FOOD : ActorDefinitions.EMPTY
+      },
         {
           position: {
             y: playerPosition.y + 1,
@@ -95,8 +122,8 @@ var GhostCollisionStartegy = (function () {
         }
       ]
     }
+    }
   };
-
 
   return GhostCollisionStartegyConstructor;
 })();

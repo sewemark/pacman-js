@@ -17,74 +17,83 @@ var CollisionStrategy = (function () {
     priv.set(this, privMembers);
   }
 
-  CollisionStrategyConstructor.prototype.mapUpdater = {
-    37: (playerPosition, player, prevValue) => {
-      return [{
+  CollisionStrategyConstructor.prototype.mapUpdater = function () {
+  return {
+      37 :
+      (playerPosition, player, prevValue) => {
+        return [{
           position: {
             y: playerPosition.y,
             x: playerPosition.x
           },
           value: prevValue ? prevValue : ActorDefinitions.EMPTY
         },
-        {
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x - 1
-          },
-          value: player
-        }
-      ]
-    },
-    38: (playerPosition, player, prevValue) => {
-      return [{
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x
-          },
-          value: prevValue ? prevValue : ActorDefinitions.EMPTY
-        },
-        {
-          position: {
-            y: playerPosition.y - 1,
-            x: playerPosition.x
-          },
-          value: player
-        }
-      ]
-    },
-    39: (playerPosition, player, prevValue) => {
-      return [{
+          {
+            position: {
+              y: playerPosition.y,
+              x: playerPosition.x - 1
+            },
+            value: player
+          }
+        ]
+      },
+        38
+    :
+      (playerPosition, player, prevValue) => {
+        return [{
           position: {
             y: playerPosition.y,
             x: playerPosition.x
           },
           value: prevValue ? prevValue : ActorDefinitions.EMPTY
         },
-        {
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x + 1
-          },
-          value: player
-        }
-      ]
-    },
-    40: (playerPosition, player, prevValue) => {
-      return [{
+          {
+            position: {
+              y: playerPosition.y - 1,
+              x: playerPosition.x
+            },
+            value: player
+          }
+        ]
+      },
+        39
+    :
+      (playerPosition, player, prevValue) => {
+        return [{
           position: {
             y: playerPosition.y,
             x: playerPosition.x
           },
           value: prevValue ? prevValue : ActorDefinitions.EMPTY
         },
-        {
+          {
+            position: {
+              y: playerPosition.y,
+              x: playerPosition.x + 1
+            },
+            value: player
+          }
+        ]
+      },
+        40
+    :
+      (playerPosition, player, prevValue) => {
+        return [{
           position: {
-            y: playerPosition.y + 1,
-            x: playerPosition.x,
+            y: playerPosition.y,
+            x: playerPosition.x
           },
-          value: player
-        }
-      ]
+          value: prevValue ? prevValue : ActorDefinitions.EMPTY
+        },
+          {
+            position: {
+              y: playerPosition.y + 1,
+              x: playerPosition.x,
+            },
+            value: player
+          }
+        ]
+      }
     }
   };
 
@@ -93,7 +102,7 @@ var CollisionStrategy = (function () {
   };
 
   CollisionStrategyConstructor.prototype.getPendingPositions = function (direction, playerPosition, destination, destinationValue) {
-    return this.mapUpdater[direction](playerPosition, destination, destinationValue);
+    return this.mapUpdater()[direction](playerPosition, destination, destinationValue);
   };
 
   CollisionStrategyConstructor.prototype.destinationCheker = function () {

@@ -78,9 +78,6 @@ describe('GhostCollisionStrategy class tests', () => {
       expect(newPositions.length).to.equal(2);
 
     })
-
-
-
   });
 
   describe("[1] Basic tests", ()=> {
@@ -101,7 +98,7 @@ describe('GhostCollisionStrategy class tests', () => {
 
     })
 
-    it('[2] should get proper new positions for up move',()=>{
+    it('[2] should get proper new positions for down move',()=>{
       const mapWidth=129;
       const mapHeight =31;
       const ghostPosition = {
@@ -121,8 +118,76 @@ describe('GhostCollisionStrategy class tests', () => {
       expect(newPositions[1].position.x).to.equal(3);
       expect(newPositions[1].position.y).to.equal(13);
       expect(newPositions[1].value).to.equal(destinationValue);
+    });
 
-    })
+    it('[3] should get proper new positions for left move',()=>{
+      const mapWidth=129;
+      const mapHeight =31;
+      const ghostPosition = {
+        x:13,
+        y:2
+      };
+      const topDirection = 37;
+      const destinationValue = ActorDefinitions.REDGHOST;
+      const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height: mapHeight});
+
+      const newPositions = ghostCollisionStrategy.getPendingPositions(topDirection, ghostPosition, destinationValue);
+
+      expect(newPositions[0].position.x).to.equal(13);
+      expect(newPositions[0].position.y).to.equal(2);
+      expect(newPositions[0].value).to.equal(ActorDefinitions.EMPTY);
+
+      expect(newPositions[1].position.x).to.equal(12);
+      expect(newPositions[1].position.y).to.equal(2);
+      expect(newPositions[1].value).to.equal(destinationValue);
+
+    });
+
+    it('[4] should get proper new positions for right move',()=>{
+      const mapWidth=129;
+      const mapHeight =31;
+      const ghostPosition = {
+        x:41,
+        y:21
+      };
+      const topDirection = 39;
+      const destinationValue = ActorDefinitions.REDGHOST;
+      const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height: mapHeight});
+
+      const newPositions = ghostCollisionStrategy.getPendingPositions(topDirection, ghostPosition, destinationValue);
+
+      expect(newPositions[0].position.x).to.equal(41);
+      expect(newPositions[0].position.y).to.equal(21);
+      expect(newPositions[0].value).to.equal(ActorDefinitions.EMPTY);
+
+      expect(newPositions[1].position.x).to.equal(42);
+      expect(newPositions[1].position.y).to.equal(21);
+      expect(newPositions[1].value).to.equal(destinationValue);
+
+    });
+
+    it('[5] should get proper new positions for up move',()=>{
+      const mapWidth=129;
+      const mapHeight =31;
+      const ghostPosition = {
+        x:41,
+        y:21
+      };
+      const topDirection = 38;
+      const destinationValue = ActorDefinitions.REDGHOST;
+      const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height: mapHeight});
+
+      const newPositions = ghostCollisionStrategy.getPendingPositions(topDirection, ghostPosition, destinationValue);
+
+      expect(newPositions[0].position.x).to.equal(41);
+      expect(newPositions[0].position.y).to.equal(21);
+      expect(newPositions[0].value).to.equal(ActorDefinitions.EMPTY);
+
+      expect(newPositions[1].position.x).to.equal(41);
+      expect(newPositions[1].position.y).to.equal(20);
+      expect(newPositions[1].value).to.equal(destinationValue);
+
+    });
   });
 
 });

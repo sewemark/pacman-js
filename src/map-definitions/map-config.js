@@ -10,6 +10,8 @@
    FOOD: 4,
    GHOSTS: [3, 5, 6, 7],
    FOODICON:8,
+   REDGHOSTFOOD :13,
+   YELLOWGHOSTFOOD :15,
 
 
 };
