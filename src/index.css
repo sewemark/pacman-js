@@ -8,14 +8,77 @@ html {
   height: 100%;
 }
 
-#game-board-canvas {
-  position: absolute;
-  width: 80%;
-  height: 80%;
-}
-#content{
-  float:right;
-  width:20%;
-  border: 2px solid red;
+body{
+  background-color: #00697D;
+  
 }
 
+#game-board-canvas {
+  float:left;
+  width: 80%;
+  margin:0;
+  padding:0;
+  height: 80%;
+}
+
+#wrapper-div {
+  margin:0 auto;
+  text-align: center;
+  background: url("./assets/Windows_03.png");
+  background-repeat: no-repeat;
+
+  background-position: center;
+
+}
+#select-level-div {
+  margin: 0 auto;
+  text-align: center;
+}
+#select-level-div ul {
+  margin: 0 auto;
+  text-align: center;
+
+  padding: 0;
+  list-style: none;
+}
+#select-level-div-ul li div {
+  margin: 0 auto;
+  padding-top:3em;
+  color:white;
+  font-family: "DejaVu Serif";
+  font-size: 15pt;
+  font-weight: bold;
+
+}
+#select-level-div-ul li {
+  background: url("./assets/Button_05.png");
+  background-repeat: no-repeat;
+  min-height: 10em;
+  min-width: 10em;
+  background-position: center;
+  text-decoration: none;
+  margin-top:1em;
+
+}
+
+#content {
+  text-align: left;
+  vertical-align: middle;
+  font-family: SansSerif;
+  font-color:white;
+  float:left;
+  width:20%;
+}
+
+#content p{
+  margin: 1em;
+}
+
+#new-game-button {
+  color:white;
+  border:none;
+  width:79px;
+  height:70px;
+  background: url("./assets/img/textures/menu.png");
+  background-size: 100% 100%;
+}

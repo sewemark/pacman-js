@@ -5,6 +5,7 @@ import MapManager from './map/map-manager';
 import MapRenderer from './map/map-renderer';
 import Game from './game/game';
 import UIIntefaceAdapter  from './ui-adapters/ui-interface-adapter';
+import MainController from './controllers/main.controller';
 
 const spiriteManager = new SpiritesManager();
 
@@ -17,7 +18,8 @@ function init() {
 
 function initUIListeners(userInputHandler) {
   var button = document.getElementById("new-game-button");
-  button.addEventListener("click", newGameListener.bind(window));
+  alert("settting");
+  button.addEventListener("click",()=> alert("dsdsad"));
   setUpGameKeyListeners();
 
   function setUpGameKeyListeners() {
@@ -57,9 +59,14 @@ function buildGame(gameBoard) {
 }
 
 function newGameListener() {
-  window.game.close();
-  window.game = gameFactory();
+  alert("dsdsad");
+  //window.game.close();
+  //window.game = gameFactory();
+
+  console.log(window.mainController.startGame);
+  //window.mainController.startGame();
 }
 
-window.game = init();
+
+window.mainController = new MainController();
 
