@@ -22,7 +22,7 @@ var RedGhost = (function() {
       ghostCollisionStrategy: ghostCollisionStrategy,
       newPositions: [],
       GHOST: ActorDefinitions.REDGHOST,
-    }
+    };
 
     Ghost.call(this, ghostCollisionStrategy, mapManager, privMembers);
     priv.set(this, privMembers);

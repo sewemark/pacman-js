@@ -73,7 +73,6 @@ function mainController() {
     for (let i = 1; i < wrapper.children.length; i++) {
       wrapper.children[i].style.visibility = "hidden";
       wrapper.children[i].style.display = "none";
-
     }
     wrapper.children[0].style.visibility = "visible";
     wrapper.children[0].style.display = "block";
@@ -81,7 +80,8 @@ function mainController() {
 
   function initGame() {
     window.uiIntefaceAdapter = new UIIntefaceAdapter(spiriteManager);
-    const game = gameFactory();
+    const gameCanvas = buildGameCanvas();
+    const game = buildGame(gameCanvas);
     initUIListeners(game);
     return game;
   }
@@ -98,11 +98,6 @@ function mainController() {
         }
       }, false);
     }
-  }
-
-  function gameFactory() {
-    const gameCanvas = buildGameCanvas();
-    return buildGame(gameCanvas);
   }
 
   function buildGameCanvas() {
@@ -133,7 +128,6 @@ function mainController() {
 
   return {
     init: init,
-    startGame: startGame
   }
 }
 

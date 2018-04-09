@@ -2,15 +2,14 @@ import ActorDefinitions from '../map-definitions/map-config';
 
 var Ghost = (function () {
 
-
   var priv = new WeakMap();
 
   var _ = function (inst) {
     return priv.get(inst);
-  }
+  };
 
   function GhostConstructor(ghostCollisionStrategy, mapManager, protectedMembers) {
-    var data = {};
+    const data = {};
     const privMembers = protectedMembers || {
       mapManager: mapManager,
       initData: data,
@@ -19,14 +18,14 @@ var Ghost = (function () {
       ghostCollisionStrategy: ghostCollisionStrategy,
       newPositions: [],
       GHOST: ActorDefinitions.EMPTY
-    }
+    };
     priv.set(this, privMembers);
 
   }
 
   GhostConstructor.prototype.checkCollisionWithOther = function (destination) {
     return _(this).ghostCollisionStrategy.checkCollisionWithOther(destination);
-  }
+  };
 
 
   GhostConstructor.prototype.getNextGhostPath = function (position) {
@@ -39,14 +38,6 @@ var Ghost = (function () {
         }
         return firstPath;
       }
-
-    //function generateNextTrip() {
-     // do {
-       // _(this).path = _(this).mapManager.getNextTripForGhost(_(this).GHOST).path;
-      //} while (_(this).path.length == 0);
-   // }
-
-
   };
 
   GhostConstructor.prototype.checkIfNoMoreMoves = function() {
@@ -98,7 +89,7 @@ var Ghost = (function () {
 
   GhostConstructor.prototype.getActorValue = function () {
     return _(this).GHOST;
-  }
+  };
 
   return GhostConstructor;
 

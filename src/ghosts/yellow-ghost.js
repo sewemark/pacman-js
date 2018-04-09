@@ -25,6 +25,7 @@ var YellowGhost = (function() {
     priv.set(this, privMembers);
 
   }
+
   YellowGhostConstructor.prototype = Object.create(Ghost.prototype);
   YellowGhostConstructor.prototype.constructor = YellowGhostConstructor;
 

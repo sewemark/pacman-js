@@ -71,11 +71,6 @@ export default function MapManager(map) {
     var init = this.generateRandomPoint();
     var initaliGhostPosition = this.getItemPosition(ghost);
 
-    //while ( Math.abs(init.x - initaliGhostPosition.x) < 5 || Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
-    //&& Math.abs(init.y - initaliGhostPosition.y) < 5 ) {
-      //init = this.generateRandomPoint();
-    //}*/
-
     var path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
     while (path.length == 0) {
       path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);

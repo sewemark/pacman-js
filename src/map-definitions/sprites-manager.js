@@ -36,10 +36,8 @@ export default function SpiritesManager(){
   this.lifeSprites = document.createElement("img");
   this.lifeSprites.src = lifeSprites[0];
 
-  this.GetUserSpirit = function(){
-
-  }
   this.getSpirit = function(actor){
+
     if(actor == ActorDefinitions.WALL){
       return this.backgroundSprite;
     }
@@ -61,7 +59,7 @@ export default function SpiritesManager(){
     else if(actor ==ActorDefinitions.LIFEICON){
       return this.lifeSprites;
     }
-  }
+  };
 
   this.getIcons = function (actor) {
    if(actor ==ActorDefinitions.FOODICON){

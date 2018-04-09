@@ -76,7 +76,6 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
     });
   };
 
-
   this.moveUser = function(actor, direction) {
     const currentPosition = this.mapManager.getItemPosition(actor.getActorValue());
     const destinationValue = this.mapManager.getDestinationPosition(direction, currentPosition);

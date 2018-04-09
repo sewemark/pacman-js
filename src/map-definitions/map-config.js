@@ -12,7 +12,6 @@
    FOODICON:8,
    REDGHOSTFOOD :13,
    YELLOWGHOSTFOOD :15,
-
-
 };
+
 export default ActorDefinitions;
