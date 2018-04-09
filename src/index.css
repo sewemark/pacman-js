@@ -10,7 +10,7 @@ html {
 
 body{
   background-color: #00697D;
-  
+
 }
 
 #game-board-canvas {
@@ -70,7 +70,7 @@ body{
   width:20%;
 }
 
-#content p{
+#content div{
   margin: 1em;
 }
 

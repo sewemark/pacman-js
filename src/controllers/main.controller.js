@@ -1,71 +1,85 @@
-import menuController from './menu.controller';
-import { levels}  from "../map-definitions/map";
-import windowImg from '../assets/Windows_03.png';
-import button from '../assets/Button_05.png';
+import {levels} from "../map-definitions/map";
 import '../index.css';
 import levelCopy from '../map-definitions/map';
 import SpiritesManager from '../map-definitions/sprites-manager';
 import MapManager from '../map/map-manager';
 import MapRenderer from '../map/map-renderer';
 import Game from '../game/game';
-import UIIntefaceAdapter  from '../ui-adapters/ui-interface-adapter';
+import UIIntefaceAdapter from '../ui-adapters/ui-interface-adapter';
 
-function  mainController() {
+function mainController() {
+  const spiriteManager = new SpiritesManager();
 
-  function init2() {
+  function init() {
     var wrapper = document.getElementById("wrapper-div");
-    const menu = wrapper.children[0];
-   // const img = document.getElementById("testImg");
-    //img.src =windowImg;
-    levels.forEach( (x,index) => {
-      const ul  = document.getElementById('select-level-div-ul');
-      const li  = document.createElement('li');
-      const div = document.createElement('div');
+    buildMenu();
+    hidePanels();
 
-      li.style.backgroundImage = "../assets/Button_05.png";
-      div.innerText = "Level " + (index+1).toString();
-      li.appendChild(div);
-      li.onclick = startGame;
-      ul.appendChild(li);
-    })
-    for(let i =1; i<wrapper.children.length;i++) {
-      wrapper.children[i].style.visibility = "hidden";
-      wrapper.children[i].style.display = "none";
+    function buildMenu() {
+      levels.forEach((x, index) => {
+        const ul = document.getElementById('select-level-div-ul');
+        const li = document.createElement('li');
+        const div = document.createElement('div');
+
+        li.style.backgroundImage = "../assets/Button_05.png";
+        div.innerText = "Level " + (index + 1).toString();
+        li.appendChild(div);
+        li.onclick = startGame;
+        ul.appendChild(li);
+      })
     }
 
+    function hidePanels() {
+      for (let i = 1; i < wrapper.children.length; i++) {
+        wrapper.children[i].style.visibility = "hidden";
+        wrapper.children[i].style.display = "none";
+      }
+    }
   }
 
-  function startGame(target, levelId) {
-    window.game = init();
+  function startGame() {
+    window.game = initGame();
     window.game.Start();
-    var wrapper = document.getElementById("wrapper-div");
-    for(let i =0; i<wrapper.children.length -1;i++) {
-      wrapper.children[i].style.visibility = "hidden";
-      wrapper.children[i].style.display = "none";
-
-    }
-    wrapper.children[wrapper.children.length-1].style.visibility = "visible";
-    wrapper.children[wrapper.children.length-1].style.display = "block";
-
+    initUIState();
   }
 
-  function endGame(target) {
-
+  function initUIState() {
     var wrapper = document.getElementById("wrapper-div");
-    for(let i =1; i<wrapper.children.length;i++) {
+    showGamePanel();
+    hidePanels();
+
+    function showGamePanel() {
+      for (let i = 0; i < wrapper.children.length - 1; i++) {
+        wrapper.children[i].style.visibility = "hidden";
+        wrapper.children[i].style.display = "none";
+
+      }
+    }
+
+    function hidePanels() {
+      wrapper.children[wrapper.children.length - 1].style.visibility = "visible";
+      wrapper.children[wrapper.children.length - 1].style.display = "block";
+    }
+  }
+
+  function endGame() {
+    hideGameState();
+    window.game.close();
+    delete window.game;
+  }
+
+  function hideGameState() {
+    var wrapper = document.getElementById("wrapper-div");
+    for (let i = 1; i < wrapper.children.length; i++) {
       wrapper.children[i].style.visibility = "hidden";
       wrapper.children[i].style.display = "none";
 
     }
     wrapper.children[0].style.visibility = "visible";
     wrapper.children[0].style.display = "block";
-    window.game.close();
-    delete window.game;
   }
 
-  const spiriteManager = new SpiritesManager();
-
-  function init() {
+  function initGame() {
     window.uiIntefaceAdapter = new UIIntefaceAdapter(spiriteManager);
     const game = gameFactory();
     initUIListeners(game);
@@ -100,16 +114,16 @@ function  mainController() {
     const cellWidth = canvas.width / levelCopy[0].length;
     const cellHeight = canvas.height / levelCopy.length;
 
-    return{
-      canvas:canvas,
-      cellWidth:cellWidth,
-      cellHeight:cellHeight
+    return {
+      canvas: canvas,
+      cellWidth: cellWidth,
+      cellHeight: cellHeight
     }
   }
 
   function buildGame(gameBoard) {
     const mapRenderer = new MapRenderer(levelCopy, gameBoard, spiriteManager);
-    const mapManager =  new MapManager(levelCopy);
+    const mapManager = new MapManager(levelCopy);
     return new Game(mapManager, mapRenderer, spiriteManager, window.uiIntefaceAdapter);
   }
 
@@ -118,9 +132,9 @@ function  mainController() {
   }
 
   return {
-    init:init2,
-    startGame:startGame
+    init: init,
+    startGame: startGame
   }
-
 }
-export default  mainController;
+
+export default mainController;

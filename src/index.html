@@ -1,38 +1,30 @@
-
 <!DOCTYPE html>
 <html>
-	<head>
-    <!--
-    The htmlWebpackPlugin will parse the logic below so that trackJS is only added to the production version of index.html (since only webpack.config.prod.js provides the trackJS token)
-    This is an example of how to add features to index.html for only one environment.
-   -->
-    <% if (htmlWebpackPlugin.options.trackJSToken) { %>
-    <!-- BEGIN TRACKJS -->
-    <script type="text/javascript">window._trackJs = { token: '<%=htmlWebpackPlugin.options.trackJSToken%>' };</script>
-    <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js"></script>
-    <!-- END TRACKJS -->
-    <% } %>
+<head>
+  <% if (htmlWebpackPlugin.options.trackJSToken) { %>
+  <script type="text/javascript">window._trackJs = {token: '<%=htmlWebpackPlugin.options.trackJSToken%>'};</script>
+  <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js"></script>
+  <% } %>
   <meta charset="UTF-8">
-
-	</head>
-	<body onload="mainController.init();">
-  <div id="wrapper-div">
+</head>
+<body onload="mainController.init();">
+<div id="wrapper-div">
   <div id="select-level-div">
     <p>PACMAN</p>
     <ul id="select-level-div-ul">
     </ul>
   </div>
   <div id="gameDiv">
-  <canvas id="game-board-canvas"></canvas>
-    <div id="content" >
-        <p id="content-p-points"></p>
-        <p id="content-ul--lifes">
-        </p>
-        <p id="content-p-actions">
-         <button id="new-game-button">MENU</button>
-      </p>
+    <canvas id="game-board-canvas"></canvas>
+    <div id="content">
+      <div id="content-p-points"></div>
+      <div id="content-ul--lifes">
+      </div>
+      <div id="content-p-actions">
+        <button id="new-game-button">MENU</button>
+      </div>
     </div>
   </div>
-  </div>
-	</body>
+</div>
+</body>
 </html>
