@@ -6,6 +6,12 @@ import MapManager from '../map/map-manager';
 import MapRenderer from '../map/map-renderer';
 import Game from '../game/game';
 import UIIntefaceAdapter from '../ui-adapters/ui-interface-adapter';
+import PacmanCollisionStartegy from "../collisions/pacman-collision-strategy";
+import GhostCollisionStartegy from "../collisions/ghost-collision-strategy";
+import RedGhost from "../ghosts/red-ghost";
+import YellowGhost from "../ghosts/yellow-ghost";
+import Player from "../player/player";
+import ActorDefinitions from "../map-definitions/map-config";
 
 function mainController() {
   const spiriteManager = new SpiritesManager();
@@ -119,7 +125,16 @@ function mainController() {
   function buildGame(gameBoard) {
     const mapRenderer = new MapRenderer(levelCopy, gameBoard, spiriteManager);
     const mapManager = new MapManager(levelCopy);
-    return new Game(mapManager, mapRenderer, spiriteManager, window.uiIntefaceAdapter);
+    const ghostCollisionStrategy = new GhostCollisionStartegy(mapManager.getLevelInfo());
+    const pacmanMoveStrategy = new PacmanCollisionStartegy(mapManager.getLevelInfo());
+    const redGhost = new RedGhost(ghostCollisionStrategy, mapManager);
+    const yellowGhost =  new YellowGhost(ghostCollisionStrategy, mapManager);
+    const player = new Player(pacmanMoveStrategy, mapManager.getItemPosition(ActorDefinitions.PLAYER));
+    return new Game(mapManager,
+                    mapRenderer,
+                    spiriteManager,
+                    window.uiIntefaceAdapter,
+                    pacmanMoveStrategy, ghostCollisionStrategy, redGhost, yellowGhost, player);
   }
 
   function newGameListener() {

@@ -1,8 +1,6 @@
 import PF from 'pathfinding';
 import ActorDefinitions from '../map-definitions/map-config';
-import {
-  userPosition
-} from '../map-definitions/map';
+import { userPosition } from '../map-definitions/map';
 
 export default function MapManager(map) {
   this.map = map;
@@ -24,8 +22,8 @@ export default function MapManager(map) {
   };
 
   this.getItemPosition = function (item) {
-    for (var i = 0; i < this.map.length; i++) {
-      let index = this.map[i].findIndex(x => x == item)
+    for (let i = 0; i < this.map.length; i++) {
+      let index = this.map[i].findIndex(x => x === item)
       if (index >= 0) {
         return {
           y: i,
@@ -37,8 +35,7 @@ export default function MapManager(map) {
   };
 
   this.getPositionValue = function (position) {
-    const next =  this.map[position[1]][position[0]];
-    return next;
+    return this.map[position[1]][position[0]];
   };
 
   this.getDestinationPosition = function (direction, playerPosition) {
@@ -58,7 +55,6 @@ export default function MapManager(map) {
     if((last && ActorDefinitions.GHOSTS.indexOf(this.map[last.position.y][last.position.x]) >=0)
       && this.map[positions[0].position.y][positions[0].position.x] == ActorDefinitions.PLAYER )
     {
-      console.log("Weszlo tam gzie nie mialo1!!!!!!!!!1");
       this.state = -1;
     }
     positions.forEach(item => {
@@ -72,7 +68,7 @@ export default function MapManager(map) {
     var initaliGhostPosition = this.getItemPosition(ghost);
 
     var path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
-    while (path.length == 0) {
+    while (path.length === 0) {
       path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
     }
 
@@ -97,14 +93,14 @@ export default function MapManager(map) {
   };
 
   this.checkLoose = function () {
-   return this.state == -1;
+   return this.state === -1;
  };
 
   this.resetPlayer = function () {
    this.state = 0;
    for(let i =0;i<this.map.length;i++){
      for(let j =0; j<this.map[0].length; j++){
-       if(this.map[i][j] == ActorDefinitions.PLAYER ){
+       if(this.map[i][j] === ActorDefinitions.PLAYER ){
          this.map[i][j] = ActorDefinitions.EMPTY
        }
      }

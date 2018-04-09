@@ -27,13 +27,12 @@ var Ghost = (function () {
     return _(this).ghostCollisionStrategy.checkCollisionWithOther(destination);
   };
 
-
   GhostConstructor.prototype.getNextGhostPath = function (position) {
-      return getNextTrip.call(this)
+      return getNextTrip.call(this);
 
       function getNextTrip() {
         var firstPath = _(this).path.splice(0, 1);
-        while (firstPath[0][0] == position.x && firstPath[0][1] == position.y) {
+        while (firstPath[0][0] === position.x && firstPath[0][1] === position.y) {
           firstPath = _(this).path.splice(0, 1);
         }
         return firstPath;
@@ -41,7 +40,7 @@ var Ghost = (function () {
   };
 
   GhostConstructor.prototype.checkIfNoMoreMoves = function() {
-    return _(this).path.length == 0
+    return _(this).path.length === 0
   };
 
   GhostConstructor.prototype.setPath = function (newPath) {
@@ -50,7 +49,7 @@ var Ghost = (function () {
 
   GhostConstructor.prototype.getDirection = function (firstPath, position) {
     let direction;
-    if (firstPath[0] == position.x) {
+    if (firstPath[0] === position.x) {
       if (firstPath[1] > position.y) direction = 40;
       else direction = 38;
     } else {
