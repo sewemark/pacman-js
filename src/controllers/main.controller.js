@@ -13,6 +13,7 @@ import BlueGhost from '../ghosts/blue-ghost';
 import YellowGhost from "../ghosts/yellow-ghost";
 import Player from "../player/player";
 import ActorDefinitions from "../map-definitions/map-config";
+import {deepCopy} from "../common/utils";
 
 function MainController() {
   const spiriteManager = new SpiritesManager();
@@ -52,8 +53,7 @@ function MainController() {
 
   function getLevelToPlay(target) {
       const levelIndex = target.target.innerText.split(' ').pop();
-
-      return levelsDefinitions[0];
+      return deepCopy(levelsDefinitions[levelIndex]);
   }
   function InitUIState() {
     var wrapper = document.getElementById("wrapper-div");
@@ -145,7 +145,7 @@ function MainController() {
   }
 
   function NewGameListener() {
-    EndGame(undefined, undefined)
+    EndGame()
   }
 
   return {
