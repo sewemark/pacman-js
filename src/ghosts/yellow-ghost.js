@@ -11,7 +11,7 @@ var YellowGhost = (function() {
   }
 
   function YellowGhostConstructor(ghostCollisionStrategy, mapManager) {
-    var data = mapManager.getNextTripForGhost(ActorDefinitions.YELLOWGHOST);
+    var data = mapManager.GetNextTripForGhost(ActorDefinitions.YELLOWGHOST);
     var privMembers = {
       mapManager: mapManager,
       initData: data,
@@ -19,7 +19,8 @@ var YellowGhost = (function() {
       path: data.path,
       ghostCollisionStrategy: ghostCollisionStrategy,
       newPositions: [],
-      GHOST: ActorDefinitions.YELLOWGHOST
+      GHOST: ActorDefinitions.YELLOWGHOST,
+      mode: 'bad'
     }
     Ghost.call(this, ghostCollisionStrategy, mapManager, privMembers);
     priv.set(this, privMembers);

@@ -14,7 +14,7 @@ describe('index.html', () => {
     jsdom.env(index, function(err, window) {
       expect(1).to.equal(1);
       done();
-      window.close();
+      window.Close();
     });
   })
 })

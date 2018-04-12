@@ -1,6 +1,5 @@
-import {levels} from "../map-definitions/map";
+import {levels, levelsDefinitions} from "../map-definitions/map";
 import '../index.css';
-import levelCopy from '../map-definitions/map';
 import SpiritesManager from '../map-definitions/sprites-manager';
 import MapManager from '../map/map-manager';
 import MapRenderer from '../map/map-renderer';
@@ -9,19 +8,21 @@ import UIIntefaceAdapter from '../ui-adapters/ui-interface-adapter';
 import PacmanCollisionStartegy from "../collisions/pacman-collision-strategy";
 import GhostCollisionStartegy from "../collisions/ghost-collision-strategy";
 import RedGhost from "../ghosts/red-ghost";
+import BlueGhost from '../ghosts/blue-ghost';
+
 import YellowGhost from "../ghosts/yellow-ghost";
 import Player from "../player/player";
 import ActorDefinitions from "../map-definitions/map-config";
 
-function mainController() {
+function MainController() {
   const spiriteManager = new SpiritesManager();
 
-  function init() {
+  function Init() {
     var wrapper = document.getElementById("wrapper-div");
-    buildMenu();
-    hidePanels();
+    BuildMenu();
+    HidePanels();
 
-    function buildMenu() {
+    function BuildMenu() {
       levels.forEach((x, index) => {
         const ul = document.getElementById('select-level-div-ul');
         const li = document.createElement('li');
@@ -30,12 +31,12 @@ function mainController() {
         li.style.backgroundImage = "../assets/Button_05.png";
         div.innerText = "Level " + (index + 1).toString();
         li.appendChild(div);
-        li.onclick = startGame;
+        li.onclick = StartGame;
         ul.appendChild(li);
       })
     }
 
-    function hidePanels() {
+    function HidePanels() {
       for (let i = 1; i < wrapper.children.length; i++) {
         wrapper.children[i].style.visibility = "hidden";
         wrapper.children[i].style.display = "none";
@@ -43,13 +44,18 @@ function mainController() {
     }
   }
 
-  function startGame() {
-    window.game = initGame();
+  function StartGame(target) {
+    window.game = InitGame(getLevelToPlay(target));
     window.game.Start();
-    initUIState();
+    InitUIState();
   }
 
-  function initUIState() {
+  function getLevelToPlay(target) {
+      const levelIndex = target.target.innerText.split(' ').pop();
+
+      return levelsDefinitions[0];
+  }
+  function InitUIState() {
     var wrapper = document.getElementById("wrapper-div");
     showGamePanel();
     hidePanels();
@@ -68,13 +74,13 @@ function mainController() {
     }
   }
 
-  function endGame() {
-    hideGameState();
-    window.game.close();
+  function EndGame() {
+    HideGameState();
+    window.game.Close();
     delete window.game;
   }
 
-  function hideGameState() {
+  function HideGameState() {
     var wrapper = document.getElementById("wrapper-div");
     for (let i = 1; i < wrapper.children.length; i++) {
       wrapper.children[i].style.visibility = "hidden";
@@ -84,17 +90,17 @@ function mainController() {
     wrapper.children[0].style.display = "block";
   }
 
-  function initGame() {
+  function InitGame(levelToPlay) {
     window.uiIntefaceAdapter = new UIIntefaceAdapter(spiriteManager);
-    const gameCanvas = buildGameCanvas();
-    const game = buildGame(gameCanvas);
-    initUIListeners(game);
+    const gameCanvas = BuildGameCanvas(levelToPlay);
+    const game = BuildGame(gameCanvas,levelToPlay);
+    InitUIListeners(game);
     return game;
   }
 
-  function initUIListeners(userInputHandler) {
+  function InitUIListeners(userInputHandler) {
     var button = document.getElementById("new-game-button");
-    button.addEventListener("click", newGameListener.bind(window));
+    button.addEventListener("click", NewGameListener.bind(window));
     setUpGameKeyListeners();
 
     function setUpGameKeyListeners() {
@@ -106,14 +112,14 @@ function mainController() {
     }
   }
 
-  function buildGameCanvas() {
+  function BuildGameCanvas(levelToPlay) {
     const canvas = document.getElementById("game-board-canvas");
-    canvas.width = window.innerWidth - (window.innerWidth % levelCopy[0].length);
-    canvas.height = window.innerHeight - (window.innerHeight % levelCopy.length);
+    canvas.width = window.innerWidth - (window.innerWidth % levelToPlay[0].length);
+    canvas.height = window.innerHeight - (window.innerHeight % levelToPlay.length);
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const cellWidth = canvas.width / levelCopy[0].length;
-    const cellHeight = canvas.height / levelCopy.length;
+    const cellWidth = canvas.width / levelToPlay[0].length;
+    const cellHeight = canvas.height / levelToPlay.length;
 
     return {
       canvas: canvas,
@@ -122,28 +128,29 @@ function mainController() {
     }
   }
 
-  function buildGame(gameBoard) {
-    const mapRenderer = new MapRenderer(levelCopy, gameBoard, spiriteManager);
-    const mapManager = new MapManager(levelCopy);
-    const ghostCollisionStrategy = new GhostCollisionStartegy(mapManager.getLevelInfo());
-    const pacmanMoveStrategy = new PacmanCollisionStartegy(mapManager.getLevelInfo());
+  function BuildGame(gameBoard, levelToPlay) {
+    const mapRenderer = new MapRenderer(levelToPlay, gameBoard, spiriteManager);
+    const mapManager = new MapManager(levelToPlay);
+    const ghostCollisionStrategy = new GhostCollisionStartegy(mapManager.GetLevelInfo());
+    const pacmanMoveStrategy = new PacmanCollisionStartegy(mapManager.GetLevelInfo());
     const redGhost = new RedGhost(ghostCollisionStrategy, mapManager);
-    const yellowGhost =  new YellowGhost(ghostCollisionStrategy, mapManager);
-    const player = new Player(pacmanMoveStrategy, mapManager.getItemPosition(ActorDefinitions.PLAYER));
+    const blueGhost = new BlueGhost(ghostCollisionStrategy, mapManager);
+    const yellowGhost = new YellowGhost(ghostCollisionStrategy, mapManager);
+    const player = new Player(pacmanMoveStrategy, mapManager.GetItemPosition(ActorDefinitions.PLAYER));
     return new Game(mapManager,
-                    mapRenderer,
-                    spiriteManager,
-                    window.uiIntefaceAdapter,
-                    pacmanMoveStrategy, ghostCollisionStrategy, redGhost, yellowGhost, player);
+      mapRenderer,
+      spiriteManager,
+      window.uiIntefaceAdapter,
+      redGhost, yellowGhost, blueGhost, player);
   }
 
-  function newGameListener() {
-    endGame(undefined, undefined)
+  function NewGameListener() {
+    EndGame(undefined, undefined)
   }
 
   return {
-    init: init,
+    init: Init,
   }
 }
 
-export default mainController;
+export default MainController;

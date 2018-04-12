@@ -13,27 +13,27 @@ export default function Player(pacmanMoveStrategy, playerPosition) {
     4: () =>   this.points++
   };
 
-  this.canMoveToPosition = (direction, destination) => {
-    return this.pacmanMoveStrategy.checkCollision(direction, this.playerPosition, destination)
+  this.CanMoveToPosition = (direction, destination) => {
+    return this.pacmanMoveStrategy.CheckCollision(direction, this.playerPosition, destination)
   };
 
-  this.getNewPosition = (direction, destination) => {
+  this.GetNewPosition = (direction, destination) => {
       if(this.actions.hasOwnProperty(destination)) {
         this.actions[destination]();
       }
-      this.newPositions = this.pacmanMoveStrategy.getPendingPositions(direction, this.playerPosition, 2, destination);
+      this.newPositions = this.pacmanMoveStrategy.GetPendingPositions(direction, this.playerPosition, 2, destination);
       this.playerPosition = this.newPositions[1].position;
       return this.newPositions;
   };
 
-  this.getActorValue = function () {
+  this.GetActorValue = function () {
     return ActorDefinitions.PLAYER;
   };
 
-  this.getPendingPositions = () => this.newPositions;
-  this.getLifes = () => this.lifes;
-  this.getPoints = () => this.points;
-  this.reduceLife = () => this.lifes = this.lifes -1;
-  this.resetPosition = () => this.playerPosition = Object.assign({}, this.initialPosition);
+  this.GetPendingPositions = () => this.newPositions;
+  this.GetLifes = () => this.lifes;
+  this.GetPoints = () => this.points;
+  this.ReduceLife = () => this.lifes = this.lifes -1;
+  this.ResetPosition = () => this.playerPosition = Object.assign({}, this.initialPosition);
 
 }

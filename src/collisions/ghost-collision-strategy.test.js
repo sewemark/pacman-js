@@ -22,7 +22,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const mapHeight =40;
 
       const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height:mapHeight});
-      const result  = ghostCollisionStrategy.checkWin(ActorDefinitions.PLAYER);
+      const result  = ghostCollisionStrategy.CheckWin(ActorDefinitions.PLAYER);
       expect(result).to.equal(true);
     });
 
@@ -31,7 +31,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const mapHeight =40;
 
       const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height:mapHeight});
-      const result  = ghostCollisionStrategy.checkWin(ActorDefinitions.LIFEICON);
+      const result  = ghostCollisionStrategy.CheckWin(ActorDefinitions.LIFEICON);
       expect(result).to.equal(false);
     });
 
@@ -40,7 +40,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const mapHeight =40;
 
       const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height:mapHeight});
-      const result  = ghostCollisionStrategy.checkCollisionWithOther(ActorDefinitions.LIFEICON);
+      const result  = ghostCollisionStrategy.CheckCollisionWithOther(ActorDefinitions.LIFEICON);
       expect(result).to.equal(false);
     });
 
@@ -49,7 +49,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const mapHeight =40;
 
       const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height:mapHeight});
-      const result  = ghostCollisionStrategy.checkCollisionWithOther(ActorDefinitions.REDGHOST);
+      const result  = ghostCollisionStrategy.CheckCollisionWithOther(ActorDefinitions.REDGHOST);
       expect(result).to.equal(true);
     });
 
@@ -58,7 +58,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const mapHeight =40;
 
       const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height:mapHeight});
-      const result  = ghostCollisionStrategy.checkCollisionWithOther(ActorDefinitions.YELLOWGHOST);
+      const result  = ghostCollisionStrategy.CheckCollisionWithOther(ActorDefinitions.YELLOWGHOST);
       expect(result).to.equal(true);
     });
 
@@ -73,7 +73,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.LIFEICON;
       const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-      const newPositions = collisionStrategy.getPendingPositions(leftDirection, playerPosition, destinationValue);
+      const newPositions = collisionStrategy.GetPendingPositions(leftDirection, playerPosition, destinationValue);
 
       expect(newPositions.length).to.equal(2);
 
@@ -92,7 +92,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.LIFEICON;
       const ghostcollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height: mapHeight});
 
-      const newPositions = ghostcollisionStrategy.getPendingPositions(leftDirection, playerPosition, destinationValue);
+      const newPositions = ghostcollisionStrategy.GetPendingPositions(leftDirection, playerPosition, destinationValue);
 
       expect(newPositions.length).to.equal(2);
 
@@ -109,7 +109,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.REDGHOST;
       const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height: mapHeight});
 
-      const newPositions = ghostCollisionStrategy.getPendingPositions(topDirection, ghostPosition, destinationValue);
+      const newPositions = ghostCollisionStrategy.GetPendingPositions(topDirection, ghostPosition, destinationValue);
 
       expect(newPositions[0].position.x).to.equal(3);
       expect(newPositions[0].position.y).to.equal(12);
@@ -131,7 +131,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.REDGHOST;
       const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height: mapHeight});
 
-      const newPositions = ghostCollisionStrategy.getPendingPositions(topDirection, ghostPosition, destinationValue);
+      const newPositions = ghostCollisionStrategy.GetPendingPositions(topDirection, ghostPosition, destinationValue);
 
       expect(newPositions[0].position.x).to.equal(13);
       expect(newPositions[0].position.y).to.equal(2);
@@ -154,7 +154,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.REDGHOST;
       const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height: mapHeight});
 
-      const newPositions = ghostCollisionStrategy.getPendingPositions(topDirection, ghostPosition, destinationValue);
+      const newPositions = ghostCollisionStrategy.GetPendingPositions(topDirection, ghostPosition, destinationValue);
 
       expect(newPositions[0].position.x).to.equal(41);
       expect(newPositions[0].position.y).to.equal(21);
@@ -177,7 +177,7 @@ describe('GhostCollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.REDGHOST;
       const ghostCollisionStrategy = new GhostCollisionStartegy({width:mapWidth, height: mapHeight});
 
-      const newPositions = ghostCollisionStrategy.getPendingPositions(topDirection, ghostPosition, destinationValue);
+      const newPositions = ghostCollisionStrategy.GetPendingPositions(topDirection, ghostPosition, destinationValue);
 
       expect(newPositions[0].position.x).to.equal(41);
       expect(newPositions[0].position.y).to.equal(21);

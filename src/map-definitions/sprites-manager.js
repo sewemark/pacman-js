@@ -11,10 +11,11 @@ import money from '../assets/img/textures/coin.png';
 import redGhost from '../assets/img/ghosts/ghost1.png';
 import life from '../assets/img/textures/heart.png';
 import yellowGhost from '../assets/img/ghosts/yelloGhost.png';
+import blueGhost from '../assets/img/ghosts/blueGhost.png';
 
 var spirits = [pacman, pacman1, pacman2, pacman3];
 var textures = [background, wall, grass, money];
-var ghost = [redGhost, yellowGhost];
+var ghost = [redGhost, yellowGhost, blueGhost];
 var lifeSprites = [life];
 export default function SpiritesManager() {
   this.userSpirit = null;
@@ -39,10 +40,13 @@ export default function SpiritesManager() {
   this.yellowGhostSpirit = document.createElement("img");
   this.yellowGhostSpirit.src = ghost[1];
 
+  this.blueGhostSpirit = document.createElement("img");
+  this.blueGhostSpirit.src = ghost[1];
+
   this.lifeSprites = document.createElement("img");
   this.lifeSprites.src = lifeSprites[0];
 
-  this.getSpirit = function (actor) {
+  this.GetSpirit = function (actor) {
 
     if (actor === ActorDefinitions.WALL) {
       return this.backgroundSprite;
@@ -65,9 +69,12 @@ export default function SpiritesManager() {
     else if (actor === ActorDefinitions.LIFEICON) {
       return this.lifeSprites;
     }
+    else if (actor === ActorDefinitions.BLUEGHOST) {
+      return this.blueGhostSpirit;
+    }
   };
 
-  this.getIcons = function (actor) {
+  this.GetIcons = function (actor) {
     if (actor === ActorDefinitions.FOODICON) {
       return money;
     }

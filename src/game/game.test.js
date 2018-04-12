@@ -5,43 +5,43 @@ describe('Game class tests', () => {
   it('[1] should create Game', () => {
 
     let mockedMapManager = {
-      getLevelInfo: function () {
+      GetLevelInfo: function () {
         return 0;
       }
     };
     const game = new Game(mockedMapManager, undefined, undefined, undefined, undefined, undefined,
-                          undefined,undefined,undefined, undefined);
+                          undefined,undefined,undefined, undefined, undefined);
     expect(game).to.be.defined;
   });
 
   it('[1] should create Game', () => {
 
     let mockedMapManager = {
-      getLevelInfo: function () {
+      GetLevelInfo: function () {
         return 0;
       }
     };
     let mockedMapRenderer = {
-      render: function () {
+      Render: function () {
         return 0;
       }
     };
 
     let mockedMapUIAdapter  = {
-      updateUserInfo: function () {
+      UpdateUserInfo: function () {
         return 0;
       }
     };
     let mockedPlayer = {
-      getPoints: function () {
+      GetPoints: function () {
           return 1111;
       },
-      getLifes: function () {
+      GetLifes: function () {
 
       }
     };
-    const game = new Game(mockedMapManager, mockedMapRenderer, undefined, mockedMapUIAdapter, undefined, undefined, mockedPlayer);
-    game.Start();
+    const game = new Game(mockedMapManager, mockedMapRenderer, undefined, mockedMapUIAdapter, undefined, undefined, undefined, mockedPlayer);
+    //game.Start();
 
   });
 });

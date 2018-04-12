@@ -18,90 +18,87 @@ var CollisionStrategy = (function () {
   }
 
   CollisionStrategyConstructor.prototype.mapUpdater = function () {
-  return {
-      37 :
-      (playerPosition, player, prevValue) => {
-        return [{
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x
-          },
-          value: prevValue ? prevValue : ActorDefinitions.EMPTY
-        },
-          {
+    return {
+      37:
+        (playerPosition, player, prevValue) => {
+          return [{
             position: {
               y: playerPosition.y,
-              x: playerPosition.x - 1
-            },
-            value: player
-          }
-        ]
-      },
-        38
-    :
-      (playerPosition, player, prevValue) => {
-        return [{
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x
-          },
-          value: prevValue ? prevValue : ActorDefinitions.EMPTY
-        },
-          {
-            position: {
-              y: playerPosition.y - 1,
               x: playerPosition.x
             },
-            value: player
-          }
-        ]
-      },
-        39
-    :
-      (playerPosition, player, prevValue) => {
-        return [{
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x
+            value: prevValue ? prevValue : ActorDefinitions.EMPTY
           },
-          value: prevValue ? prevValue : ActorDefinitions.EMPTY
+            {
+              position: {
+                y: playerPosition.y,
+                x: playerPosition.x - 1
+              },
+              value: player
+            }
+          ]
         },
-          {
+      38:
+        (playerPosition, player, prevValue) => {
+          return [{
             position: {
               y: playerPosition.y,
-              x: playerPosition.x + 1
+              x: playerPosition.x
             },
-            value: player
-          }
-        ]
-      },
-        40
-    :
-      (playerPosition, player, prevValue) => {
-        return [{
-          position: {
-            y: playerPosition.y,
-            x: playerPosition.x
+            value: prevValue ? prevValue : ActorDefinitions.EMPTY
           },
-          value: prevValue ? prevValue : ActorDefinitions.EMPTY
+            {
+              position: {
+                y: playerPosition.y - 1,
+                x: playerPosition.x
+              },
+              value: player
+            }
+          ]
         },
-          {
+      39:
+        (playerPosition, player, prevValue) => {
+          return [{
             position: {
-              y: playerPosition.y + 1,
-              x: playerPosition.x,
+              y: playerPosition.y,
+              x: playerPosition.x
             },
-            value: player
-          }
-        ]
-      }
+            value: prevValue ? prevValue : ActorDefinitions.EMPTY
+          },
+            {
+              position: {
+                y: playerPosition.y,
+                x: playerPosition.x + 1
+              },
+              value: player
+            }
+          ]
+        },
+      40:
+        (playerPosition, player, prevValue) => {
+          return [{
+            position: {
+              y: playerPosition.y,
+              x: playerPosition.x
+            },
+            value: prevValue ? prevValue : ActorDefinitions.EMPTY
+          },
+            {
+              position: {
+                y: playerPosition.y + 1,
+                x: playerPosition.x,
+              },
+              value: player
+            }
+          ]
+        }
     }
   };
 
-  CollisionStrategyConstructor.prototype.checkCollision = function (direction, playerPosition, destination) {
+  CollisionStrategyConstructor.prototype.CheckCollision = function (direction, playerPosition, destination) {
     return this.destinationCheker()[direction](playerPosition, destination)
   };
 
-  CollisionStrategyConstructor.prototype.getPendingPositions = function (direction, playerPosition, destination, destinationValue) {
+  CollisionStrategyConstructor.prototype.GetPendingPositions = function (direction, playerPosition, destination, destinationValue) {
     return this.mapUpdater()[direction](playerPosition, destination, destinationValue);
   };
 
@@ -115,7 +112,7 @@ var CollisionStrategy = (function () {
   };
 
   CollisionStrategyConstructor.prototype.checkFood = function (destination) {
-    return destination == ActorDefinitions.FOOD;
+    return destination === ActorDefinitions.FOOD;
   };
 
   return CollisionStrategyConstructor;

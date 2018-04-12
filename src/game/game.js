@@ -1,5 +1,5 @@
 export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfaceAdapter,
-                             redGhost, yellowGhost, player) {
+                             redGhost, yellowGhost, blueGhost, player) {
 
   this.mapManager = mapManager;
   this.spiritesManager = spiritesManager;
@@ -7,113 +7,118 @@ export default function Game(mapManager, mapRenderer, spiritesManager, uiInterfa
   this.mapRenderer = mapRenderer;
   this.redGhost = redGhost;
   this.yellowGhost = yellowGhost;
+  this.blueGhost = blueGhost;
   this.player = player;
-  this.ghosts = [ this.redGhost,this.yellowGhost];
+  this.ghosts = [this.redGhost, this.blueGhost, this.yellowGhost];
   this.ghostIntervalId;
 
   this.Start = function () {
-    if(!this.ghostIntervalId) {
-       this.ghostIntervalId = setInterval(this.UpdateGohosts.bind(this), 200);
+    if (!this.ghostIntervalId) {
+      this.ghostIntervalId = setInterval(this.UpdateGohosts.bind(this), 200);
     }
-    this.mapRenderer.render();
-    this.uiInterfaceAdapter.updateUserInfo({
-      playerPoints:this.player.getPoints(),
-      playerLifes: this.player.getLifes()
+    this.mapRenderer.Render();
+    this.uiInterfaceAdapter.UpdateUserInfo({
+      playerPoints: this.player.GetPoints(),
+      playerLifes: this.player.GetLifes()
     });
   };
 
   this.HandleUserInput = function (direction) {
-    this.moveUser(this.player, direction);
+    this.MoveUser(this.player, direction);
     this.spiritesManager.updateSpirit(direction);
   };
 
   this.UpdateGhost = function (ghost) {
 
-    tryGetNewPathForGhost.call(this);
-    tryMoveGhost.call(this);
+    TryGetNewPathForGhost.call(this);
+    TryMoveGhost.call(this);
 
-    function tryMoveGhost() {
-      const position = this.mapManager.getItemPosition(ghost.getActorValue());
-      var nextPosition = ghost.getNextGhostPath(position)[0];
-      var destinationValue = this.mapManager.getPositionValue(nextPosition);
+    function TryMoveGhost() {
+      const position = this.mapManager.GetItemPosition(ghost.GetActorValue());
+      var nextPosition = ghost.GetNextGhostPath(position)[0];
+      var destinationValue = this.mapManager.GetPositionValue(nextPosition);
       let maxNumOfCollisionResolver = 0;
-      while(ghost.checkCollisionWithOther(destinationValue) && maxNumOfCollisionResolver < 5)
-      {
-        ghost.resestPosition();
-        nextPosition = ghost.getNextGhostPath(position)[0];
-        destinationValue = this.mapManager.getPositionValue(nextPosition);
+      while (ghost.CheckCollisionWithOther(destinationValue) && maxNumOfCollisionResolver < 5) {
+        ghost.ResestPosition();
+        while (ghost.CheckIfNoMoreMoves()) {
+          const newPath = this.mapManager.GetNextTripForGhost(ghost.GetActorValue()).path;
+          ghost.SetPath(newPath);
+        }
+        nextPosition = ghost.GetNextGhostPath(position)[0];
+        destinationValue = this.mapManager.GetPositionValue(nextPosition);
         maxNumOfCollisionResolver++;
       }
 
-      if(maxNumOfCollisionResolver < 5) {
-        const direction = ghost.getDirection(nextPosition, position);
-        this.moveGhost(ghost, direction, position, destinationValue);
+      if (maxNumOfCollisionResolver < 5) {
+        const direction = ghost.GetDirection(nextPosition, position);
+        this.MoveGhost(ghost, direction, position, destinationValue);
       }
     }
 
-    function tryGetNewPathForGhost() {
-      while(ghost.checkIfNoMoreMoves()){
-        const newPath = this.mapManager.getNextTripForGhost(ghost.getActorValue()).path;
-        ghost.setPath(newPath);
+    function TryGetNewPathForGhost() {
+      while (ghost.CheckIfNoMoreMoves()) {
+        const newPath = this.mapManager.GetNextTripForGhost(ghost.GetActorValue()).path;
+        ghost.SetPath(newPath);
       }
     }
   };
 
   this.UpdateGohosts = function () {
     this.ghosts.reverse();
-    this.ghosts.forEach(x=> {
+    this.ghosts.forEach(x => {
+      x.ReverseMode();
       this.UpdateGhost.call(this, x);
+
     });
   };
 
-  this.moveUser = function(actor, direction) {
-    const currentPosition = this.mapManager.getItemPosition(actor.getActorValue());
-    const destinationValue = this.mapManager.getDestinationPosition(direction, currentPosition);
+  this.MoveUser = function (actor, direction) {
+    const currentPosition = this.mapManager.GetItemPosition(actor.GetActorValue());
+    const destinationValue = this.mapManager.GetDestinationPosition(direction, currentPosition);
 
-    if(actor.canMoveToPosition(direction, destinationValue)){
+    if (actor.CanMoveToPosition(direction, destinationValue)) {
 
-        const newPositions = actor.getNewPosition(direction, destinationValue);
-        this.mapManager.updateMap(newPositions);
-        this.Start();
+      const newPositions = actor.GetNewPosition(direction, destinationValue);
+      this.mapManager.UpdateMap(newPositions);
+      this.Start();
 
-      if(this.mapManager.checkLoose()) {
-        this.player.reduceLife();
-        this.checkGameState();
+      if (this.mapManager.CheckLoose()) {
+        this.player.ReduceLife();
+        this.CheckGameState();
       }
 
-      if(this.mapManager.checkWin()) {
+      if (this.mapManager.CheckWin()) {
         alert('wygrales');
       }
     }
-
   };
 
-  this.moveGhost = function(actor, direction, position, destination) {
-    const temp = actor.getNewPosition(direction, destination);
+  this.MoveGhost = function (actor, direction, position, destination) {
+    const temp = actor.GetNewPosition(direction, destination);
     if (temp.x != position.x || temp.y != position.y) {
-      this.mapManager.updateMap(actor.getPendingPositions());
+      this.mapManager.UpdateMap(actor.GetPendingPositions());
       this.Start();
     }
-    if(this.mapManager.checkLoose()) {
-      this.player.reduceLife();
-      this.checkGameState();
+    if (this.mapManager.CheckLoose()) {
+      this.player.ReduceLife();
+      this.CheckGameState();
     }
-    if(this.mapManager.checkWin()) {
+    if (this.mapManager.CheckWin()) {
       alert('wygrales');
     }
   };
 
-  this.checkGameState = function() {
-    if (this.player.getLifes() <= 0) {
+  this.CheckGameState = function () {
+    if (this.player.GetLifes() <= 0) {
       clearInterval(this.ghostIntervalId);
       this.Start();
     } else {
-      this.mapManager.resetPlayer();
-      this.player.resetPosition();
+      this.mapManager.ResetPlayer();
+      this.player.ResetPosition();
     }
   };
 
-  this.close = function () {
+  this.Close = function () {
     clearInterval(this.ghostIntervalId);
   }
 }

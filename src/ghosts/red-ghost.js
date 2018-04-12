@@ -12,7 +12,7 @@ var RedGhost = (function() {
 
   function RedGhostConstructor(ghostCollisionStrategy, mapManager) {
 
-    var data = mapManager.getNextTripForGhost(ActorDefinitions.REDGHOST);
+    var data = mapManager.GetNextTripForGhost(ActorDefinitions.REDGHOST);
 
     var privMembers = {
       mapManager: mapManager,
@@ -22,6 +22,7 @@ var RedGhost = (function() {
       ghostCollisionStrategy: ghostCollisionStrategy,
       newPositions: [],
       GHOST: ActorDefinitions.REDGHOST,
+      mode: 'bad'
     };
 
     Ghost.call(this, ghostCollisionStrategy, mapManager, privMembers);

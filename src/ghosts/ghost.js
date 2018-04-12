@@ -17,37 +17,49 @@ var Ghost = (function () {
       path: data.path,
       ghostCollisionStrategy: ghostCollisionStrategy,
       newPositions: [],
-      GHOST: ActorDefinitions.EMPTY
+      GHOST: ActorDefinitions.EMPTY,
+      mode: 'bad'
     };
     priv.set(this, privMembers);
 
   }
 
-  GhostConstructor.prototype.checkCollisionWithOther = function (destination) {
-    return _(this).ghostCollisionStrategy.checkCollisionWithOther(destination);
+  GhostConstructor.prototype.CheckCollisionWithOther = function (destination) {
+    return _(this).ghostCollisionStrategy.CheckCollisionWithOther(destination);
   };
 
-  GhostConstructor.prototype.getNextGhostPath = function (position) {
+  GhostConstructor.prototype.GetNextGhostPath = function (position) {
       return getNextTrip.call(this);
 
       function getNextTrip() {
+        let c = _(this).path;
+
+        if(!c || (c.length ==0 || _(this).path.length ==1)){
+          let a = _(this).path;
+          let b = a;
+        }
         var firstPath = _(this).path.splice(0, 1);
-        while (firstPath[0][0] === position.x && firstPath[0][1] === position.y) {
+        if(!firstPath || !firstPath[0]) {
+          console.log(firstPath);
+
+          return undefined;
+        }
+        while (firstPath && firstPath[0][0] === position.x && firstPath[0][1] === position.y) {
           firstPath = _(this).path.splice(0, 1);
         }
         return firstPath;
       }
   };
 
-  GhostConstructor.prototype.checkIfNoMoreMoves = function() {
-    return _(this).path.length === 0
+  GhostConstructor.prototype.CheckIfNoMoreMoves = function() {
+    return _(this).path.length <= 2;
   };
 
-  GhostConstructor.prototype.setPath = function (newPath) {
+  GhostConstructor.prototype.SetPath = function (newPath) {
     _(this).path = newPath;
   };
 
-  GhostConstructor.prototype.getDirection = function (firstPath, position) {
+  GhostConstructor.prototype.GetDirection = function (firstPath, position) {
     let direction;
     if (firstPath[0] === position.x) {
       if (firstPath[1] > position.y) direction = 40;
@@ -61,34 +73,47 @@ var Ghost = (function () {
 
   };
 
-  GhostConstructor.prototype.resestPosition = function () {
+  GhostConstructor.prototype.ResestPosition = function () {
     _(this).path.splice(0, _(this).path.length);
 
   };
 
-  GhostConstructor.prototype.checkCollision = function (direction, position, destination) {
-    if (!_(this).ghostCollisionStrategy.checkCollision(direction, position, destination)) {
+  GhostConstructor.prototype.CheckCollision = function (direction, position, destination) {
+    if (!_(this).ghostCollisionStrategy.CheckCollision(direction, position, destination)) {
       _(this).path.splice(0, _(this).path.length);
       return false;
     }
     return true;
   };
 
-  GhostConstructor.prototype.getNewPosition = function (direction, destination) {
-    if (_(this).ghostCollisionStrategy.checkCollision(direction, _(this).position, destination)) {
-      _(this).newPositions = _(this).ghostCollisionStrategy.getPendingPositions(direction, _(this).position, _(this).GHOST, destination);
+  GhostConstructor.prototype.GetNewPosition = function (direction, destination) {
+    if (_(this).ghostCollisionStrategy.CheckCollision(direction, _(this).position, destination)) {
+      _(this).newPositions = _(this).ghostCollisionStrategy.GetPendingPositions(direction, _(this).position, _(this).GHOST, destination, this);
       _(this).position = _(this).newPositions[1].position;
     }
     return _(this).newPositions;
   };
 
-  GhostConstructor.prototype.getPendingPositions = function () {
+  GhostConstructor.prototype.GetPendingPositions = function () {
     return _(this).newPositions;
   };
 
-  GhostConstructor.prototype.getActorValue = function () {
+  GhostConstructor.prototype.GetActorValue = function () {
     return _(this).GHOST;
   };
+
+  GhostConstructor.prototype.IsEasyMode = function () {
+    return _(this).mode === "easy";
+  };
+
+  GhostConstructor.prototype.ReverseMode = function () {
+    if( _(this).mode === "bad") {
+      _(this).mode = "easy";
+    }
+    else {
+      _(this).mode = "easy";
+    }
+  }
 
   return GhostConstructor;
 

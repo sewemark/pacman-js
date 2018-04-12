@@ -35,8 +35,8 @@ describe('CollisionStrategy class tests', () => {
       expect(isFood).to.equal(false);
     });
   });
-  describe('[2] checkCollision tests', ()=> {
-    it('[1] checkCollision for left direction and proper user position   should return true', () => {
+  describe('[2] CheckCollision tests', ()=> {
+    it('[1] CheckCollision for left direction and proper user position   should return true', () => {
       const mapWidth=40;
       const mapHeight =40;
       const playerPosition = {
@@ -48,12 +48,12 @@ describe('CollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.LIFEICON;
       const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-      const isFood = collisionStrategy.checkCollision(leftDirection, playerPosition, destinationValue);
+      const isFood = collisionStrategy.CheckCollision(leftDirection, playerPosition, destinationValue);
 
       expect(isFood).to.equal(true);
     });
 
-    it('[2] checkCollision for left direction and out of boundary destination should return false', () => {
+    it('[2] CheckCollision for left direction and out of boundary destination should return false', () => {
       const mapWidth=40;
       const mapHeight =40;
       const playerPosition = {
@@ -65,12 +65,12 @@ describe('CollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.LIFEICON;
       const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-      const isFood = collisionStrategy.checkCollision(leftDirection, playerPosition, destinationValue);
+      const isFood = collisionStrategy.CheckCollision(leftDirection, playerPosition, destinationValue);
       expect(isFood).to.equal(true);
 
     });
 
-    it('[3] checkCollision for up direction and out of boundary destination should return false', () => {
+    it('[3] CheckCollision for up direction and out of boundary destination should return false', () => {
       const mapWidth=40;
       const mapHeight =40;
       const playerPosition = {
@@ -81,12 +81,12 @@ describe('CollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.LIFEICON;
       const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-      const isFood = collisionStrategy.checkCollision(leftDirection, playerPosition, destinationValue);
+      const isFood = collisionStrategy.CheckCollision(leftDirection, playerPosition, destinationValue);
       expect(isFood).to.equal(false);
 
     });
 
-    it('[4] checkCollision for right direction and out of boundary destination should return false', () => {
+    it('[4] CheckCollision for right direction and out of boundary destination should return false', () => {
       const mapWidth=40;
       const mapHeight =40;
       const playerPosition = {
@@ -97,12 +97,12 @@ describe('CollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.LIFEICON;
       const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-      const isFood = collisionStrategy.checkCollision(leftDirection, playerPosition, destinationValue);
+      const isFood = collisionStrategy.CheckCollision(leftDirection, playerPosition, destinationValue);
       expect(isFood).to.equal(false);
 
     });
 
-    it('[5] checkCollision for down direction and out of boundary destination should return false', () => {
+    it('[5] CheckCollision for down direction and out of boundary destination should return false', () => {
       const mapWidth=40;
       const mapHeight =40;
       const playerPosition = {
@@ -113,12 +113,12 @@ describe('CollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.LIFEICON;
       const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-      const isFood = collisionStrategy.checkCollision(leftDirection, playerPosition, destinationValue);
+      const isFood = collisionStrategy.CheckCollision(leftDirection, playerPosition, destinationValue);
       expect(isFood).to.equal(false);
 
     });
 
-    it('[6] checkCollision for down direction and out of boundary destination should return false', () => {
+    it('[6] CheckCollision for down direction and out of boundary destination should return false', () => {
       const mapWidth=40;
       const mapHeight =40;
       const playerPosition = {
@@ -129,7 +129,7 @@ describe('CollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.LIFEICON;
       const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-      const isFood = collisionStrategy.checkCollision(leftDirection, playerPosition, destinationValue);
+      const isFood = collisionStrategy.CheckCollision(leftDirection, playerPosition, destinationValue);
       expect(isFood).to.equal(false);
 
     });
@@ -147,7 +147,7 @@ describe('CollisionStrategy class tests', () => {
        const destinationValue = ActorDefinitions.LIFEICON;
        const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-       const newPositions = collisionStrategy.getPendingPositions(leftDirection, playerPosition, destinationValue);
+       const newPositions = collisionStrategy.GetPendingPositions(leftDirection, playerPosition, destinationValue);
 
        expect(newPositions.length).to.equal(2);
 
@@ -164,7 +164,7 @@ describe('CollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.PLAYER;
       const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-      const newPositions = collisionStrategy.getPendingPositions(topDirection, playerPosition, destinationValue);
+      const newPositions = collisionStrategy.GetPendingPositions(topDirection, playerPosition, destinationValue);
 
       expect(newPositions[0].position.x).to.equal(3);
       expect(newPositions[0].position.y).to.equal(12);
@@ -187,7 +187,7 @@ describe('CollisionStrategy class tests', () => {
       const destinationValue = ActorDefinitions.PLAYER;
       const collisionStrategy = new CollisionStrategy({width:mapWidth, height: mapHeight});
 
-      const newPositions = collisionStrategy.getPendingPositions(topDirection, playerPosition, destinationValue);
+      const newPositions = collisionStrategy.GetPendingPositions(topDirection, playerPosition, destinationValue);
 
       expect(newPositions[0].position.x).to.equal(13);
       expect(newPositions[0].position.y).to.equal(22);

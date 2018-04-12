@@ -10,21 +10,21 @@ var PacmanCollisionStartegy = (function () {
   };
 
   function PacmanCollisionStartegyConstructor(mapInfo) {
-      priv.set(this, {mapWidth:mapInfo.width, mapHeight: mapInfo.height});
-      CollisionStrategy.apply(this, arguments);
+    priv.set(this, {mapWidth: mapInfo.width, mapHeight: mapInfo.height});
+    CollisionStrategy.apply(this, arguments);
   }
 
   PacmanCollisionStartegyConstructor.prototype = Object.create(CollisionStrategy.prototype);
 
   PacmanCollisionStartegyConstructor.prototype.checkFood = function (destination) {
-    return destination == ActorDefinitions.FOOD;
+    return destination === ActorDefinitions.FOOD;
   };
 
-  PacmanCollisionStartegyConstructor.prototype.checkLoose = function (destination) {
-    return ActorDefinitions.GHOSTS.findIndex(x=> x === destination) >= 0;
+  PacmanCollisionStartegyConstructor.prototype.CheckLoose = function (destination) {
+    return ActorDefinitions.GHOSTS.findIndex(x => x === destination) >= 0;
   };
 
-  PacmanCollisionStartegyConstructor.prototype.mapUpdater = function() {
+  PacmanCollisionStartegyConstructor.prototype.mapUpdater = function () {
     return {
       37: (playerPosition, player, destinationValue) => {
         return [{

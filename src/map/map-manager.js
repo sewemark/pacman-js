@@ -4,11 +4,11 @@ import { userPosition } from '../map-definitions/map';
 
 export default function MapManager(map) {
   this.map = map;
-  this.grid = new PF.Grid(this.map, [0, 2, 3, 4, 5 ]);
+  this.grid = new PF.Grid(this.map, [0, 2, 3, 4, 5, 6 ]);
   this.finder = new PF.AStarFinder();
   this.state = 0;
 
-  this.generateRandomPoint = function () {
+  this.GenerateRandomPoint = function () {
     var yRandom = Math.floor((Math.random() * this.map.length) + 1);
     var xRandom = Math.floor((Math.random() * this.map[0].length) + 1);
     while (!this.map[yRandom] || [0, 4].indexOf(this.map[yRandom][xRandom]) < 0) {
@@ -21,7 +21,7 @@ export default function MapManager(map) {
     }
   };
 
-  this.getItemPosition = function (item) {
+  this.GetItemPosition = function (item) {
     for (let i = 0; i < this.map.length; i++) {
       let index = this.map[i].findIndex(x => x === item)
       if (index >= 0) {
@@ -34,26 +34,21 @@ export default function MapManager(map) {
     return new Error('No such item in map');
   };
 
-  this.getPositionValue = function (position) {
+  this.GetPositionValue = function (position) {
     return this.map[position[1]][position[0]];
   };
 
-  this.getDestinationPosition = function (direction, playerPosition) {
+  this.GetDestinationPosition = function (direction, playerPosition) {
     return this.destinationCheker[direction](playerPosition)
   };
 
-  this.getDestinationPosition2 = function (actor, direction) {
-    const position = this.getItemPosition(actor);
-    return this.destinationCheker[direction](position)
-  };
-
-  this.updateMap = function (positions) {
+  this.UpdateMap = function (positions) {
     var last = positions[positions.length - 1];
-    if (last && this.map[last.position.y][last.position.x] == ActorDefinitions.PLAYER) {
+    if (last && this.map[last.position.y][last.position.x] === ActorDefinitions.PLAYER) {
           this.state = -1;
     }
     if((last && ActorDefinitions.GHOSTS.indexOf(this.map[last.position.y][last.position.x]) >=0)
-      && this.map[positions[0].position.y][positions[0].position.x] == ActorDefinitions.PLAYER )
+      && this.map[positions[0].position.y][positions[0].position.x] === ActorDefinitions.PLAYER )
     {
       this.state = -1;
     }
@@ -62,10 +57,10 @@ export default function MapManager(map) {
     });
   };
 
-  this.getNextTripForGhost = function (ghost) {
-    this.grid = new PF.Grid(this.map, [0, 2, 3, 4, 5]);
-    var init = this.generateRandomPoint();
-    var initaliGhostPosition = this.getItemPosition(ghost);
+  this.GetNextTripForGhost = function (ghost) {
+    this.grid = new PF.Grid(this.map, [0, 2, 3, 4, 5, 6]);
+    var init = this.GenerateRandomPoint();
+    var initaliGhostPosition = this.GetItemPosition(ghost);
 
     var path = this.finder.findPath(initaliGhostPosition.x, initaliGhostPosition.y, init.x, init.y, this.grid);
     while (path.length === 0) {
@@ -79,24 +74,24 @@ export default function MapManager(map) {
     }
   };
 
-  this.getLevelInfo = () => {
+  this.GetLevelInfo = () => {
     return {
       height: this.map.length,
       width: this.map[0].length
     }
   };
 
-  this.checkWin = function () {
+  this.CheckWin = function () {
     return this.map.findIndex(x => {
       return x.indexOf(ActorDefinitions.FOOD) >= 0;
     }) < 0;
   };
 
-  this.checkLoose = function () {
+  this.CheckLoose = function () {
    return this.state === -1;
  };
 
-  this.resetPlayer = function () {
+  this.ResetPlayer = function () {
    this.state = 0;
    for(let i =0;i<this.map.length;i++){
      for(let j =0; j<this.map[0].length; j++){
@@ -108,9 +103,9 @@ export default function MapManager(map) {
     this.map[userPosition.y][userPosition.x] = ActorDefinitions.PLAYER;
   };
 
-  this.getLevelWidth = () => this.map[0].length;
+  this.GetLevelWidth = () => this.map[0].length;
 
-  this.getLevelHeight = () => this.map.length;
+  this.GetLevelHeight = () => this.map.length;
 
   this.destinationCheker = {
     37: (playerPosition) => this.map[playerPosition.y][playerPosition.x - 1],

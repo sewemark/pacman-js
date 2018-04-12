@@ -1,7 +1,7 @@
 import ActorDefinitions from '../map-definitions/map-config';
 import Ghost from './ghost';
 
-var RedGhost = (function() {
+var BlueGhost = (function() {
   "use strict";
 
   var priv = new WeakMap();
@@ -10,9 +10,9 @@ var RedGhost = (function() {
     return priv.get(inst);
   }
 
-  function RedGhostConstructor(ghostCollisionStrategy, mapManager) {
+  function BlueGhostConstructor(ghostCollisionStrategy, mapManager) {
 
-    var data = mapManager.getNextTripForGhost(ActorDefinitions.REDGHOST);
+    var data = mapManager.GetNextTripForGhost(ActorDefinitions.BLUEGHOST);
 
     var privMembers = {
       mapManager: mapManager,
@@ -21,7 +21,8 @@ var RedGhost = (function() {
       path: data.path,
       ghostCollisionStrategy: ghostCollisionStrategy,
       newPositions: [],
-      GHOST: ActorDefinitions.REDGHOST,
+      GHOST: ActorDefinitions.BLUEGHOST,
+      mode: 'bad'
     };
 
     Ghost.call(this, ghostCollisionStrategy, mapManager, privMembers);
@@ -29,13 +30,13 @@ var RedGhost = (function() {
 
   }
 
-  RedGhostConstructor.prototype = Object.create(Ghost.prototype);
-  RedGhostConstructor.prototype.constructor = RedGhostConstructor;
+  BlueGhostConstructor.prototype = Object.create(Ghost.prototype);
+  BlueGhostConstructor.prototype.constructor = BlueGhostConstructor;
 
-  return RedGhostConstructor;
+  return BlueGhostConstructor;
 
 })();
 
 
-export default RedGhost;
+export default BlueGhost;
 
