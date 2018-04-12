@@ -53,7 +53,7 @@ function MainController() {
 
   function getLevelToPlay(target) {
       const levelIndex = target.target.innerText.split(' ').pop();
-      return deepCopy(levelsDefinitions[levelIndex]);
+      return deepCopy(levelsDefinitions[Number(levelIndex-1)]);
   }
   function InitUIState() {
     var wrapper = document.getElementById("wrapper-div");
